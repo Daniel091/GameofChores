@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "307777743386",
+    "firebase_url": "https://pemgami.firebaseio.com",
+    "project_id": "pemgami",
+    "storage_bucket": "pemgami.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307777743386:android:a03a9b9705700493",
+        "android_client_info": {
+          "package_name": "sbd.pemgami"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "307777743386-kgmu5caf5s39tpojuo93n8sonjd9o33o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFtlAFyBSCAuOH6FMETRI5zikb4d97nY4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
