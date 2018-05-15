@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "307777743386-umv3c1aq97g7u27doq50rhq3ufv5qlrt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sbd.pemgami",
+            "certificate_hash": "8989f3626aaee08d334f2e4d9a8040f5d47a4ade"
+          }
+        },
+        {
           "client_id": "307777743386-kgmu5caf5s39tpojuo93n8sonjd9o33o.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "307777743386-kgmu5caf5s39tpojuo93n8sonjd9o33o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
