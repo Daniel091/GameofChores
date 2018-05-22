@@ -5,4 +5,7 @@
     <string name="sign_in">Sign In</string>
     <string name="create_wg">Want to create a new WG? Create</string>
     <string name="find_wg">Find your WG</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

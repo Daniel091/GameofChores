@@ -1,14 +1,13 @@
 package sbd.pemgami
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.activity_start.*
 import kotlinx.android.synthetic.main.activity_wgform.*
 
 
@@ -21,11 +20,13 @@ class WGFormActivity : AppCompatActivity() {
 
         input_usrname.setText(CurrentUser.name)
         btnFind.setOnClickListener { findWG(input_wg_id.text.toString()) }
-        link_createWG.setOnClickListener { showWGCreateActivity() }
+        link_createWG.setOnClickListener { showWGDialog() }
     }
 
-    private fun showWGCreateActivity() {
-
+    private fun showWGDialog() {
+        val dialog = CreateWGFragment()
+        val ft = supportFragmentManager.beginTransaction()
+        dialog.show(ft,"DialogWG")
     }
 
     private fun findWG(id: String) {
