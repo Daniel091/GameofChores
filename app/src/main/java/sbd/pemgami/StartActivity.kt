@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -16,8 +17,9 @@ import java.util.*
 
 class StartActivity : AppCompatActivity() {
     private val TAG: String = "StartActivity"
-    private val fbAuth = FirebaseAuth.getInstance()
     private val RC_SIGN_IN: Int = 123
+
+    private val fbAuth = FirebaseAuth.getInstance()
     private val fbDatabase = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,23 +28,18 @@ class StartActivity : AppCompatActivity() {
 
         if (fbAuth.currentUser != null) {
             textView.text = fbAuth.currentUser?.email
-            checkUserInDb(fbAuth.currentUser)
+            checkUserInDB(fbAuth.currentUser)
         } else {
             loginUser()
         }
 
+        textView.text = fbAuth.currentUser?.email
 
-        if (fbAuth.currentUser != null) {
-            textView.text = fbAuth.currentUser?.email
-        }
-
-        // simple trigger for debugging, TODO remove
-        button3.setOnClickListener {
+        loginBtn.setOnClickListener {
             loginUser()
         }
 
-        // set up Logout Button for debugging
-        button.setOnClickListener {
+        logoutBtn.setOnClickListener {
             if (fbAuth.currentUser != null) {
                 Log.d(TAG, "Signed User Out")
                 AuthUI.getInstance()
@@ -52,6 +49,17 @@ class StartActivity : AppCompatActivity() {
                             textView.text = ""
                         }
             }
+        }
+    }
+
+    private fun moveToNextActivity() {
+        if (CurrentUser.wg_id != "" && fbAuth.currentUser != null) {
+            Log.d(TAG, "User: ${CurrentUser.name} has already a WG")
+        } else {
+            Log.d(TAG, "User: ${CurrentUser.name} has no WG")
+
+            val intent = Intent(this, WGFormActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -76,13 +84,14 @@ class StartActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
             textView.text = fbAuth.currentUser?.email
-            checkUserInDb(fbAuth.currentUser)
+            checkUserInDB(fbAuth.currentUser)
         }
 
     }
 
-    private fun checkUserInDb(user: FirebaseUser?) {
+    private fun checkUserInDB(user: FirebaseUser?) {
         if (user == null) return
+        progressBar.visibility = View.VISIBLE
 
         // check if username exists in database
         val checkUser: Query = fbDatabase.child("users").orderByChild("uid").equalTo(user.uid)
@@ -103,10 +112,12 @@ class StartActivity : AppCompatActivity() {
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "ErrorCode ${databaseError.code}, DatabaseDetails: ${databaseError.details}")
+                progressBar.visibility = View.INVISIBLE
             }
         }
         checkUser.addListenerForSingleValueEvent(checkListener)
     }
+
 
     private fun getUserData(user: FirebaseUser) {
         val getUser: Query = fbDatabase.child("users").child(user.uid)
@@ -117,11 +128,14 @@ class StartActivity : AppCompatActivity() {
                 Log.d(TAG, "Got User: ${usr?.email}")
 
                 if (usr == null) return
-                CurrentUser.init(usr.name, usr.email, usr.uid)
+                CurrentUser.init(usr.name, usr.email, usr.uid, usr.wg_id)
+                progressBar.visibility = View.INVISIBLE
+                moveToNextActivity()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "ErrorCode ${databaseError.code}, DatabaseDetails: ${databaseError.details}")
+                progressBar.visibility = View.INVISIBLE
             }
         }
         getUser.addListenerForSingleValueEvent(getListener)
@@ -135,6 +149,7 @@ class StartActivity : AppCompatActivity() {
                 .addOnSuccessListener { Log.d(TAG, "Upload Successful") }
 
         CurrentUser.init(usr.name, usr.email, usr.uid)
+        moveToNextActivity()
     }
 
 }

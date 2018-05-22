@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">pemGami</string>
+    <string name="no_user">No User</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
+    <string name="create_wg">Want to create a new WG? Create</string>
+    <string name="find_wg">Find your WG</string>
 </resources>

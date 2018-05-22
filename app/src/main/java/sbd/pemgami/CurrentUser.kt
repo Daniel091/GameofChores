@@ -1,11 +1,12 @@
 package sbd.pemgami
 
 object CurrentUser {
-    private var name: String = ""
-    private var email: String = ""
-    private var uid: String = ""
+    var name: String = ""
+    var email: String = ""
+    var uid: String = ""
+    var wg_id: String = ""
 
-    fun init(name: String = "", email: String = "", uid: String = "") {
+    fun init(name: String = "", email: String = "", uid: String = "", wg_id: String = "") {
         this.name = name
         this.email = email
         this.uid = uid
