@@ -1,3 +1,3 @@
 package sbd.pemgami
 
-class User(val usrname: String? = "", val uid: String = "", val email: String? = "")
+class User(val name: String = "", val uid: String = "", val email: String = "")

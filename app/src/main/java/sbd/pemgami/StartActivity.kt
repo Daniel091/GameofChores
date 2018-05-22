@@ -24,10 +24,9 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-
         if (fbAuth.currentUser != null) {
             textView.text = fbAuth.currentUser?.email
-            //TODO
+            checkUserInDb(fbAuth.currentUser)
         } else {
             loginUser()
         }
@@ -116,6 +115,9 @@ class StartActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val usr = dataSnapshot.getValue(User::class.java)
                 Log.d(TAG, "Got User: ${usr?.email}")
+
+                if (usr == null) return
+                CurrentUser.init(usr.name, usr.email, usr.uid)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -126,11 +128,13 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun addUserData(user: FirebaseUser) {
-        val usr = User(user.email, user.uid, user.email)
+        val usr = User(user.email ?: "", user.uid, user.email ?: "")
 
         // add user to firebase
         fbDatabase.child("users").child(user.uid).setValue(usr)
                 .addOnSuccessListener { Log.d(TAG, "Upload Successful") }
+
+        CurrentUser.init(usr.name, usr.email, usr.uid)
     }
 
 }
