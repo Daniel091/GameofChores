@@ -94,7 +94,7 @@ class StartActivity : AppCompatActivity() {
         progressBar.visibility = View.VISIBLE
 
         // check if username exists in database
-        val checkUser: Query = fbDatabase.child("users").orderByChild("uid").equalTo(user.uid)
+        val checkUser: Query = Constants.databaseUsers.orderByChild("uid").equalTo(user.uid)
 
         // set up listener
         val checkListener = object : ValueEventListener {
@@ -120,7 +120,7 @@ class StartActivity : AppCompatActivity() {
 
 
     private fun getUserData(user: FirebaseUser) {
-        val getUser: Query = fbDatabase.child("users").child(user.uid)
+        val getUser: Query = Constants.databaseUsers.child(user.uid)
 
         val getListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -145,7 +145,7 @@ class StartActivity : AppCompatActivity() {
         val usr = User(user.email ?: "", user.uid, user.email ?: "")
 
         // add user to firebase
-        fbDatabase.child("users").child(user.uid).setValue(usr)
+        Constants.databaseUsers.child(user.uid).setValue(usr)
                 .addOnSuccessListener { Log.d(TAG, "Upload Successful") }
 
         CurrentUser.init(usr.name, usr.email, usr.uid)
