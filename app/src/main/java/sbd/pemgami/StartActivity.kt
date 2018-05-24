@@ -20,7 +20,6 @@ class StartActivity : AppCompatActivity() {
     private val RC_SIGN_IN: Int = 123
 
     private val fbAuth = FirebaseAuth.getInstance()
-    private val fbDatabase = FirebaseDatabase.getInstance().reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
