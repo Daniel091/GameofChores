@@ -54,6 +54,14 @@ class StartActivity : AppCompatActivity() {
     private fun moveToNextActivity() {
         if (CurrentUser.wg_id != "" && fbAuth.currentUser != null) {
             Log.d(TAG, "User: ${CurrentUser.name} has already a WG")
+
+            // TODO comment in
+            //val intent = Intent(this, HomeActivity::class.java)
+            //startActivity(intent)
+
+            // TODO remove
+            val intent = Intent(this, WGFormActivity::class.java)
+            startActivity(intent)
         } else {
             Log.d(TAG, "User: ${CurrentUser.name} has no WG")
 
@@ -98,7 +106,6 @@ class StartActivity : AppCompatActivity() {
         // set up listener
         val checkListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                 Log.d(TAG, dataSnapshot.childrenCount.toString())
                 if (dataSnapshot.childrenCount > 0) {
                     Log.d(TAG, "User exists")

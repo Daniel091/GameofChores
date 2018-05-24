@@ -10,5 +10,6 @@ object CurrentUser {
         this.name = name
         this.email = email
         this.uid = uid
+        this.wg_id = wg_id
     }
 }
