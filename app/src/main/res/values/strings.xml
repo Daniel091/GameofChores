@@ -20,4 +20,6 @@
     <string name="wg_created">Gratulations %1$s, your WG has been created</string>
     <string name="share_code_text">Share this code with your fellow flatmates</string>
     <string name="copy">Copy</string>
+    <string name="found_wg">Hurray, found WG named: %1s Do you like to join it as: %2s?</string>
+    <string name="no_wg">Sadly, no WG with this ID found</string>
 </resources>

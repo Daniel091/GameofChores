@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.firebase.database.DataSnapshot
@@ -39,6 +40,9 @@ class FindWGFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        linLayout.visibility = View.GONE
+        continueButton.visibility = View.GONE
+
         input_usrname.setText(CurrentUser.name)
         btnFind.setOnClickListener {
             hideKeyboard()
@@ -65,16 +69,14 @@ class FindWGFragment : Fragment() {
 
                     fetchWGData(id)
                 } else {
-                    notifyUser("Sadly, no WG with this ID found")
+                    Toast.makeText(context, getString(R.string.no_wg), Toast.LENGTH_LONG).show()
+                    progressBar2.visibility = View.INVISIBLE
                 }
-                //val usr = dataSnapshot.getValue(User::class.java)
-                //Log.d(TAG, "Got User: ${usr?.email}")
-
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "ErrorCode ${databaseError.code}, DatabaseDetails: ${databaseError.details}")
-                //progressBar2.visibility = View.INVISIBLE
+                progressBar2.visibility = View.INVISIBLE
             }
         }
         getWG.addListenerForSingleValueEvent(getListener)
@@ -88,8 +90,7 @@ class FindWGFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val wg = dataSnapshot.getValue(WG::class.java)
                 Log.d(TAG, "Got WG: ${wg?.name}")
-
-                notifyUser("Hurray, WG found its called ${wg?.name}")
+                notifyUser(wg)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -99,9 +100,17 @@ class FindWGFragment : Fragment() {
         getUser.addListenerForSingleValueEvent(getListener)
     }
 
-    private fun notifyUser(text: String) {
+    private fun notifyUser(wg: WG?) {
         progressBar2.visibility = View.INVISIBLE
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        textView2.text = resources.getString(R.string.found_wg, wg?.name, input_usrname.text)
+
+        val fadInAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
+        fadInAnimation.duration = 3000
+
+        linLayout.startAnimation(fadInAnimation)
+        continueButton.startAnimation(fadInAnimation)
+        linLayout.visibility = View.VISIBLE
+        continueButton.visibility = View.VISIBLE
     }
 
     private fun hideKeyboard() {
