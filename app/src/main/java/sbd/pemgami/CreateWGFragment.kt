@@ -1,7 +1,9 @@
 package sbd.pemgami
 
 
-import android.content.Context
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_create_wg.*
 
 class CreateWGFragment : Fragment() {
@@ -36,10 +38,25 @@ class CreateWGFragment : Fragment() {
         createWgBtn.setOnClickListener {
             val wgname = input_wgname.text.toString()
             if (wgname != "") {
+                this.hideKeyboard()
+
                 progressBar3.visibility = View.VISIBLE
+                input_wgname.isEnabled = false
                 createWG(input_wgname.text.toString())
             }
         }
+
+        copyBtn.setOnClickListener {
+            copyText(codeTextView.text)
+        }
+    }
+
+    private fun copyText(text: CharSequence) {
+        val clipM = context?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", text)
+        clipM.primaryClip = clipData
+
+        Toast.makeText(context, "WG ID Copied", Toast.LENGTH_LONG).show()
     }
 
     private fun createWG(wgname: String) {
@@ -66,7 +83,7 @@ class CreateWGFragment : Fragment() {
         progressBar3.visibility = View.INVISIBLE
 
         val fadInAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
-        fadInAnimation.duration = 2500
+        fadInAnimation.duration = 3000
 
         codeTextView.text = CurrentWG.uid
         textView2.text = resources.getString(R.string.wg_created, CurrentWG.name)
