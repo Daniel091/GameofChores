@@ -62,11 +62,13 @@ class StartActivity : AppCompatActivity() {
             // TODO remove
             val intent = Intent(this, WGFormActivity::class.java)
             startActivity(intent)
+            finish()
         } else {
             Log.d(TAG, "User: ${CurrentUser.name} has no WG")
 
             val intent = Intent(this, WGFormActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 

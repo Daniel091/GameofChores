@@ -3,6 +3,7 @@ package sbd.pemgami
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_create_wg.*
 
@@ -38,7 +40,7 @@ class CreateWGFragment : Fragment() {
         createWgBtn.setOnClickListener {
             val wgname = input_wgname.text.toString()
             if (wgname != "") {
-                this.hideKeyboard()
+                hideKeyboard()
 
                 progressBar3.visibility = View.VISIBLE
                 input_wgname.isEnabled = false
@@ -102,7 +104,12 @@ class CreateWGFragment : Fragment() {
         Log.d(TAG, "Move to next activity triggered")
 
         val intent = Intent(context, HomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }
 
+    private fun hideKeyboard() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(content.windowToken, 0)
+    }
 }
