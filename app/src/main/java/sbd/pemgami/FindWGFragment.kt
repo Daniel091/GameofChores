@@ -2,6 +2,7 @@ package sbd.pemgami
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -49,6 +50,7 @@ class FindWGFragment : Fragment() {
             findWG(input_wg_id.text.toString())
         }
         link_createWG.setOnClickListener { mListener?.triggerCardFlip() }
+        continueButton.setOnClickListener { moveToNextActivity() }
     }
 
     override fun onAttach(context: Context?) {
@@ -90,6 +92,8 @@ class FindWGFragment : Fragment() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val wg = dataSnapshot.getValue(WG::class.java)
                 Log.d(TAG, "Got WG: ${wg?.name}")
+                if (wg == null) return
+                CurrentWG.init(wg.name, wg.uid, wg.admin, wg.users)
                 notifyUser(wg)
             }
 
@@ -116,5 +120,13 @@ class FindWGFragment : Fragment() {
     private fun hideKeyboard() {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(content.windowToken, 0)
+    }
+
+    private fun moveToNextActivity() {
+        Log.d(TAG, "Move to next activity triggered")
+
+        val intent = Intent(context, HomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

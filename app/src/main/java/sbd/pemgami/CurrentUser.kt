@@ -1,5 +1,6 @@
 package sbd.pemgami
 
+// TODO move to shared preferences, maybe use GSON
 object CurrentUser {
     var name: String = ""
     var email: String = ""
