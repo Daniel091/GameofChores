@@ -1,6 +1,5 @@
 package sbd.pemgami
 
-// nice import of layout no need for findById anymore
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +26,9 @@ class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
+
+        // Just for debugging clean your shared preferences usr and wg data
+        //SharedPrefsUtils._debugClearPreferences(applicationContext)
 
         if (fbAuth.currentUser != null) {
             textView.text = fbAuth.currentUser?.email
@@ -63,12 +65,7 @@ class StartActivity : AppCompatActivity() {
         if (usr_wg_id != "" && fbAuth.currentUser != null) {
             Log.d(TAG, "User has already a WG -> To Home Screen")
 
-            // TODO comment in
-            //val intent = Intent(this, HomeActivity::class.java)
-            //startActivity(intent)
-
-            // TODO remove
-            val intent = Intent(this, WGFormActivity::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()
         } else {

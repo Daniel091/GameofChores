@@ -39,4 +39,11 @@ object SharedPrefsUtils {
         Log.d(TAG, "No LastUser could be read")
         return null
     }
+
+    fun _debugClearPreferences(context: Context?) {
+        val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = mPrefs.edit()
+        prefsEditor.clear()
+        prefsEditor.commit()
+    }
 }
