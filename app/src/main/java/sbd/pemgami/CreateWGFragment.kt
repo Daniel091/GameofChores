@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_create_wg.*
 
 class CreateWGFragment : Fragment() {
     private val TAG = "CreateWGFragment"
+    private var currentUser: User? = null
 
     companion object {
         fun newInstance(): CreateWGFragment {
@@ -51,6 +52,9 @@ class CreateWGFragment : Fragment() {
         copyBtn.setOnClickListener {
             copyText(codeTextView.text)
         }
+
+        val act = activity ?: return
+        currentUser = SharedPrefsUtils.readLastUserFromSharedPref(act.applicationContext)
     }
 
     private fun copyText(text: CharSequence) {
@@ -62,21 +66,24 @@ class CreateWGFragment : Fragment() {
     }
 
     private fun createWG(wgname: String) {
+        val usr = currentUser ?: return
+
         val wgReference = Constants.databaseWGs.push()
-        val wg = WG(wgname, wgReference.key, CurrentUser.uid, listOf(CurrentUser.uid))
+        val wg = WG(wgname, wgReference.key, usr.uid, listOf(usr.uid))
 
         wgReference.setValue(wg).addOnSuccessListener {
-            CurrentWG.init(wgname, wgReference.key, CurrentUser.uid, listOf(CurrentUser.uid))
+            CurrentWG.init(wgname, wgReference.key, usr.uid, listOf(usr.uid))
             Log.d(TAG, "WG Upload Successful")
-            linkWGtoUser(wgReference.key)
+            linkWGtoUser(wgReference.key, usr)
         }
     }
 
-    private fun linkWGtoUser(wg_id: String) {
-        Constants.getCurrentUserWGRef()?.setValue(wg_id)?.addOnSuccessListener {
-            CurrentUser.wg_id = wg_id
+    private fun linkWGtoUser(wg_id: String, usr: User) {
+        Constants.getCurrentUserWGRef(usr.uid)?.setValue(wg_id)?.addOnSuccessListener {
+            val linkedUsr = usr.copy(wg_id = wg_id)
             Log.d(TAG, "User Update Successful")
 
+            SharedPrefsUtils.writeUserToSharedPref(activity?.applicationContext, linkedUsr)
             notifyUser()
         }
     }

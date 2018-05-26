@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_find_wg.*
 class FindWGFragment : Fragment() {
     var mListener: CardButtonListener? = null
     private val TAG = "FindWGFragment"
+    private var currentUser: User? = null
 
     // factory pattern
     companion object {
@@ -41,10 +42,12 @@ class FindWGFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        currentUser = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
+
         linLayout.visibility = View.GONE
         continueButton.visibility = View.GONE
 
-        input_usrname.setText(CurrentUser.name)
+        input_usrname.setText(currentUser?.name)
         btnFind.setOnClickListener {
             hideKeyboard()
             findWG(input_wg_id.text.toString())
@@ -66,9 +69,7 @@ class FindWGFragment : Fragment() {
         val getListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.childrenCount > 0) {
-                    val wg = dataSnapshot.getValue(WG::class.java)
                     Log.d(TAG, "WG gefunden :-)")
-
                     fetchWGData(id)
                 } else {
                     Toast.makeText(context, getString(R.string.no_wg), Toast.LENGTH_LONG).show()

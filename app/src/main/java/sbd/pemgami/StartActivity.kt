@@ -10,7 +10,10 @@ import android.view.View
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_start.*
 import java.util.*
 
@@ -27,15 +30,20 @@ class StartActivity : AppCompatActivity() {
 
         if (fbAuth.currentUser != null) {
             textView.text = fbAuth.currentUser?.email
-            checkUserInDB(fbAuth.currentUser)
+            val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
+            if (usr == null || usr.wg_id == "") {
+                checkUserInDB(fbAuth.currentUser)
+            } else {
+                moveToNextActivity(usr.wg_id)
+            }
         } else {
-            loginUser()
+            startFirebaseUI()
         }
 
         textView.text = fbAuth.currentUser?.email
 
         loginBtn.setOnClickListener {
-            loginUser()
+            startFirebaseUI()
         }
 
         logoutBtn.setOnClickListener {
@@ -51,9 +59,9 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    private fun moveToNextActivity() {
-        if (CurrentUser.wg_id != "" && fbAuth.currentUser != null) {
-            Log.d(TAG, "User: ${CurrentUser.name} has already a WG")
+    private fun moveToNextActivity(usr_wg_id: String) {
+        if (usr_wg_id != "" && fbAuth.currentUser != null) {
+            Log.d(TAG, "User has already a WG -> To Home Screen")
 
             // TODO comment in
             //val intent = Intent(this, HomeActivity::class.java)
@@ -64,7 +72,7 @@ class StartActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         } else {
-            Log.d(TAG, "User: ${CurrentUser.name} has no WG")
+            Log.d(TAG, "User has no WG -> WGForm")
 
             val intent = Intent(this, WGFormActivity::class.java)
             startActivity(intent)
@@ -72,7 +80,7 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser() {
+    private fun startFirebaseUI() {
         // add google, and email & pw provider
         val selectedProviders = ArrayList<AuthUI.IdpConfig>()
         selectedProviders.add(AuthUI.IdpConfig.EmailBuilder().build())
@@ -114,7 +122,7 @@ class StartActivity : AppCompatActivity() {
                     getUserData(user)
                 } else {
                     // add user data
-                    addUserData(user)
+                    writeUserData(user)
                 }
             }
 
@@ -136,9 +144,9 @@ class StartActivity : AppCompatActivity() {
                 Log.d(TAG, "Got User: ${usr?.email}")
 
                 if (usr == null) return
-                CurrentUser.init(usr.name, usr.email, usr.uid, usr.wg_id)
+                SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
                 progressBar.visibility = View.INVISIBLE
-                moveToNextActivity()
+                moveToNextActivity(usr.wg_id)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -149,15 +157,17 @@ class StartActivity : AppCompatActivity() {
         getUser.addListenerForSingleValueEvent(getListener)
     }
 
-    private fun addUserData(user: FirebaseUser) {
+
+    private fun writeUserData(user: FirebaseUser) {
         val usr = User(user.email ?: "", user.uid, user.email ?: "")
 
-        // add user to firebase
+        // add user to firebase, if successful continue to HomeScreen
         Constants.databaseUsers.child(user.uid).setValue(usr)
-                .addOnSuccessListener { Log.d(TAG, "Upload Successful") }
-
-        CurrentUser.init(usr.name, usr.email, usr.uid)
-        moveToNextActivity()
+                .addOnSuccessListener {
+                    Log.d(TAG, "Upload Successful")
+                    SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
+                    moveToNextActivity(usr.wg_id)
+                }
     }
 
 }
