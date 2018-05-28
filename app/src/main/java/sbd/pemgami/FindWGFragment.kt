@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_find_wg.*
 
 class FindWGFragment : Fragment() {
     var mListener: CardButtonListener? = null
-    private val TAG = "FindWGFragment"
+    private val TAG = "WGFragment"
     private var currentUser: User? = null
 
     // factory pattern

@@ -1,6 +1,7 @@
 package sbd.pemgami
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -21,6 +22,8 @@ class StartActivity : AppCompatActivity() {
     private val TAG: String = "StartActivity"
     private val RC_SIGN_IN: Int = 123
 
+    // TODO replace this, but suitable here
+    private var progress: ProgressDialog? = null
     private val fbAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,13 +33,23 @@ class StartActivity : AppCompatActivity() {
         // Just for debugging clean your shared preferences usr and wg data
         //SharedPrefsUtils._debugClearPreferences(applicationContext)
 
+        /*
+            Routing:
+            1. check usr
+            2. if no usr -> FirebaseUI
+            3. if new usr or unknown usr -> checkUserIn Firebase
+            doRouting method:
+            4. if usr and no wg -> WG Form
+            5. if usr and wg -> HomeActivity
+         */
         if (fbAuth.currentUser != null) {
             textView.text = fbAuth.currentUser?.email
             val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
-            if (usr == null || usr.wg_id == "") {
-                checkUserInDB(fbAuth.currentUser)
-            } else {
-                moveToNextActivity(usr.wg_id)
+
+            when {
+                usr == null -> checkUserInDB(fbAuth.currentUser)
+                fbAuth.currentUser?.uid != usr.uid -> checkUserInDB(fbAuth.currentUser)
+                else -> doRouting(usr.wg_id)
             }
         } else {
             startFirebaseUI()
@@ -61,22 +74,6 @@ class StartActivity : AppCompatActivity() {
         }
     }
 
-    private fun moveToNextActivity(usr_wg_id: String) {
-        if (usr_wg_id != "" && fbAuth.currentUser != null) {
-            Log.d(TAG, "User has already a WG -> To Home Screen")
-
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        } else {
-            Log.d(TAG, "User has no WG -> WGForm")
-
-            val intent = Intent(this, WGFormActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-    }
-
     private fun startFirebaseUI() {
         // add google, and email & pw provider
         val selectedProviders = ArrayList<AuthUI.IdpConfig>()
@@ -98,14 +95,23 @@ class StartActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
             textView.text = fbAuth.currentUser?.email
-            checkUserInDB(fbAuth.currentUser)
-        }
 
+            val lastKnownUsr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
+            if (fbAuth.currentUser?.uid == lastKnownUsr?.uid && lastKnownUsr != null) {
+                doRouting(lastKnownUsr.wg_id)
+            } else {
+                checkUserInDB(fbAuth.currentUser)
+            }
+
+        } else {
+            // e.g on back oder Sign In canceld
+            finish()
+        }
     }
 
     private fun checkUserInDB(user: FirebaseUser?) {
         if (user == null) return
-        progressBar.visibility = View.VISIBLE
+        //showProgressDialog()
 
         // check if username exists in database
         val checkUser: Query = Constants.databaseUsers.orderByChild("uid").equalTo(user.uid)
@@ -114,12 +120,11 @@ class StartActivity : AppCompatActivity() {
         val checkListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d(TAG, dataSnapshot.childrenCount.toString())
-                if (dataSnapshot.childrenCount > 0) {
-                    Log.d(TAG, "User exists")
-                    getUserData(user)
-                } else {
-                    // add user data
-                    writeUserData(user)
+
+                val len = dataSnapshot.childrenCount
+                when {
+                    len > 0 -> getUserData(user)
+                    else -> writeUserData(user)
                 }
             }
 
@@ -143,12 +148,11 @@ class StartActivity : AppCompatActivity() {
                 if (usr == null) return
                 SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
                 progressBar.visibility = View.INVISIBLE
-                moveToNextActivity(usr.wg_id)
+                doRouting(usr.wg_id)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.d(TAG, "ErrorCode ${databaseError.code}, DatabaseDetails: ${databaseError.details}")
-                progressBar.visibility = View.INVISIBLE
             }
         }
         getUser.addListenerForSingleValueEvent(getListener)
@@ -163,8 +167,49 @@ class StartActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     Log.d(TAG, "Upload Successful")
                     SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
-                    moveToNextActivity(usr.wg_id)
+                    doRouting(usr.wg_id)
                 }
+    }
+
+    /*
+        1. no wg id -> WGForm
+        2. wg_id same as in SharedPref -> HomeActivity
+        3. wg_id different as in SharedPref should not happen -> WGForm
+     */
+    private fun doRouting(wg_id: String) {
+        hideProgessDialog()
+
+        val lastKnownWG = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
+
+        when (wg_id) {
+            "" -> _moveToWGForm()
+            lastKnownWG?.uid -> _moveToWGForm()
+            else -> _moveToHomeActivity()
+        }
+    }
+
+    private fun _moveToHomeActivity() {
+        Log.d(TAG, "User has WG -> HomeActivity")
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun _moveToWGForm() {
+        Log.d(TAG, "User has no WG -> WGForm")
+
+        val intent = Intent(this, WGFormActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun showProgressDialog() {
+        this.progress = ProgressDialog.show(applicationContext, "Fetching Data",
+                "wait a sec ;-)", true)
+    }
+
+    private fun hideProgessDialog() {
+        this.progress?.hide()
     }
 
 }

@@ -18,7 +18,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_create_wg.*
 
 class CreateWGFragment : Fragment() {
-    private val TAG = "CreateWGFragment"
+    private val TAG = "WGFragment"
     private var currentUser: User? = null
 
     companion object {

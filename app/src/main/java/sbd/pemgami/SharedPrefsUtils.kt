@@ -8,6 +8,39 @@ import com.google.gson.Gson
 object SharedPrefsUtils {
     private val TAG = "SharedPrefsUtils"
 
+    fun writeWGToSharedPref(context: Context, wg: WG) {
+        val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = mPrefs.edit()
+        val gson = Gson()
+
+        val json = gson.toJson(wg)
+        prefsEditor.putString("LastWG", json)
+        prefsEditor.commit()
+        Log.d(TAG, "Wrote LastWG")
+    }
+
+    fun writeWGToSharedPref(context: Context?, wg: WG): Boolean {
+        if (context == null) return false
+        writeWGToSharedPref(context, wg)
+        return true
+    }
+
+    fun readLastWGFromSharedPref(context: Context?): WG? {
+        val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val gson = Gson()
+
+        val json = mPrefs.getString("LastWG", "")
+        if (json != "") {
+            val wg = gson.fromJson(json, WG::class.java)
+            if (wg != null) {
+                return wg
+            }
+        }
+        Log.d(TAG, "No LastWG could be read")
+        return null
+    }
+
+
     fun writeUserToSharedPref(context: Context, user: User) {
         val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         val prefsEditor = mPrefs.edit()
