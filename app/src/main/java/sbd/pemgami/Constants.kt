@@ -11,4 +11,8 @@ object Constants {
     fun getCurrentUserWGRef(uid: String): DatabaseReference? {
         return databaseUsers.child(uid).child("wg_id")
     }
+
+    fun getUserNameRef(uid: String): DatabaseReference? {
+        return databaseUsers.child(uid).child("name")
+    }
 }

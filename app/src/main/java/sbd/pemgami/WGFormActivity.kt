@@ -1,12 +1,12 @@
 package sbd.pemgami
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import kotlinx.android.synthetic.main.activity_wgform.*
 
 
-class WGFormActivity : AppCompatActivity(), FindWGFragment.CardButtonListener{
+class WGFormActivity : AppCompatActivity(), FindWGFragment.CardButtonListener {
 
     private val TAG = "WGFormAcitivty"
 
@@ -14,10 +14,19 @@ class WGFormActivity : AppCompatActivity(), FindWGFragment.CardButtonListener{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_wgform)
 
+        // check for wg again, because user may created wg and then exited the app
+        val user = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
+        if (user?.wg_id != "") {
+            Log.d(TAG, "User has WG -> HomeActivity")
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         if (savedInstanceState == null) {
             supportFragmentManager
                     .beginTransaction()
-                    .add(R.id.fragments_cont,FindWGFragment.newInstance(),"FrontSide")
+                    .add(R.id.fragments_cont, FindWGFragment.newInstance(), "FrontSide")
                     .commit()
         }
     }

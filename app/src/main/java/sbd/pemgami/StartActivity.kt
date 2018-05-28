@@ -1,7 +1,6 @@
 package sbd.pemgami
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -28,9 +27,6 @@ class StartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_start)
 
-        // Just for debugging clean your shared preferences usr and wg data
-        //SharedPrefsUtils._debugClearPreferences(applicationContext)
-
         /*
             Routing:
             1. check usr
@@ -41,7 +37,6 @@ class StartActivity : AppCompatActivity() {
             5. if usr and wg -> HomeActivity
          */
         if (fbAuth.currentUser != null) {
-            textView.text = fbAuth.currentUser?.email
             val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
 
             when {
@@ -53,23 +48,6 @@ class StartActivity : AppCompatActivity() {
             startFirebaseUI()
         }
 
-        textView.text = fbAuth.currentUser?.email
-
-        loginBtn.setOnClickListener {
-            startFirebaseUI()
-        }
-
-        logoutBtn.setOnClickListener {
-            if (fbAuth.currentUser != null) {
-                Log.d(TAG, "Signed User Out")
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener {
-                            // user completly signed out
-                            textView.text = ""
-                        }
-            }
-        }
     }
 
     private fun startFirebaseUI() {
@@ -92,8 +70,6 @@ class StartActivity : AppCompatActivity() {
         Log.d(TAG, "ResultCode $resultCode, requestCode: $requestCode")
 
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
-            textView.text = fbAuth.currentUser?.email
-
             val lastKnownUsr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
             if (fbAuth.currentUser?.uid == lastKnownUsr?.uid && lastKnownUsr != null) {
                 doRouting(lastKnownUsr.wg_id)
@@ -155,7 +131,6 @@ class StartActivity : AppCompatActivity() {
         }
         getUser.addListenerForSingleValueEvent(getListener)
     }
-
 
     private fun writeUserData(user: FirebaseUser) {
         val usr = User(user.email ?: "", user.uid, user.email ?: "")

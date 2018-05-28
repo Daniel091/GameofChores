@@ -22,6 +22,7 @@ class FindWGFragment : Fragment() {
     var mListener: CardButtonListener? = null
     private val TAG = "WGFragment"
     private var currentUser: User? = null
+    private var foundWG: WG? = null
 
     // factory pattern
     companion object {
@@ -53,7 +54,39 @@ class FindWGFragment : Fragment() {
             findWG(input_wg_id.text.toString())
         }
         link_createWG.setOnClickListener { mListener?.triggerCardFlip() }
-        continueButton.setOnClickListener { moveToNextActivity() }
+        continueButton.setOnClickListener {
+            val new_name = input_usrname.text.toString()
+            if (new_name != "") {
+                val usr = currentUser?.copy(name = new_name)
+                logUserInWG(usr, foundWG)
+            }
+        }
+    }
+
+    /*
+        1. links user to WG -> Firebase and tries to update his name
+        2. writes username to WG users list -> Firebase
+        3. updates Shared Preferences LastUser and LastWG
+        4. moves to HomeActivity
+     */
+    private fun logUserInWG(usr: User?, wg: WG?) {
+        if (wg == null || usr == null) return
+        progressBar2.visibility = View.VISIBLE
+
+        val wgUsrRef = Constants.getCurrentUserWGRef(usr.uid)
+        wgUsrRef?.setValue(wg.uid)?.addOnSuccessListener {
+            Log.d(TAG, "Linked User Successful")
+
+            val wgUsrName = Constants.getUserNameRef(usr.uid)
+            wgUsrName?.setValue(usr.name)
+
+            val wgRef = Constants.databaseWGs.child(wg.uid).child("users").push()
+            wgRef.setValue(usr.uid).addOnSuccessListener {
+                updateSharedPreferences(usr, wg)
+                moveToHomeActivity()
+            }
+        }
+
     }
 
     override fun onAttach(context: Context?) {
@@ -94,7 +127,7 @@ class FindWGFragment : Fragment() {
                 val wg = dataSnapshot.getValue(WG::class.java)
                 Log.d(TAG, "Got WG: ${wg?.name}")
                 if (wg == null) return
-                SharedPrefsUtils.writeWGToSharedPref(activity?.applicationContext, wg)
+                foundWG = wg
                 notifyUser(wg)
             }
 
@@ -104,6 +137,15 @@ class FindWGFragment : Fragment() {
         }
         getUser.addListenerForSingleValueEvent(getListener)
     }
+
+    private fun updateSharedPreferences(usr: User?, wg: WG) {
+        val linkedUsr = usr?.copy(wg_id = wg.uid)
+        if (linkedUsr != null) {
+            SharedPrefsUtils.writeUserToSharedPref(activity?.applicationContext, linkedUsr)
+            SharedPrefsUtils.writeWGToSharedPref(activity?.applicationContext, wg)
+        }
+    }
+
 
     private fun notifyUser(wg: WG?) {
         progressBar2.visibility = View.INVISIBLE
@@ -123,7 +165,8 @@ class FindWGFragment : Fragment() {
         imm.hideSoftInputFromWindow(content.windowToken, 0)
     }
 
-    private fun moveToNextActivity() {
+    private fun moveToHomeActivity() {
+        progressBar2.visibility = View.INVISIBLE
         Log.d(TAG, "Move to next activity triggered")
 
         val intent = Intent(context, HomeActivity::class.java)
