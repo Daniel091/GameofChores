@@ -22,8 +22,6 @@ class StartActivity : AppCompatActivity() {
     private val TAG: String = "StartActivity"
     private val RC_SIGN_IN: Int = 123
 
-    // TODO replace this, but suitable here
-    private var progress: ProgressDialog? = null
     private val fbAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +109,7 @@ class StartActivity : AppCompatActivity() {
 
     private fun checkUserInDB(user: FirebaseUser?) {
         if (user == null) return
-        //showProgressDialog()
+        progressBar.visibility = View.VISIBLE
 
         // check if username exists in database
         val checkUser: Query = Constants.databaseUsers.orderByChild("uid").equalTo(user.uid)
@@ -177,7 +175,7 @@ class StartActivity : AppCompatActivity() {
         3. wg_id different as in SharedPref should not happen -> WGForm
      */
     private fun doRouting(wg_id: String) {
-        hideProgessDialog()
+        progressBar.visibility = View.INVISIBLE
 
         val lastKnownWG = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
 
@@ -202,14 +200,4 @@ class StartActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-    private fun showProgressDialog() {
-        this.progress = ProgressDialog.show(applicationContext, "Fetching Data",
-                "wait a sec ;-)", true)
-    }
-
-    private fun hideProgessDialog() {
-        this.progress?.hide()
-    }
-
 }

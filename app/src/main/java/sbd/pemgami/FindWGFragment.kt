@@ -94,7 +94,7 @@ class FindWGFragment : Fragment() {
                 val wg = dataSnapshot.getValue(WG::class.java)
                 Log.d(TAG, "Got WG: ${wg?.name}")
                 if (wg == null) return
-                CurrentWG.init(wg.name, wg.uid, wg.admin, wg.users)
+                SharedPrefsUtils.writeWGToSharedPref(activity?.applicationContext, wg)
                 notifyUser(wg)
             }
 

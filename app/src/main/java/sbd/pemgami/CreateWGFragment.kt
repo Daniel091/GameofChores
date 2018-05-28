@@ -72,30 +72,30 @@ class CreateWGFragment : Fragment() {
         val wg = WG(wgname, wgReference.key, usr.uid, listOf(usr.uid))
 
         wgReference.setValue(wg).addOnSuccessListener {
-            CurrentWG.init(wgname, wgReference.key, usr.uid, listOf(usr.uid))
+            SharedPrefsUtils.writeWGToSharedPref(activity?.applicationContext, wg)
             Log.d(TAG, "WG Upload Successful")
-            linkWGtoUser(wgReference.key, usr)
+            linkWGtoUser(wg, usr)
         }
     }
 
-    private fun linkWGtoUser(wg_id: String, usr: User) {
-        Constants.getCurrentUserWGRef(usr.uid)?.setValue(wg_id)?.addOnSuccessListener {
-            val linkedUsr = usr.copy(wg_id = wg_id)
+    private fun linkWGtoUser(wg: WG, usr: User) {
+        Constants.getCurrentUserWGRef(usr.uid)?.setValue(wg.uid)?.addOnSuccessListener {
+            val linkedUsr = usr.copy(wg_id = wg.uid)
             Log.d(TAG, "User Update Successful")
 
             SharedPrefsUtils.writeUserToSharedPref(activity?.applicationContext, linkedUsr)
-            notifyUser()
+            notifyUser(wg)
         }
     }
 
-    private fun notifyUser() {
+    private fun notifyUser(wg: WG) {
         progressBar3.visibility = View.INVISIBLE
 
         val fadInAnimation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in)
         fadInAnimation.duration = 3000
 
-        codeTextView.text = CurrentWG.uid
-        textView2.text = resources.getString(R.string.wg_created, CurrentWG.name)
+        codeTextView.text = wg.uid
+        textView2.text = resources.getString(R.string.wg_created, wg.name)
         linLayout.visibility = View.VISIBLE
         linLayout.startAnimation(fadInAnimation)
 
