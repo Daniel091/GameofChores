@@ -2,6 +2,7 @@ package sbd.pemgami;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class TaskWG {
 
@@ -15,6 +16,7 @@ public class TaskWG {
 
     private boolean taskDone;
     private boolean taskOverdue;
+    private String uniqueID = UUID.randomUUID().toString();
 
     public TaskWG() {
         //default constructor needed for something i forgot. but the doc said it's needed so keep it por favore.
@@ -88,4 +90,7 @@ public class TaskWG {
         }
     }
 
+    public String getUniqueID() {
+        return uniqueID;
+    }
 }

@@ -2,6 +2,7 @@ package sbd.pemgami;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.UUID;
 
 public class RotateableTaskWG {
 
@@ -11,6 +12,8 @@ public class RotateableTaskWG {
     private int timeInMinutes;
 
     private List<DayOfWeek> rotation;
+
+    private String uniqueID = UUID.randomUUID().toString();
 
     public RotateableTaskWG() {
         //default constructor is needed for some reason
@@ -44,4 +47,7 @@ public class RotateableTaskWG {
         return rotation;
     }
 
+    public String getUniqueID() {
+        return uniqueID;
+    }
 }
