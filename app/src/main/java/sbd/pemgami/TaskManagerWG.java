@@ -11,7 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class TaskManagerWG {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 TaskWG firebaseTask = dataSnapshot.getValue(TaskWG.class);
 
-                if(!tasks.contains(firebaseTask)){
+                if (!tasks.contains(firebaseTask)) {
                     tasks.add(firebaseTask);
                 }
             }
@@ -51,7 +50,7 @@ public class TaskManagerWG {
                 TaskWG firebaseTask = dataSnapshot.getValue(TaskWG.class);
 
                 for (int i = 0; i < tasks.size(); i++) {
-                    if(tasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())){
+                    if (tasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())) {
                         tasks.set(i, firebaseTask);
                     }
                 }
@@ -63,7 +62,7 @@ public class TaskManagerWG {
                 TaskWG firebaseTask = dataSnapshot.getValue(TaskWG.class);
 
                 for (int i = 0; i < tasks.size(); i++) {
-                    if(tasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())){
+                    if (tasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())) {
                         tasks.remove(i);
                     }
                 }
@@ -86,7 +85,7 @@ public class TaskManagerWG {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 RotateableTaskWG firebaseTask = dataSnapshot.getValue(RotateableTaskWG.class);
 
-                if(!rotateableTasks.contains(firebaseTask)){
+                if (!rotateableTasks.contains(firebaseTask)) {
                     rotateableTasks.add(firebaseTask);
                 }
             }
@@ -96,7 +95,7 @@ public class TaskManagerWG {
                 RotateableTaskWG firebaseTask = dataSnapshot.getValue(RotateableTaskWG.class);
 
                 for (int i = 0; i < rotateableTasks.size(); i++) {
-                    if(rotateableTasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())){
+                    if (rotateableTasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())) {
                         rotateableTasks.set(i, firebaseTask);
                     }
                 }
@@ -107,7 +106,7 @@ public class TaskManagerWG {
                 RotateableTaskWG firebaseTask = dataSnapshot.getValue(RotateableTaskWG.class);
 
                 for (int i = 0; i < rotateableTasks.size(); i++) {
-                    if(rotateableTasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())){
+                    if (rotateableTasks.get(i).getUniqueID().equals(firebaseTask.getUniqueID())) {
                         rotateableTasks.remove(i);
                     }
                 }
