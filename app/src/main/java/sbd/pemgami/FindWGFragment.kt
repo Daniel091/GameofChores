@@ -73,6 +73,10 @@ class FindWGFragment : Fragment() {
         if (wg == null || usr == null) return
         progressBar2.visibility = View.VISIBLE
 
+        val wgUsers = wg.users
+        wgUsers.add(usr.uid)
+        val updatedWG = wg.copy(users = wgUsers)
+
         val wgUsrRef = Constants.getCurrentUserWGRef(usr.uid)
         wgUsrRef?.setValue(wg.uid)?.addOnSuccessListener {
             Log.d(TAG, "Linked User Successful")
@@ -80,9 +84,9 @@ class FindWGFragment : Fragment() {
             val wgUsrName = Constants.getUserNameRef(usr.uid)
             wgUsrName?.setValue(usr.name)
 
-            val wgRef = Constants.databaseWGs.child(wg.uid).child("users").push()
-            wgRef.setValue(usr.uid).addOnSuccessListener {
-                updateSharedPreferences(usr, wg)
+            val wgRef = Constants.databaseWGs.child(wg.uid)
+            wgRef.setValue(updatedWG).addOnSuccessListener {
+                updateSharedPreferences(usr, updatedWG)
                 moveToHomeActivity()
             }
         }

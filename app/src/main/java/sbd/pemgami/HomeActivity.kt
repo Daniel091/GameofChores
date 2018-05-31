@@ -36,11 +36,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
 
-        /*
-               TODO maybe also fetch wg_data here if it is not set,
-               can happen if you clean SharedPrefrences by hand
-               or delete app data in settings of your phone
-        */
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
         debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
