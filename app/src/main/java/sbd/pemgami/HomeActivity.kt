@@ -55,6 +55,13 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             logUsrOut()
         }
 
+        //
+        toWorkPlan.setOnClickListener {
+            val intent = Intent(this, WorkPlanActivity::class.java)
+            startActivity(intent)
+        }
+
+
         nav_view.setNavigationItemSelectedListener(this)
     }
 
