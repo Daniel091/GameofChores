@@ -69,7 +69,7 @@ class CreateWGFragment : Fragment() {
         val usr = currentUser ?: return
 
         val wgReference = Constants.databaseWGs.push()
-        val wg = WG(wgname, wgReference.key, usr.uid, listOf(usr.uid))
+        val wg = WG(wgname, wgReference.key, usr.uid, mutableListOf(usr.uid))
 
         wgReference.setValue(wg).addOnSuccessListener {
             SharedPrefsUtils.writeWGToSharedPref(activity?.applicationContext, wg)

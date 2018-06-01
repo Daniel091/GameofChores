@@ -34,7 +34,7 @@ class StartActivity : AppCompatActivity() {
             3. if new usr or unknown usr -> checkUserIn Firebase
             doRouting method:
             4. if usr and no wg -> WG Form
-            5. if usr and wg -> HomeActivity
+            5. if usr and wg -> checkIfWG is the same as in usr obj -> HomeActivity
          */
         if (fbAuth.currentUser != null) {
             val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
@@ -42,7 +42,7 @@ class StartActivity : AppCompatActivity() {
             when {
                 usr == null -> checkUserInDB(fbAuth.currentUser)
                 fbAuth.currentUser?.uid != usr.uid -> checkUserInDB(fbAuth.currentUser)
-                else -> doRouting(usr.wg_id)
+                else -> doRouting(usr)
             }
         } else {
             startFirebaseUI()
@@ -72,7 +72,7 @@ class StartActivity : AppCompatActivity() {
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
             val lastKnownUsr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
             if (fbAuth.currentUser?.uid == lastKnownUsr?.uid && lastKnownUsr != null) {
-                doRouting(lastKnownUsr.wg_id)
+                doRouting(lastKnownUsr)
             } else {
                 checkUserInDB(fbAuth.currentUser)
             }
@@ -122,7 +122,7 @@ class StartActivity : AppCompatActivity() {
                 if (usr == null) return
                 SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
                 progressBar.visibility = View.INVISIBLE
-                doRouting(usr.wg_id)
+                doRouting(usr)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -140,25 +140,47 @@ class StartActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     Log.d(TAG, "Upload Successful")
                     SharedPrefsUtils.writeUserToSharedPref(applicationContext, usr)
-                    doRouting(usr.wg_id)
+                    doRouting(usr)
                 }
     }
 
     /*
-        1. no wg id -> WGForm
-        2. wg_id same as in SharedPref -> HomeActivity
-        3. wg_id different as in SharedPref should not happen -> WGForm
+        1. no usr_wg_id -> WGForm
+        2. usr_wg_id same as in SharedPref -> HomeActivity
+        3. usr_wg_id different as in SharedPref -> fetchWG
      */
-    private fun doRouting(wg_id: String) {
-        progressBar.visibility = View.INVISIBLE
-
+    private fun doRouting(usr: User) {
         val lastKnownWG = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
-
-        when (wg_id) {
-            "" -> _moveToWGForm()
-            lastKnownWG?.uid -> _moveToWGForm()
-            else -> _moveToHomeActivity()
+        if (lastKnownWG?.uid != usr.wg_id && usr.wg_id != "") {
+            fetchWG(usr)
+            return
         }
+
+        progressBar.visibility = View.INVISIBLE
+        when {
+            usr.wg_id == "" -> _moveToWGForm()
+            usr.wg_id == lastKnownWG?.uid -> _moveToHomeActivity()
+        }
+    }
+
+    private fun fetchWG(usr: User) {
+        val getWG: Query = Constants.databaseWGs.child(usr.wg_id)
+
+        val getListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val wg = dataSnapshot.getValue(WG::class.java)
+                Log.d(TAG, "Got WG: ${wg?.name}")
+
+                if (wg == null) return
+                SharedPrefsUtils.writeWGToSharedPref(applicationContext, wg)
+                doRouting(usr)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d(TAG, "ErrorCode ${databaseError.code}, DatabaseDetails: ${databaseError.details}")
+            }
+        }
+        getWG.addListenerForSingleValueEvent(getListener)
     }
 
     private fun _moveToHomeActivity() {
