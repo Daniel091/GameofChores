@@ -25,4 +25,5 @@
     <string name="debug_logout">Debug Logout</string>
     <string name="debug_clear_sharedpreferences">Debug Clear SharedPreferences and Logout</string>
     <string name="title_activity_work_plan">WorkPlanActivity</string>
+    <string name="work_plan">Work Plan</string>
 </resources>

@@ -26,21 +26,13 @@ public class WorkPlanActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         mlist.add("Test1");
         mlist.add("Test2");
         mlist.add("Test3");
         mlist.add("Test4");
 
-        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView = findViewById(R.id.my_recycler_view);
+        mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
