@@ -1,8 +1,10 @@
 package sbd.pemgami
 
+import android.nfc.Tag
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -40,9 +42,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerView.wg_title.text = wg?.name
         headerView.usr_name.text = usr?.name
 
+        val tag = HomeFragment::class.java.simpleName
         val trans = supportFragmentManager.beginTransaction()
         trans.replace(R.id.mainFrame, HomeFragment.newInstance())
-        trans.addToBackStack("HomeFragment")
+        trans.addToBackStack(tag)
         trans.commit()
     }
 
@@ -67,7 +70,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         var tag: String? = null
         when (item.itemId) {
             R.id.nav_home -> {
-                showToast()
+                fragment = HomeFragment()
+                tag = "HomeFragment"
             }
             R.id.nav_tasks -> {
                 showToast()
@@ -82,15 +86,36 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         if (fragment == null) return true
-        val trans = supportFragmentManager.beginTransaction()
-        trans.replace(R.id.mainFrame, fragment)
-        trans.addToBackStack(tag)
-        trans.commit()
+        setUpFragment(fragment)
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
+
+    private fun setUpFragment(fragment: Fragment) {
+        val tag = fragment.javaClass.simpleName
+        val manager = supportFragmentManager
+        val fragInStack = isFragmentInBackStack(manager, tag)
+
+        if (fragInStack) {
+            manager.popBackStackImmediate(tag, 0)
+        } else {
+            val trans = manager.beginTransaction()
+            trans.replace(R.id.mainFrame, fragment)
+            trans.addToBackStack(tag)
+            trans.commit()
+        }
+    }
+
+    private fun isFragmentInBackStack(fragmentManager: FragmentManager, fragmentTagName: String): Boolean {
+        for (entry in 0 until fragmentManager.backStackEntryCount) {
+            if (fragmentTagName == fragmentManager.getBackStackEntryAt(entry).name) {
+                return true
+            }
+        }
+        return false
+    }
 
     private fun showToast(text: String = "Not implemented") {
         val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
