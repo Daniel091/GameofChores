@@ -74,7 +74,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 showToast()
             }
             R.id.nav_rankings -> {
-                showToast()
+                fragment = AnimationFragment()
+                //showToast()
             }
             R.id.nav_settings -> {
                 fragment = SettingsFragment()
