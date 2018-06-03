@@ -24,4 +24,5 @@
     <string name="no_wg">Sadly, no WG with this ID found</string>
     <string name="debug_logout">Debug Logout</string>
     <string name="debug_clear_sharedpreferences">Debug Clear SharedPreferences and Logout</string>
+    <string name="settings">Settings</string>
 </resources>
