@@ -3,7 +3,6 @@ package sbd.pemgami
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -15,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.content_home.*
+import android.widget.TextView
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val fbAuth = FirebaseAuth.getInstance()
@@ -25,20 +26,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
-
-
-        val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
-        val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
-        debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
 
         // debug button
         logoutBtn.setOnClickListener { logUsrOut() }
@@ -51,6 +42,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
+        val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
+        debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
+
+        val headerView = nav_view.getHeaderView(0)
+        val navUsernameText = headerView.findViewById(R.id.usr_name) as TextView
+        val navWGText = headerView.findViewById(R.id.wg_title) as TextView
+
+        navWGText.text = wg?.name
+        navUsernameText.text = usr?.name
     }
 
     override fun onBackPressed() {
