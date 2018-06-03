@@ -5,7 +5,7 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WGFormActivity">
+    tools:context=".LoginFlow.WGFormActivity">
 
     <ProgressBar
         android:id="@+id/progressBar2"

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_settings.*
+import sbd.pemgami.LoginFlow.StartActivity
 
 
 class SettingsFragment : Fragment() {
