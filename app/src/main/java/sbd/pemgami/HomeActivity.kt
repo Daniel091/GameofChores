@@ -1,6 +1,5 @@
 package sbd.pemgami
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -67,11 +66,9 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var fragment: Fragment? = null
-        var tag: String? = null
         when (item.itemId) {
             R.id.nav_home -> {
                 fragment = HomeFragment()
-                tag = "HomeFragment"
             }
             R.id.nav_tasks -> {
                 showToast()
@@ -81,7 +78,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_settings -> {
                 fragment = SettingsFragment()
-                tag = "HomeFragment"
             }
         }
 
