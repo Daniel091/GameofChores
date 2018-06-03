@@ -1,25 +1,20 @@
 package sbd.pemgami
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
-import kotlinx.android.synthetic.main.content_home.*
-import android.widget.TextView
-import android.widget.Toast
+import kotlinx.android.synthetic.main.nav_header_home.view.*
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val fbAuth = FirebaseAuth.getInstance()
     private val TAG = "HomeActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,16 +27,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
-        // debug button
-        logoutBtn.setOnClickListener { logUsrOut() }
-
-        // debug button
-        clearShPrefBtn.setOnClickListener {
-            // cleans your shared preferences usr and wg data
-            SharedPrefsUtils._debugClearPreferences(applicationContext)
-            logUsrOut()
-        }
-
         nav_view.setNavigationItemSelectedListener(this)
     }
 
@@ -50,20 +35,25 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
-        debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
 
         val headerView = nav_view.getHeaderView(0)
-        val navUsernameText = headerView.findViewById(R.id.usr_name) as TextView
-        val navWGText = headerView.findViewById(R.id.wg_title) as TextView
+        headerView.wg_title.text = wg?.name
+        headerView.usr_name.text = usr?.name
 
-        navWGText.text = wg?.name
-        navUsernameText.text = usr?.name
+        val trans = supportFragmentManager.beginTransaction()
+        trans.replace(R.id.mainFrame, HomeFragment.newInstance())
+        trans.addToBackStack("HomeFragment")
+        trans.commit()
     }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
+            // Last Fragment is always HomeFragment
+            if (supportFragmentManager.backStackEntryCount == 1) {
+                supportFragmentManager.popBackStack()
+            }
             super.onBackPressed()
         }
     }
@@ -73,6 +63,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        var fragment: Fragment? = null
+        var tag: String? = null
         when (item.itemId) {
             R.id.nav_home -> {
                 showToast()
@@ -84,26 +76,21 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 showToast()
             }
             R.id.nav_settings -> {
-
+                fragment = SettingsFragment()
+                tag = "HomeFragment"
             }
         }
+
+        if (fragment == null) return true
+        val trans = supportFragmentManager.beginTransaction()
+        trans.replace(R.id.mainFrame, fragment)
+        trans.addToBackStack(tag)
+        trans.commit()
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    private fun logUsrOut() {
-        if (fbAuth.currentUser != null) {
-            Log.d(TAG, "Signed User Out")
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener {
-                        val intent = Intent(this, StartActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-        }
-    }
 
     private fun showToast(text: String = "Not implemented") {
         val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
