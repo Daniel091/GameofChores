@@ -150,10 +150,15 @@ public class TaskManagerWG {
     }
 
     /**
-     * Call at the end of the month
+     * Call at the first day of each month
      */
-    public void deleteTasks() {
+    public void seasonIsOverNewSeasonStarts() {
         tasks.clear();
+        for (RotateableTaskWG rotaty : rotateableTasks
+             ) {
+            tasks.addAll(rotaty.createTasksFromRotation());
+        }
+
         updateTasksOnFirebase();
     }
 }
