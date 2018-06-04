@@ -9,7 +9,7 @@
 
     <EditText
         android:id="@+id/nameEditText"
-        style="@style/EditTextStyle"
+        style="@style/EditTextStyle.title"
         android:layout_marginBottom="8dp"
         android:drawableLeft="@drawable/pen"
         android:hint="@string/task"
@@ -18,12 +18,11 @@
         android:maxLines="5"
         android:minLines="1"
         android:scrollbars="vertical"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.16" />
+        app:layout_constraintVertical_bias="0.16"/>
 
     <EditText
         style="@style/EditTextStyle"
