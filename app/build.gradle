@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
@@ -39,12 +40,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:3.3.1'
     implementation 'com.google.android.gms:play-services-auth:15.0.0'
     implementation 'com.google.code.gson:gson:2.8.4'
-<<<<<<< HEAD
 
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-=======
     implementation 'com.airbnb.android:lottie:2.5.4'
->>>>>>> 742960801b728efd058a83fd8b493a5b448a20bd
 }
 
 apply plugin: 'com.google.gms.google-services'

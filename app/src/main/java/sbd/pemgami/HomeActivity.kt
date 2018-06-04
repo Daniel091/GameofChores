@@ -41,22 +41,19 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerView.wg_title.text = wg?.name
         headerView.usr_name.text = usr?.name
 
-<<<<<<< HEAD
         //
-        toWorkPlan.setOnClickListener {
-            val intent = Intent(this, WorkPlanActivity::class.java)
-            startActivity(intent)
-        }
+        //toWorkPlan.setOnClickListener {
+        //    val intent = Intent(this, WorkPlanActivity::class.java)
+        //    startActivity(intent)
+        //}
 
 
         nav_view.setNavigationItemSelectedListener(this)
-=======
         val tag = HomeFragment::class.java.simpleName
         val trans = supportFragmentManager.beginTransaction()
         trans.replace(R.id.mainFrame, HomeFragment.newInstance())
         trans.addToBackStack(tag)
         trans.commit()
->>>>>>> 742960801b728efd058a83fd8b493a5b448a20bd
     }
 
     override fun onBackPressed() {

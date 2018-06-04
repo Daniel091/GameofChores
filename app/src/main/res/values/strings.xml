@@ -24,15 +24,12 @@
     <string name="no_wg">Sadly, no WG with this ID found</string>
     <string name="debug_logout">Debug Logout</string>
     <string name="debug_clear_sharedpreferences">Debug Clear SharedPreferences and Logout</string>
-<<<<<<< HEAD
     <string name="title_activity_work_plan">WorkPlanActivity</string>
     <string name="work_plan">Work Plan</string>
-=======
     <string name="settings">Settings</string>
 
 
     <string name="winner_excitement1">And this month\'s winner is?</string>
     <string name="winner_excitement2">From the %1s</string>
 
->>>>>>> 742960801b728efd058a83fd8b493a5b448a20bd
 </resources>
