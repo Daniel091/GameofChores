@@ -31,5 +31,11 @@
 
     <string name="winner_excitement1">And this month\'s winner is?</string>
     <string name="winner_excitement2">From the %1s</string>
+    <string name="time_in_mins">Time (in mins)</string>
+    <string name="first_deadline">First deadline</string>
+    <string name="who_starts">Who starts?</string>
+    <string name="points">5 Points</string>
+    <string name="save">Save</string>
+    <string name="task">Task</string>
 
 </resources>
