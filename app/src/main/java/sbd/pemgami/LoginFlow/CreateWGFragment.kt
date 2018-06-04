@@ -1,4 +1,4 @@
-package sbd.pemgami
+package sbd.pemgami.LoginFlow
 
 
 import android.content.ClipData
@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_create_wg.*
+import sbd.pemgami.*
 
 class CreateWGFragment : Fragment() {
     private val TAG = "WGFragment"

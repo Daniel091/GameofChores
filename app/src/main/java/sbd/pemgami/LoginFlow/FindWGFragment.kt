@@ -1,4 +1,4 @@
-package sbd.pemgami
+package sbd.pemgami.LoginFlow
 
 
 import android.content.Context
@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_find_wg.*
+import sbd.pemgami.*
 
 class FindWGFragment : Fragment() {
     var mListener: CardButtonListener? = null

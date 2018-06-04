@@ -1,23 +1,21 @@
 package sbd.pemgami
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
-import kotlinx.android.synthetic.main.content_home.*
+import kotlinx.android.synthetic.main.nav_header_home.view.*
+
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-    private val fbAuth = FirebaseAuth.getInstance()
     private val TAG = "HomeActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,31 +23,25 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_home)
         setSupportActionBar(toolbar)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
-
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+        nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
-        debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
 
-        // debug button
-        logoutBtn.setOnClickListener { logUsrOut() }
+        val headerView = nav_view.getHeaderView(0)
+        headerView.wg_title.text = wg?.name
+        headerView.usr_name.text = usr?.name
 
-        // debug button
-        clearShPrefBtn.setOnClickListener {
-            // cleans your shared preferences usr and wg data
-            SharedPrefsUtils._debugClearPreferences(applicationContext)
-            logUsrOut()
-        }
-
+<<<<<<< HEAD
         //
         toWorkPlan.setOnClickListener {
             val intent = Intent(this, WorkPlanActivity::class.java)
@@ -58,70 +50,84 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 
         nav_view.setNavigationItemSelectedListener(this)
+=======
+        val tag = HomeFragment::class.java.simpleName
+        val trans = supportFragmentManager.beginTransaction()
+        trans.replace(R.id.mainFrame, HomeFragment.newInstance())
+        trans.addToBackStack(tag)
+        trans.commit()
+>>>>>>> 742960801b728efd058a83fd8b493a5b448a20bd
     }
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
+            // Last Fragment is always HomeFragment
+            if (supportFragmentManager.backStackEntryCount == 1) {
+                supportFragmentManager.popBackStack()
+            }
             super.onBackPressed()
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.home, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
-        }
+        return false
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
+        var fragment: Fragment? = null
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
+            R.id.nav_home -> {
+                fragment = HomeFragment()
             }
-            R.id.nav_gallery -> {
-
+            R.id.nav_tasks -> {
+                showToast()
             }
-            R.id.nav_slideshow -> {
-
+            R.id.nav_rankings -> {
+                fragment = AnimationFragment()
+                //showToast()
             }
-            R.id.nav_manage -> {
-
-            }
-            R.id.nav_share -> {
-
-            }
-            R.id.nav_send -> {
-
+            R.id.nav_settings -> {
+                fragment = SettingsFragment()
             }
         }
+
+        if (fragment == null) return true
+        setUpFragment(fragment)
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    private fun logUsrOut() {
-        if (fbAuth.currentUser != null) {
-            Log.d(TAG, "Signed User Out")
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener {
-                        val intent = Intent(this, StartActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
+
+    private fun setUpFragment(fragment: Fragment) {
+        val tag = fragment.javaClass.simpleName
+        val manager = supportFragmentManager
+        val fragInStack = isFragmentInBackStack(manager, tag)
+
+        if (fragInStack) {
+            manager.popBackStackImmediate(tag, 0)
+        } else {
+            val trans = manager.beginTransaction()
+            trans.replace(R.id.mainFrame, fragment)
+            trans.addToBackStack(tag)
+            trans.commit()
         }
+    }
+
+    private fun isFragmentInBackStack(fragmentManager: FragmentManager, fragmentTagName: String): Boolean {
+        for (entry in 0 until fragmentManager.backStackEntryCount) {
+            if (fragmentTagName == fragmentManager.getBackStackEntryAt(entry).name) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun showToast(text: String = "Not implemented") {
+        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
+        toast.show()
     }
 
 }

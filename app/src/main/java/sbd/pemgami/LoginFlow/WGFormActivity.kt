@@ -1,9 +1,12 @@
-package sbd.pemgami
+package sbd.pemgami.LoginFlow
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import sbd.pemgami.HomeActivity
+import sbd.pemgami.R
+import sbd.pemgami.SharedPrefsUtils
 
 
 class WGFormActivity : AppCompatActivity(), FindWGFragment.CardButtonListener {
