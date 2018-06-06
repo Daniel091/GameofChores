@@ -54,7 +54,7 @@
         android:hint="@string/start_date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/whoTextView" />
 
 
     <TextView
@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/startDateText" />
 
     <TextView
-        android:id="@+id/firstEditText"
+        android:id="@+id/whoTextView"
         style="@style/BigBoldTextViewStyle"
         android:layout_marginTop="32dp"
         android:clickable="true"
@@ -107,7 +107,7 @@
         android:id="@+id/submitButton"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_alignStart="@+id/firstEditText"
+        android:layout_alignStart="@+id/whoTextView"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
