@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AnimationFragment">
+    tools:context=".AnimationFragment"
+    android:background="@drawable/blackboard">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +17,7 @@
 
 
         <TextView
+            style="@style/EditTextStyle"
             android:id="@+id/firstTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,6 +27,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
+            style="@style/EditTextStyle"
             android:id="@+id/secondTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,6 +37,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
+            style="@style/EditTextStyle"
             android:id="@+id/usrTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
