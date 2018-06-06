@@ -45,4 +45,17 @@
         <item name="android:textSize">30dp</item>
     </style>
 
+    <style name="BigBoldTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:layout_width">300dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColorHint">#ffffff</item>
+        <item name="android:fontFamily">sans-serif-smallcaps</item>
+        <item name="android:backgroundTint">#ffffff</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
+
 </resources>

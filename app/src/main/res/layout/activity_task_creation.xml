@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/blackboard"
+    android:orientation="vertical"
+    tools:context=".TasksPlanner.TaskCreationActivity">
+
+    <EditText
+        android:id="@+id/nameEditText"
+        style="@style/EditTextStyle.title"
+        android:layout_marginTop="64dp"
+        android:drawableLeft="@drawable/pen"
+        android:drawablePadding="10dp"
+        android:hint="@string/task"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="5"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/timeEditText"
+        style="@style/EditTextStyle"
+        android:layout_alignStart="@+id/nameEditText"
+        android:layout_below="@+id/nameEditText"
+        android:layout_marginTop="16dp"
+        android:drawableLeft="@drawable/duration"
+        android:drawablePadding="10dp"
+        android:hint="@string/time_in_mins"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+
+    <TextView
+        android:id="@+id/startDateText"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_alignStart="@+id/timeEditText"
+        android:layout_below="@+id/timeEditText"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/deadline"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="@string/start_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstEditText" />
+
+
+    <TextView
+        android:id="@+id/endDateText"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_alignStart="@+id/timeEditText"
+        android:layout_below="@+id/timeEditText"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/deadline"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="@string/end_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startDateText" />
+
+    <TextView
+        android:id="@+id/firstEditText"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_marginTop="32dp"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/person"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="@string/who"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeEditText" />
+
+    <TextView
+        android:id="@+id/task_times"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_marginTop="16dp"
+        android:clickable="true"
+        android:drawablePadding="5dp"
+        android:drawableStart="@drawable/repeat_circle"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="@string/default_times"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/endDateText" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/firstEditText"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:drawableStart="@drawable/save"
+        android:fontFamily="sans-serif-smallcaps"
+        android:minHeight="1dp"
+        android:minWidth="2dp"
+        android:text="@string/save"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:theme="@style/buttonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/rotation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_times" />
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/pointsTextView"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/submitButton"
+        android:layout_below="@+id/checkBox"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="end"
+        android:text="@string/points"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+
+
+</android.support.constraint.ConstraintLayout>

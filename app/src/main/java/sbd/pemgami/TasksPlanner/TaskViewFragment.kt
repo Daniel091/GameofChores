@@ -1,6 +1,7 @@
 package sbd.pemgami.TasksPlanner
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -21,13 +22,14 @@ class TaskViewFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        // TODO could load these from HomeActivity, would be nicer than to always read them
+        // could load these from HomeActivity, would be nicer than to always read them
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
 
-        // Start Add Activity
+        // Start TaskCreation Activity
         addTaskBtn.setOnClickListener {
-
+            val intent = Intent(activity?.applicationContext, TaskCreationActivity::class.java)
+            startActivity(intent)
         }
 
     }
