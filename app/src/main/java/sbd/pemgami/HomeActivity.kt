@@ -42,6 +42,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerView.wg_title.text = wg?.name
         headerView.usr_name.text = usr?.name
 
+        nav_view.setNavigationItemSelectedListener(this)
         val tag = HomeFragment::class.java.simpleName
         val trans = supportFragmentManager.beginTransaction()
         trans.replace(R.id.mainFrame, HomeFragment.newInstance())
