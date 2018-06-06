@@ -13,6 +13,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
+import sbd.pemgami.TasksPlanner.TaskViewFragment
 
 
 class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -71,7 +72,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = HomeFragment()
             }
             R.id.nav_tasks -> {
-                showToast()
+                fragment = TaskViewFragment()
             }
             R.id.nav_rankings -> {
                 fragment = AnimationFragment()
