@@ -4,6 +4,8 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -60,6 +62,27 @@ class TaskCreationActivity : AppCompatActivity() {
         task_times.setOnClickListener {
             showListDialogTimes()
         }
+
+        // calculate new points, for every minute user gets x points
+        timeEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                return
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                return
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                pointsTextView.visibility = View.VISIBLE
+                var points = "0"
+                if (!timeEditText.text.toString().isEmpty()) {
+                    val minutes = timeEditText.text.toString().toInt()
+                    points = PointsCalculator.calcPoints(minutes).toString()
+                }
+                pointsTextView.text = resources.getString(R.string.points, points)
+            }
+        })
     }
 
     // TODO not display uids, display names
