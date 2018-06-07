@@ -14,8 +14,8 @@ import java.util.*
 
 class TaskCreationActivity : AppCompatActivity() {
     private var whoStarts: String? = null
-    private var startTime: Long? = null
-    private var endTime: Long? = null
+    private var startTime: Date? = null
+    private var endTime: Date? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class TaskCreationActivity : AppCompatActivity() {
         task_times.text = taskTimes[0]
 
         submitButton.setOnClickListener {
-            createTask()
+            createTasks()
         }
 
         whoTextView.setOnClickListener {
@@ -101,10 +101,10 @@ class TaskCreationActivity : AppCompatActivity() {
             val dateStr = fmt.format(c.time)
 
             if (start) {
-                startTime = c.timeInMillis
+                startTime = c.time
                 startDateText.text = dateStr
             } else {
-                endTime = c.timeInMillis
+                endTime = c.time
                 endDateText.text = dateStr
             }
         }
@@ -125,7 +125,21 @@ class TaskCreationActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun createTask() {
+    private fun createTasks() {
+        if (nameEditText.text.isEmpty() || timeEditText.text.isEmpty() ||
+                startTime == null || endTime == null || whoStarts == null) {
+            // TODO notify User
+            return
+        }
+        val c = Calendar.getInstance()
+        val time = timeEditText.text.toString().toInt()
+
+        //1. Task Factory create Tasks, puts them out as an array
+        val taskList = TaskFactory.createTasks(name = nameEditText.text.toString(), user = whoStarts
+                ?: "", start_time = startTime ?: c.time, end_time = endTime
+                ?: c.time, duration = time, rotatable = checkBox.isChecked)
+
+        // 2. tasks get send to firebase
 
     }
 }
