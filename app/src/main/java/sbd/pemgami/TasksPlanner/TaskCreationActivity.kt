@@ -14,7 +14,6 @@ import java.util.*
 
 class TaskCreationActivity : AppCompatActivity() {
     private var whoStarts: String? = null
-    private var taskTimes: String? = null
     private var startTime: Long? = null
     private var endTime: Long? = null
 
@@ -32,6 +31,11 @@ class TaskCreationActivity : AppCompatActivity() {
         // user that creates tasks, starts as default
         whoStarts = usr?.uid
         whoTextView.text = usr?.name
+
+        // default taskTime, is one time
+        val res = resources
+        val taskTimes = res.getStringArray(R.array.taskTimes)
+        task_times.text = taskTimes[0]
 
         submitButton.setOnClickListener {
             createTask()
@@ -57,14 +61,26 @@ class TaskCreationActivity : AppCompatActivity() {
     private fun showListDialogTimes() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose WG Member")
+        var tmpTaskTime = task_times.text
 
-        val timesArray = arrayOf("One Time", "Daily", "Weekly", "Monthly", "Yearly")
-        val selected = timesArray.indexOf(taskTimes)
+        val res = resources
+        val timesArray = res.getStringArray(R.array.taskTimes)
+        val selected = timesArray.indexOf(tmpTaskTime)
         builder.setSingleChoiceItems(timesArray, selected, { _, which ->
-            Log.d("Dialog", timesArray[which])
-            taskTimes = timesArray[which]
-            task_times.text = taskTimes
+            Log.d("TaskTimesDialog", timesArray[which])
+            tmpTaskTime = timesArray[which]
         })
+
+        // save choice
+        builder.setPositiveButton("Ok", { _, id ->
+            task_times.text = tmpTaskTime
+        })
+
+        // reset tmp var
+        builder.setNegativeButton("Cancel", { _, id ->
+            tmpTaskTime = task_times.text
+        })
+
         val dialog = builder.create()
         dialog.show()
     }

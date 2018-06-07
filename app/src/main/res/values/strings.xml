@@ -42,4 +42,13 @@
     <string name="default_times">Einmalig</string>
     <string name="rotation">Rotation?</string>
 
+    <!-- String Array Constants -->
+    <string-array name="taskTimes">
+        <item>One Time</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
 </resources>
