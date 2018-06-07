@@ -25,6 +25,15 @@ object TaskFactory {
         // month is a the moment always 30 days long ...
         val days = getTaskTimes(context, taskTime)
 
+        // if One Time was selected
+        if (days.toInt() == 0) {
+            val timestamp = lStartTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val task = Task(name, user, timestamp, duration, rotatable)
+            taskList.add(task)
+            return taskList
+        }
+
+        
         var taskOwner = user
         // fancy step through by x amount of days
         for (date in lStartTime..lEndTime step days) {
