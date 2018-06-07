@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_task_creation.*
 import sbd.pemgami.Constants
 import sbd.pemgami.R
@@ -60,6 +62,7 @@ class TaskCreationActivity : AppCompatActivity() {
         }
     }
 
+    // TODO not display uids, display names
     private fun showListDialogTimes() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose WG Member")
@@ -73,13 +76,13 @@ class TaskCreationActivity : AppCompatActivity() {
             tmpTaskTime = timesArray[which]
         })
 
-        // save choice
-        builder.setPositiveButton("Ok", { _, id ->
+        // on click save choice
+        builder.setPositiveButton("Ok", { _, _ ->
             task_times.text = tmpTaskTime
         })
 
-        // reset tmp var
-        builder.setNegativeButton("Cancel", { _, id ->
+        // on click reset tmp var
+        builder.setNegativeButton("Cancel", { _, _ ->
             tmpTaskTime = task_times.text
         })
 
@@ -102,7 +105,7 @@ class TaskCreationActivity : AppCompatActivity() {
         val dpd2 = DatePickerDialog(this)
         dpd2.updateDate(y, m, d)
         dpd2.setOnDateSetListener { view, year, monthOfYear, dayOfMonth ->
-            Log.d("Dialog", "$year $monthOfYear $dayOfMonth")
+            Log.d("DateDialog", "$year $monthOfYear $dayOfMonth")
             c.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
 
             val fmt = DateFormat.getDateInstance(1, Locale.US)
@@ -136,9 +139,10 @@ class TaskCreationActivity : AppCompatActivity() {
     private fun createTasks(users: MutableList<String>, wg_uid: String) {
         if (nameEditText.text.isEmpty() || timeEditText.text.isEmpty() ||
                 startTime == null || endTime == null || whoStarts == null) {
-            // TODO notify User
+            notifyUser(R.string.error_input_params)
             return
         }
+        progressBar.visibility = View.VISIBLE
         val c = Calendar.getInstance()
         val time = timeEditText.text.toString().toInt()
 
@@ -149,9 +153,15 @@ class TaskCreationActivity : AppCompatActivity() {
 
         // 2. tasks get send to firebase
         val wgReference = Constants.getTasksWGRef(wg_uid)
-        /*wgReference?.setValue(taskList)?.addOnSuccessListener {
+        wgReference?.setValue(taskList)?.addOnSuccessListener {
             Log.d("UploadTask_Tasks", "Task Upload Successful")
-        }*/
+            progressBar.visibility = View.GONE
+            notifyUser(R.string.success_input_params)
+            finish()
+        }
+    }
 
+    private fun notifyUser(msg: Int) {
+        Toast.makeText(applicationContext, resources.getString(msg), Toast.LENGTH_LONG).show()
     }
 }

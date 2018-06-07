@@ -45,6 +45,9 @@ object TaskFactory {
     }
 
 
+    /*
+        whatTime can have values from 0, Calendar.DATE, Calendar.WEEK_OF_MONTH, Calendar.MONTH, Calendar.YEAR
+     */
     private fun getDatesInRange(t1: Date, t2: Date, whatTime: Int): List<Date> {
         val mList = mutableListOf<Date>()
 

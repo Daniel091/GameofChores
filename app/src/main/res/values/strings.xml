@@ -41,7 +41,8 @@
     <string name="welcome_back">Welcome back!</string>
     <string name="default_times">Einmalig</string>
     <string name="rotation">Rotation?</string>
-
+    <string name="error_input_params">Failed to save, check your Input Parameters again</string>
+    <string name="success_input_params">Success, added Tasks </string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
@@ -50,13 +51,5 @@
         <item>Monthly</item>
         <item>Yearly</item>
     </string-array>
-
-    <integer-array name="mappedDays">
-        <item>0</item>
-        <item>1</item>
-        <item>7</item>
-        <item>30</item>
-        <item>365</item>
-    </integer-array>
 
 </resources>
