@@ -6,6 +6,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_task_creation.*
+import sbd.pemgami.Constants
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
 import java.text.DateFormat
@@ -39,7 +40,7 @@ class TaskCreationActivity : AppCompatActivity() {
 
         submitButton.setOnClickListener {
             if (wg == null) return@setOnClickListener
-            createTasks(wg.users)
+            createTasks(wg.users, wg.uid)
         }
 
         whoTextView.setOnClickListener {
@@ -126,7 +127,7 @@ class TaskCreationActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun createTasks(users: MutableList<String>) {
+    private fun createTasks(users: MutableList<String>, wg_uid: String) {
         if (nameEditText.text.isEmpty() || timeEditText.text.isEmpty() ||
                 startTime == null || endTime == null || whoStarts == null) {
             // TODO notify User
@@ -141,7 +142,10 @@ class TaskCreationActivity : AppCompatActivity() {
                 ?: c.time, duration = time, rotatable = checkBox.isChecked, taskTime = task_times.text.toString(), users = users, context = applicationContext)
 
         // 2. tasks get send to firebase
-        // TODO
+        val wgReference = Constants.getTasksWGRef(wg_uid)
+        wgReference?.setValue(taskList)?.addOnSuccessListener {
+            Log.d("UploadTask_Tasks", "Task Upload Successful")
+        }
 
     }
 }

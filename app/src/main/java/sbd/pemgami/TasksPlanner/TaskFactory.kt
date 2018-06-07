@@ -33,7 +33,6 @@ object TaskFactory {
             return taskList
         }
 
-        
         var taskOwner = user
         // fancy step through by x amount of days
         for (date in lStartTime..lEndTime step days) {
