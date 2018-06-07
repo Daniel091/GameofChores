@@ -89,6 +89,12 @@ class TaskCreationActivity : AppCompatActivity() {
 
     private fun showDatePicker(start: Boolean = false, end: Boolean = false) {
         val c = Calendar.getInstance()
+
+        when (start) {
+            true -> startTime?.let { c.time = startTime }
+            false -> endTime?.let { c.time = endTime }
+        }
+
         val y = c.get(Calendar.YEAR)
         val m = c.get(Calendar.MONTH)
         val d = c.get(Calendar.DAY_OF_MONTH)
@@ -143,9 +149,9 @@ class TaskCreationActivity : AppCompatActivity() {
 
         // 2. tasks get send to firebase
         val wgReference = Constants.getTasksWGRef(wg_uid)
-        wgReference?.setValue(taskList)?.addOnSuccessListener {
+        /*wgReference?.setValue(taskList)?.addOnSuccessListener {
             Log.d("UploadTask_Tasks", "Task Upload Successful")
-        }
+        }*/
 
     }
 }

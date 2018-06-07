@@ -3,39 +3,22 @@ package sbd.pemgami.TasksPlanner
 import android.content.Context
 import android.util.Log
 import sbd.pemgami.R
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.util.*
 
 
 object TaskFactory {
 
-    // for custom date operator
-    operator fun LocalDateTime.rangeTo(other: LocalDateTime) = DateProgression(this, other)
-
     fun createTasks(name: String, user: String, start_time: Date, end_time: Date, duration: Int, rotatable: Boolean, taskTime: String, users: List<String>, context: Context): List<Task>? {
         val taskList = mutableListOf<Task>()
         var rStart = 0
 
-        val lStartTime = convertToLocalDate(start_time)
-        val lEndTime = convertToLocalDate(end_time)
+        // get list of dates where new event should occure
+        val calSpecific = getTaskTimes(context, taskTime)
+        val dates = getDatesInRange(start_time, end_time, calSpecific)
 
-        // get days e.g one time is 0; daily is 1, ... etc.
-        // month is a the moment always 30 days long ...
-        val days = getTaskTimes(context, taskTime)
-
-        // if One Time was selected
-        if (days.toInt() == 0) {
-            val timestamp = lStartTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            val task = Task(name, user, timestamp, duration, rotatable)
-            taskList.add(task)
-            return taskList
-        }
-
+        // create tasks
         var taskOwner = user
-        // fancy step through by x amount of days
-        for (date in lStartTime..lEndTime step days) {
+        for (date in dates) {
             Log.d("Date", date.toString())
 
             // rotate taskOwner
@@ -47,23 +30,44 @@ object TaskFactory {
                 }
             }
 
-            val timestamp = date.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            val task = Task(name, taskOwner, timestamp, duration, rotatable)
+            val task = Task(name, taskOwner, date.time, duration, rotatable)
             taskList.add(task)
         }
 
         return taskList
     }
 
-    private fun convertToLocalDate(date: Date): LocalDateTime {
-        val instant = Instant.ofEpochMilli(date.time)
-        return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    private fun getTaskTimes(context: Context, taskTime: String): Int {
+        val res = context.resources
+        val taskTimes = res.getStringArray(R.array.taskTimes)
+        val calList = listOf(0, Calendar.DATE, Calendar.WEEK_OF_MONTH, Calendar.MONTH, Calendar.YEAR)
+        return calList[taskTimes.indexOf(taskTime)]
     }
 
-    private fun getTaskTimes(context: Context, taskTime: String): Long {
-        val res = context.resources
-        val daysTaskTimes = res.getIntArray(R.array.mappedDays)
-        val taskTimes = res.getStringArray(R.array.taskTimes)
-        return daysTaskTimes[taskTimes.indexOf(taskTime)].toLong()
+
+    private fun getDatesInRange(t1: Date, t2: Date, whatTime: Int): List<Date> {
+        val mList = mutableListOf<Date>()
+
+        val calendarSt = Calendar.getInstance()
+        calendarSt.time = t1
+
+        val calendarEnd = Calendar.getInstance()
+        calendarEnd.time = t2
+
+        // whatTime is 0, when Task just has to arise once
+        if (whatTime != 0) {
+            // before is exclusive, so add 1 day unit to calendarEnd
+            calendarEnd.add(Calendar.DATE, 1)
+
+            while (calendarSt.before(calendarEnd)) {
+                val result = calendarSt.time
+                mList.add(result)
+                calendarSt.add(whatTime, 1)
+            }
+        } else {
+            mList.add(t1)
+        }
+
+        return mList
     }
 }
