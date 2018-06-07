@@ -51,4 +51,12 @@
         <item>Yearly</item>
     </string-array>
 
+    <integer-array name="mappedDays">
+        <item>0</item>
+        <item>1</item>
+        <item>7</item>
+        <item>30</item>
+        <item>365</item>
+    </integer-array>
+
 </resources>

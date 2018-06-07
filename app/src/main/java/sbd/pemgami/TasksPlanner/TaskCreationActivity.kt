@@ -38,7 +38,8 @@ class TaskCreationActivity : AppCompatActivity() {
         task_times.text = taskTimes[0]
 
         submitButton.setOnClickListener {
-            createTasks()
+            if (wg == null) return@setOnClickListener
+            createTasks(wg.users)
         }
 
         whoTextView.setOnClickListener {
@@ -125,7 +126,7 @@ class TaskCreationActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun createTasks() {
+    private fun createTasks(users: MutableList<String>) {
         if (nameEditText.text.isEmpty() || timeEditText.text.isEmpty() ||
                 startTime == null || endTime == null || whoStarts == null) {
             // TODO notify User
@@ -137,9 +138,10 @@ class TaskCreationActivity : AppCompatActivity() {
         //1. Task Factory create Tasks, puts them out as an array
         val taskList = TaskFactory.createTasks(name = nameEditText.text.toString(), user = whoStarts
                 ?: "", start_time = startTime ?: c.time, end_time = endTime
-                ?: c.time, duration = time, rotatable = checkBox.isChecked)
+                ?: c.time, duration = time, rotatable = checkBox.isChecked, taskTime = task_times.text.toString(), users = users, context = applicationContext)
 
         // 2. tasks get send to firebase
+        // TODO
 
     }
 }
