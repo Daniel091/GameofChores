@@ -43,11 +43,22 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         headerView.usr_name.text = usr?.name
 
         nav_view.setNavigationItemSelectedListener(this)
-        val tag = HomeFragment::class.java.simpleName
-        val trans = supportFragmentManager.beginTransaction()
-        trans.replace(R.id.mainFrame, HomeFragment.newInstance())
-        trans.addToBackStack(tag)
-        trans.commit()
+
+
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            val index = supportFragmentManager.backStackEntryCount - 1
+            val tagName = supportFragmentManager.getBackStackEntryAt(index).name
+            val trans = supportFragmentManager.beginTransaction()
+            val fragment = supportFragmentManager.findFragmentByTag(tagName)
+            trans.replace(R.id.mainFrame, fragment)
+            trans.commit()
+        } else {
+            val tag = HomeFragment::class.java.simpleName
+            val trans = supportFragmentManager.beginTransaction()
+            trans.replace(R.id.mainFrame, HomeFragment.newInstance(), tag)
+            trans.addToBackStack(tag)
+            trans.commit()
+        }
     }
 
     override fun onBackPressed() {
@@ -77,7 +88,6 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_rankings -> {
                 fragment = AnimationFragment()
-                //showToast()
             }
             R.id.nav_settings -> {
                 fragment = SettingsFragment()
@@ -101,7 +111,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             manager.popBackStackImmediate(tag, 0)
         } else {
             val trans = manager.beginTransaction()
-            trans.replace(R.id.mainFrame, fragment)
+            trans.replace(R.id.mainFrame, fragment, tag)
             trans.addToBackStack(tag)
             trans.commit()
         }
