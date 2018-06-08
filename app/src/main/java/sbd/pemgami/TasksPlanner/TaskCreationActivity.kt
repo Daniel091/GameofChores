@@ -9,18 +9,24 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_task_creation.*
 import sbd.pemgami.Constants
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
+import sbd.pemgami.User
 import java.text.DateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class TaskCreationActivity : AppCompatActivity() {
     private var whoStarts: String? = null
     private var startTime: Date? = null
     private var endTime: Date? = null
+    private var usersCached = mutableListOf<User>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +56,10 @@ class TaskCreationActivity : AppCompatActivity() {
             createTasks(wg.users, wg.uid)
         }
 
-        whoTextView.setOnClickListener { showListDialog(wg?.users) }
+        whoTextView.setOnClickListener {
+            val id = wg?.uid
+            id?.let { readUsers(id) }
+        }
         startDateText.setOnClickListener { showDatePicker(start = true) }
         endDateText.setOnClickListener { showDatePicker(end = true) }
         task_times.setOnClickListener { showListDialogTimes() }
@@ -88,10 +97,9 @@ class TaskCreationActivity : AppCompatActivity() {
         startDateText.text = dateStr
     }
 
-    // TODO not display uids, display names
     private fun showListDialogTimes() {
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose WG Member")
+        builder.setTitle("Choose task frequency")
         var tmpTaskTime = task_times.text
 
         val res = resources
@@ -158,15 +166,18 @@ class TaskCreationActivity : AppCompatActivity() {
         dpd2.show()
     }
 
-    // TODO show usr names instead of uids
-    private fun showListDialog(users: MutableList<String>?) {
+    private fun showListDialog(users: MutableList<User>) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose WG Member")
 
-        val usersArray = users?.toTypedArray() ?: return
+        val users = users.sortedBy { user -> user.name }
+        val names = users.map { user -> user.name }
+
+        val usersArray = names.toTypedArray()
         builder.setItems(usersArray, { _, which ->
             Log.d("Dialog", usersArray[which])
-            whoStarts = usersArray[which]
+            whoStarts = users[which].uid
+            whoTextView.text = usersArray[which]
         })
         val dialog = builder.create()
         dialog.show()
@@ -200,4 +211,33 @@ class TaskCreationActivity : AppCompatActivity() {
     private fun notifyUser(msg: Int) {
         Toast.makeText(applicationContext, resources.getString(msg), Toast.LENGTH_LONG).show()
     }
+
+    private fun readUsers(wg_uid: String) {
+        if (usersCached.size > 0) {
+            showListDialog(usersCached)
+            return
+        }
+
+        progressBar.visibility = View.VISIBLE
+        val getWGMembers = Constants.databaseUsers.orderByChild("wg_id").equalTo(wg_uid)
+        val getListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val users = mutableListOf<User>()
+                for (child in dataSnapshot.children) {
+                    val map = child.value as HashMap<*, *>
+                    val usr = User(map["name"] as String, map["uid"] as String, map["email"] as String, map["wg_id"] as String)
+                    users.add(usr)
+                }
+                progressBar.visibility = View.INVISIBLE
+                usersCached = users
+                showListDialog(users)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                progressBar.visibility = View.INVISIBLE
+            }
+        }
+        getWGMembers.addListenerForSingleValueEvent(getListener)
+    }
+
 }
