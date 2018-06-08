@@ -130,7 +130,16 @@ class TaskCreationActivity : AppCompatActivity() {
 
         val dpd2 = DatePickerDialog(this)
         dpd2.updateDate(y, m, d)
-        dpd2.datePicker.minDate = System.currentTimeMillis() - 1000
+
+        // workaround first set minDate to 0, in order to set date later
+        dpd2.datePicker.minDate = 0
+        if (start || startTime == null) {
+            dpd2.datePicker.minDate = System.currentTimeMillis() - 1000
+        } else {
+            val time = startTime?.time
+            time?.let { dpd2.datePicker.minDate = time }
+        }
+
         dpd2.setOnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             Log.d("DateDialog", "$year $monthOfYear $dayOfMonth")
             c.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
