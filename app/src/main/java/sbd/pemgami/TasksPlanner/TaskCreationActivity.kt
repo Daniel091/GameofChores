@@ -38,8 +38,7 @@ class TaskCreationActivity : AppCompatActivity() {
         whoTextView.text = usr?.name
 
         // default taskTime, is One Time
-        val res = resources
-        val taskTimes = res.getStringArray(R.array.taskTimes)
+        val taskTimes = resources.getStringArray(R.array.taskTimes)
         task_times.text = taskTimes[0]
 
         // set calendar defaults
@@ -131,6 +130,7 @@ class TaskCreationActivity : AppCompatActivity() {
 
         val dpd2 = DatePickerDialog(this)
         dpd2.updateDate(y, m, d)
+        dpd2.datePicker.minDate = System.currentTimeMillis() - 1000
         dpd2.setOnDateSetListener { view, year, monthOfYear, dayOfMonth ->
             Log.d("DateDialog", "$year $monthOfYear $dayOfMonth")
             c.set(year, monthOfYear, dayOfMonth, 0, 0, 0)
