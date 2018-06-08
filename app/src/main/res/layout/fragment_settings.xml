@@ -5,8 +5,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".SettingsFragment">
+    tools:context=".SettingsFragment"
+    android:background="@drawable/blackboard" >
 
+    <TextView
+        style="@style/EditTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:text="Choose Theme"/>
+
+    <RadioGroup
+        style="@style/EditTextStyle"
+        android:id="@+id/ThemeRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp">
+
+        <RadioButton
+            style="@style/EditTextStyle"
+            android:buttonTint="@color/colorWhite"
+            android:textColor="#ffa600"
+            android:id="@+id/radioOrange"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Orange Theme"/>
+
+        <RadioButton
+            style="@style/EditTextStyle"
+            android:buttonTint="@color/colorWhite"
+            android:id="@+id/radioGrey"
+            android:textColor="#c9c7c7"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grey Theme"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/logoutBtn"

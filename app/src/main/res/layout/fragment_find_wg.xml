@@ -5,7 +5,8 @@
     android:id="@+id/content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFlow.WGFormActivity">
+    tools:context=".LoginFlow.WGFormActivity"
+    android:background="@drawable/blackboard">
 
     <ProgressBar
         android:id="@+id/progressBar2"
@@ -30,9 +31,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2">
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2"
+        style="@style/EditTextStyle">
 
         <EditText
+            style="@style/EditTextStyle"
             android:id="@+id/input_usrname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,9 +53,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        style="@style/EditTextStyle">
 
         <EditText
+            style="@style/EditTextStyle"
             android:id="@+id/input_wg_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,6 +80,7 @@
 
 
     <TextView
+        style="@style/EditTextStyle"
         android:id="@+id/link_createWG"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
@@ -101,6 +107,7 @@
         app:layout_constraintTop_toBottomOf="@+id/link_createWG">
 
         <TextView
+            style="@style/EditTextStyle"
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

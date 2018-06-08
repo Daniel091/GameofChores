@@ -61,6 +61,7 @@ class StartActivity : AppCompatActivity() {
         startActivityForResult(
                 AuthUI.getInstance().createSignInIntentBuilder()
                         .setAvailableProviders(selectedProviders)
+                        .setTheme(R.style.LoginTheme)
                         .build(),
                 RC_SIGN_IN)
     }
