@@ -37,31 +37,24 @@ class TaskCreationActivity : AppCompatActivity() {
         whoStarts = usr?.uid
         whoTextView.text = usr?.name
 
-        // default taskTime, is one time
+        // default taskTime, is One Time
         val res = resources
         val taskTimes = res.getStringArray(R.array.taskTimes)
         task_times.text = taskTimes[0]
 
+        // set calendar defaults
+        setStartTimeDefault()
+
+        // much on clicks
         submitButton.setOnClickListener {
             if (wg == null) return@setOnClickListener
             createTasks(wg.users, wg.uid)
         }
 
-        whoTextView.setOnClickListener {
-            showListDialog(wg?.users)
-        }
-
-        startDateText.setOnClickListener {
-            showDatePicker(start = true)
-        }
-
-        endDateText.setOnClickListener {
-            showDatePicker(end = true)
-        }
-
-        task_times.setOnClickListener {
-            showListDialogTimes()
-        }
+        whoTextView.setOnClickListener { showListDialog(wg?.users) }
+        startDateText.setOnClickListener { showDatePicker(start = true) }
+        endDateText.setOnClickListener { showDatePicker(end = true) }
+        task_times.setOnClickListener { showListDialogTimes() }
 
         // calculate new points, for every minute user gets x points
         timeEditText.addTextChangedListener(object : TextWatcher {
@@ -83,6 +76,17 @@ class TaskCreationActivity : AppCompatActivity() {
                 pointsTextView.text = resources.getString(R.string.points, points)
             }
         })
+    }
+
+    // sets up default values for text fields
+    private fun setStartTimeDefault() {
+        val c = Calendar.getInstance()
+        startTime = c.time
+
+        val fmt = DateFormat.getDateInstance(1, Locale.US)
+        val dateStr = fmt.format(c.time)
+
+        startDateText.text = dateStr
     }
 
     // TODO not display uids, display names
@@ -176,7 +180,7 @@ class TaskCreationActivity : AppCompatActivity() {
 
         // 2. tasks get send to firebase
         val wgReference = Constants.getTasksWGRef(wg_uid)
-        wgReference?.setValue(taskList)?.addOnSuccessListener {
+        wgReference?.updateChildren(taskList)?.addOnSuccessListener {
             Log.d("UploadTask_Tasks", "Task Upload Successful")
             progressBar.visibility = View.GONE
             notifyUser(R.string.success_input_params)

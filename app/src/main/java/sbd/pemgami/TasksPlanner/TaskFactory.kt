@@ -4,12 +4,12 @@ import android.content.Context
 import android.util.Log
 import sbd.pemgami.R
 import java.util.*
-
+import java.util.UUID
 
 object TaskFactory {
 
-    fun createTasks(name: String, user: String, start_time: Date, end_time: Date, duration: Int, rotatable: Boolean, taskTime: String, users: List<String>, context: Context): List<Task>? {
-        val taskList = mutableListOf<Task>()
+    fun createTasks(name: String, user: String, start_time: Date, end_time: Date, duration: Int, rotatable: Boolean, taskTime: String, users: List<String>, context: Context): Map<String, Task>? {
+        val taskMap = mutableMapOf<String, Task>()
         var rStart = 0
 
         // get list of dates where new event should occure
@@ -31,10 +31,11 @@ object TaskFactory {
             }
 
             val task = Task(name, taskOwner, date.time, duration, rotatable)
-            taskList.add(task)
+            val uniqueID = UUID.randomUUID().toString()
+            taskMap[uniqueID] = task
         }
 
-        return taskList
+        return taskMap
     }
 
     private fun getTaskTimes(context: Context, taskTime: String): Int {
