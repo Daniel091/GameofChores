@@ -8,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_task_view_.*
-import sbd.pemgami.CustomAdapter
+import sbd.pemgami.Constants
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
+import sbd.pemgami.TaskHolder
 
 class TaskViewFragment : Fragment() {
 
     private val TAG = "TaskFragment"
-    private lateinit var adapter: CustomAdapter
+    private var adapter: FirebaseRecyclerAdapter<Task, TaskHolder>? = null
 
     // list needs to be mutable, and var to maybe make it changeable
     var taskList = mutableListOf<Task>()
@@ -33,12 +36,6 @@ class TaskViewFragment : Fragment() {
         super.onStart()
 
         my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
-        val tasks = ArrayList<Task>()
-        tasks.add(Task("wash dishes", "Paul"))
-        tasks.add(Task("grocery shopping", "Jane"))
-
-        adapter = CustomAdapter(tasks)
-        my_recycler_view.adapter = adapter
 
         // could load these from HomeActivity, would be nicer than to always read them
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
@@ -50,52 +47,38 @@ class TaskViewFragment : Fragment() {
             startActivity(intent)
         }
 
+        // Using firebaseUI
+        // https://github.com/firebase/FirebaseUI-Android/tree/master/database#a-note-on-ordering
+        if (wg == null) return
+
+        // orders childs by user field, get task only user equal to current user id and shows only 10
+        val query = Constants.getTasksWGRef(wg.uid)?.orderByChild("user")?.equalTo(usr?.uid)
+                ?: return
+
+        val options = FirebaseRecyclerOptions.Builder<Task>()
+                .setQuery(query, Task::class.java)
+                .build()
+
+        adapter = object : FirebaseRecyclerAdapter<Task, TaskHolder>(options) {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
+                val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.row_layout, parent, false)
+                return TaskHolder(view)
+            }
+
+            override fun onBindViewHolder(holder: TaskHolder, position: Int, model: Task) {
+                holder.setTask(model)
+            }
+        }
+
+        // add adapter
+        my_recycler_view.adapter = adapter
+        adapter?.startListening()
     }
 
-
-    // First try to catch data from Firebase
-    // TODO: fix error "object is not abstract..."
-    /*
-    private fun firebaseListenerInit() {
-        val childEventListener = object : ChildEventListener {
-
-            override fun onChildAdded(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                val task = dataSnapshot!!.getValue(Task::class.java)
-                taskList.add(task!!)
-
-                Log.e(TAG, "onChildAdded:" + task.name)
-
-                val latest = taskList[taskList.size - 1]
-
-                firstLine.text = latest.name
-                secondLine.text = latest.user
-            }
-            /*
-            override fun onChildChanged(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                Log.e(TAG, "onChildChanged:" + dataSnapshot!!.key)
-                val task = dataSnapshot.getValue(Task::class.java)
-                Toast.makeText(this, "onChildChanged: " + task!!.name, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onChildRemoved(dataSnapshot: DataSnapshot?) {
-                Log.e(TAG, "onChildRemoved:" + dataSnapshot!!.key)
-                val message = dataSnapshot.getValue(Task::class.java)
-                Toast.makeText(this, "onChildRemoved: " + task!!.name, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onChildMoved(dataSnapshot: DataSnapshot?, previousChildName: String?) {
-                Log.e(TAG, "onChildMoved:" + dataSnapshot!!.key)
-                val message = dataSnapshot.getValue(Task::class.java)
-                Toast.makeText(this, "onChildMoved: " + task!!., Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError?) {
-                Log.e(TAG, "postMessages:onCancelled", databaseError!!.toException())
-                Toast.makeText(this, "Failed to load task.", Toast.LENGTH_SHORT).show()
-            }
-        }*/
-
-
+    override fun onStop() {
+        super.onStop()
+        adapter?.stopListening()
     }
-    }*/
+
 }
