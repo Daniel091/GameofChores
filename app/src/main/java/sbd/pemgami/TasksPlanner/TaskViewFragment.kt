@@ -8,18 +8,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_task_view_.*
 import sbd.pemgami.Constants
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
-import sbd.pemgami.TaskHolder
+import sbd.pemgami.TaskFirebaseAdapter
 
-class TaskViewFragment : Fragment() {
-
+class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
     private val TAG = "TaskFragment"
-    private var adapter: FirebaseRecyclerAdapter<Task, TaskHolder>? = null
+    private var adapter: TaskFirebaseAdapter? = null
 
     // list needs to be mutable, and var to maybe make it changeable
     var taskList = mutableListOf<Task>()
@@ -35,8 +33,9 @@ class TaskViewFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
+        progressBarRecycler.visibility = View.VISIBLE
 
+        my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
         // could load these from HomeActivity, would be nicer than to always read them
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
@@ -58,18 +57,7 @@ class TaskViewFragment : Fragment() {
         val options = FirebaseRecyclerOptions.Builder<Task>()
                 .setQuery(query, Task::class.java)
                 .build()
-
-        adapter = object : FirebaseRecyclerAdapter<Task, TaskHolder>(options) {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
-                val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.row_layout, parent, false)
-                return TaskHolder(view)
-            }
-
-            override fun onBindViewHolder(holder: TaskHolder, position: Int, model: Task) {
-                holder.setTask(model)
-            }
-        }
+        adapter = TaskFirebaseAdapter(options, this)
 
         // add adapter
         my_recycler_view.adapter = adapter
@@ -81,4 +69,8 @@ class TaskViewFragment : Fragment() {
         adapter?.stopListening()
     }
 
+    // get triggered by TaskFirebaseAdapter, when data arrives
+    override fun triggerBuildHappened() {
+        progressBarRecycler.visibility = View.INVISIBLE
+    }
 }
