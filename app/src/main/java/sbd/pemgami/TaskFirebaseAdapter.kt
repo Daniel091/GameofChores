@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.row_layout.view.*
 import sbd.pemgami.TasksPlanner.PointsCalculator
 import sbd.pemgami.TasksPlanner.Task
 import sbd.pemgami.TasksPlanner.TaskViewFragment
+import java.text.DateFormat
+import java.util.*
 
 
 class TaskFirebaseAdapter(options: FirebaseRecyclerOptions<Task>, frag: TaskViewFragment) : FirebaseRecyclerAdapter<Task, TaskFirebaseAdapter.TaskHolder>(options) {
@@ -42,16 +44,21 @@ class TaskFirebaseAdapter(options: FirebaseRecyclerOptions<Task>, frag: TaskView
 
     class TaskHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
+        private val fmt = DateFormat.getDateInstance(1, Locale.US)
+
 
         init {
             v.setOnClickListener(this)
         }
 
         fun setTask(task: Task) {
-            view.firstLine.text = task.name
-
             val points = PointsCalculator.calcPoints(task.duration).toString()
             view.secondLine.text = view.resources.getString(R.string.points, points)
+
+            val taskDate = Date(task.time)
+            val dateStr = fmt.format(taskDate)
+
+            view.firstLine.text = task.name + " - " + dateStr
         }
 
         override fun onClick(v: View) {
