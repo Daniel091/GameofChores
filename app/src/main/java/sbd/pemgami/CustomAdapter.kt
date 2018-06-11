@@ -1,33 +1,48 @@
 package sbd.pemgami
 
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import kotlinx.android.synthetic.main.row_layout.view.*
 import sbd.pemgami.TasksPlanner.Task
 
-class CustomAdapter(val taskList: ArrayList<Task>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
-    fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder?.txtName?.text = taskList[position].name
-        holder?.txtTitle?.text = taskList[position].user
+class CustomAdapter(private val taskList: List<Task>) : RecyclerView.Adapter<CustomAdapter.TaskHolder>() {
 
+    override fun onBindViewHolder(holder: TaskHolder, position: Int) {
+        val task = taskList[position]
+        holder.setTask(task)
     }
 
-    fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent?.context).inflate(R.layout.row_layout, parent, false)
-        return ViewHolder(v)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
+        val inflatedView = parent.inflate(R.layout.row_layout, false)
+        return TaskHolder(inflatedView)
     }
 
     override fun getItemCount(): Int {
         return taskList.size
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        val txtName = itemView.findViewById<TextView>(R.id.secondLine)
-        val txtTitle = itemView.findViewById<TextView>(R.id.firstLine)
+    class TaskHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
+        private var view: View = v
+        private var task: Task? = null
 
+        init {
+            v.setOnClickListener(this)
+        }
+
+        fun setTask(task: Task) {
+            view.secondLine.text = task.name
+            view.firstLine.text = task.user
+        }
+
+        override fun onClick(v: View) {
+            Log.d("RecyclerView", "CLICK!")
+        }
+
+        companion object {
+            private val Task_KEY = "TASK"
+        }
     }
-
 }

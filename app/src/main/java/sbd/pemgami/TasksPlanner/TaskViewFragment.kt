@@ -1,61 +1,44 @@
 package sbd.pemgami.TasksPlanner
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
+import kotlinx.android.synthetic.main.fragment_task_view_.*
+import sbd.pemgami.CustomAdapter
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
-import kotlinx.android.synthetic.main.fragment_task_view_.*
-import kotlinx.android.synthetic.main.row_layout.*
-import sbd.pemgami.CustomAdapter
-import sbd.pemgami.R.string.task
 
 class TaskViewFragment : Fragment() {
 
-    private val TAG = "TaskActivity"
-    private val REQUIRED = "Required"
-    private var user: FirebaseUser? = null
-    private var mDatabase: DatabaseReference? = null
-    private var mTaskReference: DatabaseReference? = null
-    private var mTaskListener: ChildEventListener? = null
+    private val TAG = "TaskFragment"
+    private lateinit var adapter: CustomAdapter
 
-    val taskList = ArrayList<Task>()
+    // list needs to be mutable, and var to maybe make it changeable
+    var taskList = mutableListOf<Task>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
 
-        // TODO: Find out why setContentView and findViewById don't work
-        setContentView(R.layout.fragment_task_view_)
-
-        val rv = findViewById<RecyclerView>(R.id.my_recycler_view)
-        rv.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        val tasks = ArrayList<Task>()
-        tasks.add(Task("wash dishes", "Paul"))
-        tasks.add(Task("grocery shopping", "Jane"))
-
-        var adapter = CustomAdapter(tasks)
-        rv.adapter = adapter
         return inflater.inflate(R.layout.fragment_task_view_, container, false)
     }
 
     override fun onStart() {
         super.onStart()
+
+        my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
+        val tasks = ArrayList<Task>()
+        tasks.add(Task("wash dishes", "Paul"))
+        tasks.add(Task("grocery shopping", "Jane"))
+
+        adapter = CustomAdapter(tasks)
+        my_recycler_view.adapter = adapter
 
         // could load these from HomeActivity, would be nicer than to always read them
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
