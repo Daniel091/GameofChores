@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 object Constants {
-    private val databaseRoot: DatabaseReference = FirebaseDatabase.getInstance().reference
+    val databaseRoot: DatabaseReference = FirebaseDatabase.getInstance().reference
     val databaseUsers: DatabaseReference = databaseRoot.child("users")
     val databaseWGs: DatabaseReference = databaseRoot.child("wgs")
     val databaseTasks: DatabaseReference = databaseRoot.child("wg_tasks")

@@ -30,8 +30,8 @@ object TaskFactory {
                 }
             }
 
-            val task = Task(name, taskOwner, date.time, duration, rotatable)
             val uniqueID = UUID.randomUUID().toString()
+            val task = Task(name, uniqueID, taskOwner, date.time, duration, rotatable)
             taskMap[uniqueID] = task
         }
 

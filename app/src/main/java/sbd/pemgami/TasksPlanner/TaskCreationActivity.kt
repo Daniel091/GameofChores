@@ -194,13 +194,13 @@ class TaskCreationActivity : AppCompatActivity() {
         val time = timeEditText.text.toString().toInt()
 
         //1. Task Factory create Tasks, puts them out as an array
-        val taskList = TaskFactory.createTasks(name = nameEditText.text.toString(), user = whoStarts
+        val taskMap = TaskFactory.createTasks(name = nameEditText.text.toString(), user = whoStarts
                 ?: "", start_time = startTime ?: c.time, end_time = endTime
                 ?: c.time, duration = time, rotatable = checkBox.isChecked, taskTime = task_times.text.toString(), users = users, context = applicationContext)
 
         // 2. tasks get send to firebase
         val wgReference = Constants.getTasksWGRef(wg_uid)
-        wgReference?.updateChildren(taskList)?.addOnSuccessListener {
+        wgReference?.updateChildren(taskMap)?.addOnSuccessListener {
             Log.d("UploadTask_Tasks", "Task Upload Successful")
             progressBar.visibility = View.GONE
             notifyUser(R.string.success_input_params)

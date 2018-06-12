@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.row_layout.view.*
 import sbd.pemgami.TasksPlanner.PointsCalculator
 import sbd.pemgami.TasksPlanner.Task
 import sbd.pemgami.TasksPlanner.TaskViewFragment
-import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -24,41 +24,48 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
 
     init {
 
-        /*
-         query gets last 20 tasks of wg_id
-         filtering to custiom usr.uid is done in child added
-        */
-        val query = Constants.getTasksWGRef(wg.uid)?.orderByChild("time")?.limitToFirst(20)
+        val query = Constants.getTasksWGRef(wg.uid)?.orderByChild("user")?.equalTo(mUsr.uid)?.limitToFirst(20)
 
         val childListener = object : ChildEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
+            override fun onCancelled(snapshot: DatabaseError?) {
 
             }
 
-            override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
-
+            override fun onChildMoved(snapshot: DataSnapshot?, preKey: String?) {
+                // we do not plan to move childs
             }
 
-            override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-                // TODO add UID field to Task Class
-                // makes it easier to follow this guide https://github.com/hyperoslo/firebase-recipes-demo-android/blob/master/app/src/main/kotlin/no/hyper/demos/recipes/ui/RecipesAdapter.kt
-            }
-
-            override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                val task = p0?.getValue(Task::class.java)
-
-                // do not add if uid is different
-                if (task?.user != mUsr.uid) return
-
-                val index = if (tasks.count() != 0) tasks.count() - 1 else 0
-                task.let {
-                    tasks.add(index, task)
-                    notifyItemInserted(index)
+            override fun onChildChanged(snapshot: DataSnapshot?, preKey: String?) {
+                val index = tasks.indexOfFirst { it.uid == preKey }
+                if (index != -1) {
+                    val task = snapshot?.getValue(Task::class.java)
+                    task?.let {
+                        tasks[index] = task
+                        notifyItemChanged(index)
+                    }
                 }
             }
 
-            override fun onChildRemoved(p0: DataSnapshot?) {
+            override fun onChildAdded(snapshot: DataSnapshot?, preKey: String?) {
+                val task = snapshot?.getValue(Task::class.java)
 
+                val index = if (tasks.count() != 0) tasks.count() - 1 else 0
+                task?.let {
+                    tasks.add(index, task)
+                    tasks.sortBy { it.time }
+                    notifyDataSetChanged()
+                }
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot?) {
+                val task = snapshot?.getValue(Task::class.java)
+                task?.let {
+                    val index = tasks.indexOfFirst { it.uid == task.uid }
+                    if (index != -1) {
+                        tasks.remove(task)
+                        notifyItemRemoved(index)
+                    }
+                }
             }
 
         }
@@ -89,20 +96,18 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
 
     class TaskHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
-        private val fmt = DateFormat.getDateInstance(1, Locale.US)
-
+        private val fmt2 = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
         init {
             v.setOnClickListener(this)
         }
 
-        // TODO change display of dateStr
         fun setTask(task: Task) {
             val points = PointsCalculator.calcPoints(task.duration).toString()
             view.secondLine.text = view.resources.getString(R.string.points, points)
 
             val taskDate = Date(task.time)
-            val dateStr = fmt.format(taskDate)
+            val dateStr = fmt2.format(taskDate)
 
             view.firstLine.text = task.name + " - " + dateStr
         }
