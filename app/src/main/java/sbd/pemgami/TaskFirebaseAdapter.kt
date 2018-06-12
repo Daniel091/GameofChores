@@ -90,6 +90,12 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
         return tasks.count()
     }
 
+    // Remove item after swiping
+    fun removeAt(position: Int) {
+        tasks.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     interface BuildEventHandler {
         fun triggerBuildHappened()
     }

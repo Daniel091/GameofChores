@@ -1,9 +1,12 @@
 package sbd.pemgami.TasksPlanner
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_task_view_.*
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
+import sbd.pemgami.SwipeToDeleteCallback
 import sbd.pemgami.TaskFirebaseAdapter
 
 class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
@@ -24,6 +28,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
+        my_recycler_view.layoutManager = LinearLayoutManager(context)
 
         return inflater.inflate(R.layout.fragment_task_view_, container, false)
     }
@@ -51,6 +56,16 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
 
         adapter = TaskFirebaseAdapter(this, usr, wg)
         my_recycler_view.adapter = adapter
+
+        val swipeHandler = object : SwipeToDeleteCallback(activity!!.applicationContext) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(my_recycler_view)
     }
 
     override fun onStop() {
