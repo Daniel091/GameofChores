@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import kotlinx.android.synthetic.main.fragment_task_view_.*
-import sbd.pemgami.Constants
 import sbd.pemgami.R
 import sbd.pemgami.SharedPrefsUtils
 import sbd.pemgami.TaskFirebaseAdapter
@@ -35,7 +33,6 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
 
         progressBarRecycler.visibility = View.VISIBLE
 
-        my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
         // could load these from HomeActivity, would be nicer than to always read them
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
@@ -46,27 +43,18 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
             startActivity(intent)
         }
 
-        // Using firebaseUI
-        // https://github.com/firebase/FirebaseUI-Android/tree/master/database#a-note-on-ordering
+        my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
+
+        // fancy guard statement
         if (wg == null) return
+        if (usr == null) return
 
-        // orders childs by user field, get task only user equal to current user id and shows only 10
-        val query = Constants.getTasksWGRef(wg.uid)?.orderByChild("user")?.equalTo(usr?.uid)
-                ?: return
-
-        val options = FirebaseRecyclerOptions.Builder<Task>()
-                .setQuery(query, Task::class.java)
-                .build()
-        adapter = TaskFirebaseAdapter(options, this)
-
-        // add adapter
+        adapter = TaskFirebaseAdapter(this, usr, wg)
         my_recycler_view.adapter = adapter
-        adapter?.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        adapter?.stopListening()
     }
 
     // get triggered by TaskFirebaseAdapter, when data arrives
