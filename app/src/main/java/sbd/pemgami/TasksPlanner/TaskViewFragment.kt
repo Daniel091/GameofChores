@@ -1,6 +1,5 @@
 package sbd.pemgami.TasksPlanner
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -26,10 +25,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         super.onCreate(savedInstanceState)
-        my_recycler_view.layoutManager = LinearLayoutManager(context)
-
         return inflater.inflate(R.layout.fragment_task_view_, container, false)
     }
 
@@ -57,7 +53,8 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         adapter = TaskFirebaseAdapter(this, usr, wg)
         my_recycler_view.adapter = adapter
 
-        val swipeHandler = object : SwipeToDeleteCallback(activity!!.applicationContext) {
+        val context = activity?.applicationContext ?: return
+        val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
@@ -70,6 +67,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
 
     override fun onStop() {
         super.onStop()
+        adapter?.removeQueryListener()
     }
 
     // get triggered by TaskFirebaseAdapter, when data arrives

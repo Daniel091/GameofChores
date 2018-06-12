@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.row_layout.view.*
 import sbd.pemgami.TasksPlanner.PointsCalculator
 import sbd.pemgami.TasksPlanner.Task
@@ -20,13 +21,14 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
     private var mListener: BuildEventHandler? = frag
     private val mUsr = usr
     private val tasks = mutableListOf<Task>()
-
+    private var childListener: ChildEventListener? = null
+    private var query: Query? = null
 
     init {
 
-        val query = Constants.getTasksWGRef(wg.uid)?.orderByChild("user")?.equalTo(mUsr.uid)?.limitToFirst(20)
+        query = Constants.getTasksWGRef(wg.uid)?.orderByChild("user")?.equalTo(mUsr.uid)?.limitToFirst(20)
 
-        val childListener = object : ChildEventListener {
+        childListener = object : ChildEventListener {
             override fun onCancelled(snapshot: DatabaseError?) {
 
             }
@@ -88,6 +90,10 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
 
     override fun getItemCount(): Int {
         return tasks.count()
+    }
+
+    fun removeQueryListener() {
+        query?.removeEventListener(childListener)
     }
 
     // Remove item after swiping
