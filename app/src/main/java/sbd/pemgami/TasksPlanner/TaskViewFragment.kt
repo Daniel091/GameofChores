@@ -4,17 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_task_view_.*
-import sbd.pemgami.R
-import sbd.pemgami.SharedPrefsUtils
-import sbd.pemgami.SwipeToDeleteCallback
-import sbd.pemgami.TaskFirebaseAdapter
+import sbd.pemgami.*
 
 class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
     private val TAG = "TaskFragment"
@@ -46,22 +42,27 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
 
         my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
 
-        // fancy guard statement
+        // not so fancy guard statement
         if (wg == null) return
         if (usr == null) return
+        val context = context ?: return
 
         adapter = TaskFirebaseAdapter(this, usr, wg)
         my_recycler_view.adapter = adapter
 
-        val context = activity?.applicationContext ?: return
-        val swipeHandler = object : SwipeToDeleteCallback(context) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+        val swipeController = SwipeController(object : SwipeControllerActions {
+            override fun onLeftSwipe(position: Int?) {
                 val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-                adapter.removeAt(viewHolder.adapterPosition)
+                position?.let { adapter.removeAt(position) }
             }
-        }
 
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+            override fun onRightSwipe(position: Int?) {
+                val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
+                position?.let { adapter.removeAt(position) }
+            }
+
+        }, context)
+        val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(my_recycler_view)
     }
 
