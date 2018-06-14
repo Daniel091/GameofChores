@@ -53,12 +53,12 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         val swipeController = SwipeController(object : SwipeControllerActions {
             override fun onLeftSwipe(position: Int?) {
                 val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-                position?.let { adapter.removeAt(position) }
+                position?.let { adapter.removeAt(position, false) }
             }
 
             override fun onRightSwipe(position: Int?) {
                 val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-                position?.let { adapter.removeAt(position) }
+                position?.let { adapter.removeAt(position, true) }
             }
 
         }, context)

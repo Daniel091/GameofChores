@@ -21,6 +21,7 @@ import java.util.*
 class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerView.Adapter<TaskFirebaseAdapter.TaskHolder>() {
     private var mListener: BuildEventHandler? = frag
     private val mUsr = usr
+    private val mWg = wg
     private val tasks = mutableListOf<Task>()
     private var childListener: ChildEventListener? = null
     private var query: Query? = null
@@ -97,10 +98,29 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG) : RecyclerV
         query?.removeEventListener(childListener)
     }
 
-    // Remove item after swiping
-    fun removeAt(position: Int) {
-        tasks.removeAt(position)
+    // Remove item after swiping,
+    // taskDone means: User did that Task, false if he just deleted Task
+    fun removeAt(position: Int, taskDone: Boolean) {
+        val task = tasks.removeAt(position)
         notifyItemRemoved(position)
+
+        // remove Item from firebase, on success add to firebase wg_done_tasks
+        Constants.getTasksWGRef(mWg.uid)?.child(task.uid)?.removeValue()?.addOnSuccessListener {
+            addToDoneTasks(task, taskDone)
+        }
+
+    }
+
+    private fun addToDoneTasks(task: Task, taskDone: Boolean) {
+        val queryAdd = Constants.getPastTasksWGRef(mWg.uid)?.child(task.uid)
+
+        // duration 0 means: 0 points
+        if (!taskDone) {
+            val notDoneTask = task.copy(duration = 0)
+            queryAdd?.setValue(notDoneTask)
+        } else {
+            queryAdd?.setValue(task)
+        }
     }
 
     interface BuildEventHandler {

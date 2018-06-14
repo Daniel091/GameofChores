@@ -8,6 +8,7 @@ object Constants {
     val databaseUsers: DatabaseReference = databaseRoot.child("users")
     val databaseWGs: DatabaseReference = databaseRoot.child("wgs")
     val databaseTasks: DatabaseReference = databaseRoot.child("wg_tasks")
+    val databasePastTasks: DatabaseReference = databaseRoot.child("past_wg_tasks")
 
 
     fun getCurrentUserWGRef(uid: String): DatabaseReference? {
@@ -18,7 +19,11 @@ object Constants {
         return databaseUsers.child(uid).child("name")
     }
 
-    fun getTasksWGRef(uid: String) : DatabaseReference? {
+    fun getTasksWGRef(uid: String): DatabaseReference? {
         return databaseTasks.child(uid)
+    }
+
+    fun getPastTasksWGRef(uid: String): DatabaseReference? {
+        return databasePastTasks.child(uid)
     }
 }
