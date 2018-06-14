@@ -47,7 +47,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         if (usr == null) return
         val context = context ?: return
 
-        adapter = TaskFirebaseAdapter(this, usr, wg)
+        adapter = TaskFirebaseAdapter(this, usr, wg, context)
         my_recycler_view.adapter = adapter
 
         val swipeController = SwipeController(object : SwipeControllerActions {
@@ -64,6 +64,12 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         }, context)
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(my_recycler_view)
+    }
+
+    override fun triggerShowPointsDialog(points: Int) {
+        val dialogFrag = PointsDialog.newInstance()
+        dialogFrag.points = points
+        dialogFrag.show(activity?.fragmentManager, "PointsDialog")
     }
 
     override fun onStop() {

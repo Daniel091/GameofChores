@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    android:maxHeight="300dp"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".AnimationFragment">
+
+
+    <TextView
+        android:id="@+id/points_earned"
+        style="@style/BigBoldTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="@string/earned_points"
+        android:textColor="@color/colorAccent" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieGift"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:maxHeight="150dp"
+        android:layout_gravity="center"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="giftbox.json"
+        app:lottie_loop="false" />
+
+</FrameLayout>

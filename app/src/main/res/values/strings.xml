@@ -43,6 +43,7 @@
     <string name="rotation">Rotation?</string>
     <string name="error_input_params">Failed to save, check your Input Parameters again</string>
     <string name="success_input_params">Success, added Tasks </string>
+    <string name="earned_points">Gratulations earned %1s Points!</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
