@@ -46,6 +46,8 @@
     <string name="earned_points">Gratulations earned %1s Points!</string>
     <string name="really_delete">Really want to ignore this Task?</string>
     <string name="delete_desc">If you ignore this Task, you get 0 Points for it.</string>
+    <string name="really_done">Do not disappoint your flat mates!</string>
+    <string name="done_desc">Only mark this task done if you have finished it thoroughly.</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
