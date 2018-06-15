@@ -87,7 +87,7 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 fragment = TaskViewFragment()
             }
             R.id.nav_rankings -> {
-                fragment = AnimationFragment()
+                fragment = ScoreRankingFragment()
             }
             R.id.nav_settings -> {
                 fragment = SettingsFragment()
