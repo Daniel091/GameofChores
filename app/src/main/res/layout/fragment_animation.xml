@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/blackboard"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AnimationFragment"
-    android:background="@drawable/blackboard">
+    tools:context=".AnimationDialog">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,18 +17,18 @@
 
 
         <TextView
-            style="@style/EditTextStyle"
             android:id="@+id/firstTextView"
+            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="48dp"
             android:text="@string/winner_excitement1"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
-            style="@style/EditTextStyle"
             android:id="@+id/secondTextView"
+            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -37,8 +37,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
-            style="@style/EditTextStyle"
             android:id="@+id/usrTextView"
+            style="@style/EditTextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -48,6 +48,14 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar5"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="visible" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"
