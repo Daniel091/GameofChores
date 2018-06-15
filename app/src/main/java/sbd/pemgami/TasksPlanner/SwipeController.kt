@@ -9,7 +9,6 @@ import android.support.v7.widget.helper.ItemTouchHelper.*
 import android.view.View
 import sbd.pemgami.R
 
-
 class SwipeController(private val actions: SwipeControllerActions, context: Context) : Callback() {
     private val swipeWidth = 50
     private val background = ColorDrawable()
@@ -18,6 +17,7 @@ class SwipeController(private val actions: SwipeControllerActions, context: Cont
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
     private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete)
+    private val checkIcon = ContextCompat.getDrawable(context, R.drawable.ic_done)
 
     override fun onChildDraw(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
         drawFeedback(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
@@ -54,8 +54,18 @@ class SwipeController(private val actions: SwipeControllerActions, context: Cont
         background.setBounds(itemView.left + dX.toInt(), itemView.top, itemView.left, itemView.bottom)
         background.draw(c)
 
-        // TODO add check icon here
-
+        checkIcon?.let {
+            val itemHeight = itemView.bottom - itemView.top
+            val intrinsicWidth = checkIcon.intrinsicWidth
+            val intrinsicHeight = checkIcon.intrinsicHeight
+            val checkIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
+            val checkIconMargin = (itemHeight - intrinsicHeight) / 2
+            val checkIconLeft = itemView.left + checkIconMargin - intrinsicWidth + 40
+            val checkIconRight = itemView.left + intrinsicHeight + 40
+            val checkIconBottom = checkIconTop + intrinsicHeight
+            checkIcon.setBounds(checkIconLeft, checkIconTop, checkIconRight, checkIconBottom)
+            checkIcon.draw(c)
+        }
     }
 
     private fun showCancelFeedback(dX: Float, itemView: View, c: Canvas?) {
