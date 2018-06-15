@@ -37,7 +37,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
+        android:layout_toRightOf="@id/imageview_task_icon"
         android:gravity="center_vertical"
         android:text="Wash the dishes"
         android:textSize="16sp" />

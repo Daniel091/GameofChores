@@ -1,20 +1,17 @@
 package sbd.pemgami.TasksPlanner
 
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
 import kotlinx.android.synthetic.main.row_layout.view.*
 import sbd.pemgami.*
-import sbd.pemgami.R.id.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -160,10 +157,8 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
             // set image according to activity
             val regex = Regex(pattern = "(toilet)")
             val matched = regex.containsMatchIn(input = task.name)
-            if (matched){
-                // TODO: SetImageResource properly
-                //imageview_task_icon.setImageResource(R.drawable.toilet)
-                //view.imageview_task_icon.src = "R.drawable.toilet"
+            if (matched) {
+                view.imageview_task_icon.setImageResource(R.drawable.toilet)
 
                 // for debugging purposes
                 view.firstLine.text = "toilet toilet toilet"
