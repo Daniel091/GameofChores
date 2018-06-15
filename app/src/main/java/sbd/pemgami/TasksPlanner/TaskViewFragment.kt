@@ -58,13 +58,35 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
             }
 
             override fun onRightSwipe(position: Int?) {
-                val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-                position?.let { adapter.removeAt(position, true) }
+                //val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
+                //position?.let { adapter.removeAt(position, true) }
+                displayDoneDialog(context, position)
             }
 
         }, context)
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(my_recycler_view)
+    }
+
+    private fun displayDoneDialog(context: Context, position: Int?) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(context.resources.getString(R.string.really_done))
+        builder.setMessage(context.resources.getString(R.string.done_desc))
+
+        // delete Item
+        builder.setPositiveButton("Ok") { _, _ ->
+            val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
+            position?.let { adapter.removeAt(position, false) }
+        }
+
+        // revert
+        builder.setNegativeButton("Cancel") { _, _ ->
+            val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
+            position?.let { adapter.notifyItemChanged(position) }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun displayAlertDialog(context: Context, position: Int?) {

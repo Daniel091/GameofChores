@@ -154,14 +154,21 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
 
             view.firstLine.text = task.name + " - " + dateStr
 
-            // set image according to activity
-            val regex = Regex(pattern = "(toilet)")
-            val matched = regex.containsMatchIn(input = task.name)
-            if (matched) {
-                view.imageview_task_icon.setImageResource(R.drawable.toilet)
+            val imageList = HashMap<String, Int>()
+            imageList.put("toilet|bathroom", R.drawable.toilet)
+            imageList.put("clean.*(?!toilet|bathroom)", R.drawable.clean2)
+            imageList.put("dishes| (wash up)| (dish wash)", R.drawable.dishes2)
+            imageList.put("call", R.drawable.call)
+            imageList.put("grocer(y|ies)|shopping|supermarket", R.drawable.shopping2)
+            imageList.put("repair|fix", R.drawable.repair2)
 
-                // for debugging purposes
-                view.firstLine.text = "toilet toilet toilet"
+            for ((key, value) in imageList) {
+                val regex = Regex(pattern = key)
+                val matched = regex.containsMatchIn(input = task.name)
+                if (matched){
+                    view.imageview_task_icon.setImageResource(value)
+                    return
+                }
             }
         }
 
