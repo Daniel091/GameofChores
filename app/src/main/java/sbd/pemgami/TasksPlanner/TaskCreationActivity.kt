@@ -105,20 +105,20 @@ class TaskCreationActivity : AppCompatActivity() {
         val res = resources
         val timesArray = res.getStringArray(R.array.taskTimes)
         val selected = timesArray.indexOf(tmpTaskTime)
-        builder.setSingleChoiceItems(timesArray, selected, { _, which ->
+        builder.setSingleChoiceItems(timesArray, selected) { _, which ->
             Log.d("TaskTimesDialog", timesArray[which])
             tmpTaskTime = timesArray[which]
-        })
+        }
 
         // on click save choice
-        builder.setPositiveButton("Ok", { _, _ ->
+        builder.setPositiveButton("Ok") { _, _ ->
             task_times.text = tmpTaskTime
-        })
+        }
 
         // on click reset tmp var
-        builder.setNegativeButton("Cancel", { _, _ ->
+        builder.setNegativeButton("Cancel") { _, _ ->
             tmpTaskTime = task_times.text
-        })
+        }
 
         val dialog = builder.create()
         dialog.show()
@@ -174,11 +174,11 @@ class TaskCreationActivity : AppCompatActivity() {
         val names = users.map { user -> user.name }
 
         val usersArray = names.toTypedArray()
-        builder.setItems(usersArray, { _, which ->
+        builder.setItems(usersArray) { _, which ->
             Log.d("Dialog", usersArray[which])
             whoStarts = users[which].uid
             whoTextView.text = usersArray[which]
-        })
+        }
         val dialog = builder.create()
         dialog.show()
     }
