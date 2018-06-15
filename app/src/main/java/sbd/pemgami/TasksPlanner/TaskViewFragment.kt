@@ -76,7 +76,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         // delete Item
         builder.setPositiveButton("Ok") { _, _ ->
             val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-            position?.let { adapter.removeAt(position, false) }
+            position?.let { adapter.removeAt(position, true) }
         }
 
         // revert
