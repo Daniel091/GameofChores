@@ -1,4 +1,4 @@
-package sbd.pemgami
+package sbd.pemgami.MonthlyWinner
 
 
 import android.os.Bundle
@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_animation.*
-
+import sbd.pemgami.R
+import sbd.pemgami.SharedPrefsUtils
+import sbd.pemgami.User
+import sbd.pemgami.WG
 
 class AnimationDialog : DialogFragment() {
+    var winner: User? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,32 +28,11 @@ class AnimationDialog : DialogFragment() {
         firstTextView.visibility = View.INVISIBLE
         secondTextView.visibility = View.INVISIBLE
         usrTextView.visibility = View.INVISIBLE
-        progressBar5.visibility = View.VISIBLE
 
         // computer winner of month
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
-        val query = Constants.databaseUsers.orderByChild("wg_id").equalTo(wg?.uid)
-        val mListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-            }
-
-            override fun onDataChange(snapshot: DataSnapshot?) {
-                if (snapshot == null) return
-                progressBar5.visibility = View.GONE
-                val users = mutableListOf<User>()
-                for (child in snapshot.children) {
-                    val map = child.value as HashMap<*, *>
-                    val points = map["points"] as Long
-                    val usr = User(map["name"] as String, map["uid"] as String, map["email"] as String, map["wg_id"] as String, points.toInt() )
-                    users.add(usr)
-                }
-                users.sortByDescending { it.points }
-                if (users.count() > 0) {
-                    showWinner(users.first(), wg)
-                }
-            }
-        }
-        query.addListenerForSingleValueEvent(mListener)
+        val cWinner = winner
+        cWinner?.let { showWinner(cWinner, wg) }
     }
 
     private fun showWinner(winner: User, wg: WG?) {

@@ -7,7 +7,7 @@
     android:background="@drawable/blackboard"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AnimationDialog">
+    tools:context=".MonthlyWinner.AnimationDialog">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,15 +47,6 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressBar5"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:indeterminate="true"
-        android:visibility="visible" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieAnimationView"

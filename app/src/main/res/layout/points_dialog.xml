@@ -7,7 +7,7 @@
     android:maxHeight="300dp"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".AnimationFragment">
+    tools:context=".MonthlyWinner.AnimationDialog">
 
 
     <TextView

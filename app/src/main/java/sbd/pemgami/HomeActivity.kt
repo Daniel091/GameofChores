@@ -9,14 +9,15 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
+import sbd.pemgami.MonthlyWinner.AnimationDialog
+import sbd.pemgami.MonthlyWinner.MonthlyWinnerHandler
 import sbd.pemgami.TasksPlanner.TaskViewFragment
 
 
-class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, MonthlyWinnerHandler.MonthlyWinnerCallback {
     private val TAG = "HomeActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,8 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(applicationContext)
+
+        wg?.let { setUpMonthlyHandler(wg) }
 
         val headerView = nav_view.getHeaderView(0)
         headerView.wg_title.text = wg?.name
@@ -126,9 +129,15 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return false
     }
 
-    private fun showToast(text: String = "Not implemented") {
-        val toast = Toast.makeText(applicationContext, text, Toast.LENGTH_LONG)
-        toast.show()
+    private fun setUpMonthlyHandler(wg: WG) {
+        val handler = MonthlyWinnerHandler(this, this.applicationContext, wg)
+        handler.checkNeedsPastTaskClear()
+    }
+
+    override fun triggerAnimationFragment(winner: User) {
+        val dialogFrag = AnimationDialog()
+        dialogFrag.winner = winner
+        dialogFrag.show(this.supportFragmentManager, "Animation")
     }
 
 }

@@ -9,7 +9,7 @@ object Constants {
     val databaseWGs: DatabaseReference = databaseRoot.child("wgs")
     val databaseTasks: DatabaseReference = databaseRoot.child("wg_tasks")
     val databasePastTasks: DatabaseReference = databaseRoot.child("past_wg_tasks")
-
+    val databaseWinners: DatabaseReference = databaseRoot.child("wg_winners")
 
     fun getCurrentUserWGRef(uid: String): DatabaseReference? {
         return databaseUsers.child(uid).child("wg_id")
