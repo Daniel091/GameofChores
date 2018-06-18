@@ -44,6 +44,9 @@ dependencies {
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.airbnb.android:lottie:2.5.4'
+
+    //for gambling
+    implementation 'com.michaelmuenzer.android:ScrollableNumberPicker:0.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
