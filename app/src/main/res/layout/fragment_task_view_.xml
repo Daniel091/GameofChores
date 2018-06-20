@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TasksPlanner.TaskViewFragment">
+    tools:context=".TasksPlanner.TaskViewFragment"
+    android:background="@drawable/blackboard">
 
 
     <ProgressBar
@@ -21,6 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/EditTextStyle"
         android:id="@+id/workPlanTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add"
-        app:backgroundTint="@color/cardview_dark_background"
-        android:tint="@color/colorWhite"/>
+        app:backgroundTint="@color/colorWhite"
+        android:tint="@color/cardview_dark_background"/>
 
 </android.support.constraint.ConstraintLayout>

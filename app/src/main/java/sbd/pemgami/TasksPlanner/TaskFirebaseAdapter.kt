@@ -158,9 +158,10 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
             imageList.put("toilet|bathroom", R.drawable.toilet)
             imageList.put("clean.*(?!toilet|bathroom)", R.drawable.clean2)
             imageList.put("dishes| (wash up)| (dish wash)", R.drawable.dishes2)
-            imageList.put("call", R.drawable.call)
-            imageList.put("grocer(y|ies)|shopping|supermarket", R.drawable.shopping2)
-            imageList.put("repair|fix", R.drawable.repair2)
+            imageList.put("call", R.drawable.call2)
+            imageList.put("grocer(y|ies)|shopping|supermarket", R.drawable.shopping3)
+            imageList.put("repair|fix", R.drawable.repair3)
+            imageList.put("waste|trash", R.drawable.waste)
 
             for ((key, value) in imageList) {
                 val regex = Regex(pattern = key)
