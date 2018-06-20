@@ -155,13 +155,13 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
             view.firstLine.text = task.name + " - " + dateStr
 
             val imageList = HashMap<String, Int>()
-            imageList.put("toilet|bathroom", R.drawable.toilet)
-            imageList.put("clean.*(?!toilet|bathroom)", R.drawable.clean2)
-            imageList.put("dishes| (wash up)| (dish wash)", R.drawable.dishes2)
-            imageList.put("call", R.drawable.call2)
-            imageList.put("grocer(y|ies)|shopping|supermarket", R.drawable.shopping3)
-            imageList.put("repair|fix", R.drawable.repair3)
-            imageList.put("waste|trash", R.drawable.waste)
+            imageList.put("[tT]oilet|[bB]athroom", R.drawable.toilet)
+            imageList.put("[cC]lean.*(?![tT]oilet|[bB]athroom)", R.drawable.clean2)
+            imageList.put("[dD]ishes| ([wW]ash up)| ([dD]ish wash)", R.drawable.dishes2)
+            imageList.put("[cC]all", R.drawable.call2)
+            imageList.put("[gG]rocer(y|ies)|[sS]hopping|[sS]upermarket", R.drawable.shopping3)
+            imageList.put("[rR]epair|[fF]ix", R.drawable.repair3)
+            imageList.put("[wW]aste|[tT]rash", R.drawable.waste)
 
             for ((key, value) in imageList) {
                 val regex = Regex(pattern = key)
@@ -169,6 +169,8 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
                 if (matched){
                     view.imageview_task_icon.setImageResource(value)
                     return
+                } else{
+                    view.imageview_task_icon.setImageResource(R.drawable.ic_task_white)
                 }
             }
         }
