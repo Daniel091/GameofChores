@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.nav_header_home.view.*
 import sbd.pemgami.MonthlyWinner.AnimationDialog
 import sbd.pemgami.MonthlyWinner.MonthlyWinnerHandler
+import sbd.pemgami.Gambling.GamblingFragment
 import sbd.pemgami.TasksPlanner.TaskViewFragment
 
 
@@ -95,6 +96,10 @@ class HomeActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_settings -> {
                 fragment = SettingsFragment()
             }
+            R.id.nav_gambling -> {
+                fragment = GamblingFragment()
+            }
+
         }
 
         if (fragment == null) return true

@@ -50,6 +50,17 @@
     <string name="done_desc">Only mark this task done if you have finished it thoroughly.</string>
     <string name="highscore">%1s Highscore</string>
     <string name="score_rank">%1s. %2s : %3s Points</string>
+    <string name="gambling">Gambling</string>
+    <string name="gamb_startNewGame">New Game</string>
+    <string name="gambl_submitbet">Submit Bet</string>
+    <string name="gambl_raise">Raise!</string>
+    <string name="gambl_stay">Stay</string>
+    <string name="gambl_nextRound">Next Round!</string>
+    <string name="gambl_buySwitch">Buy Switch</string>
+    <string name="gambl_placeYourBets">Select a card and place your bet!!</string>
+    <string name="gambl_stayOrSwitch">Stay or double bet to switch card!!</string>
+    <string name="gambl_jackpotTitle">WG JACKPOT:</string>
+>>>>>>> gambling
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
