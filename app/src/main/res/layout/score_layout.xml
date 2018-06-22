@@ -35,7 +35,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="301dp"
-        android:layout_height="272dp"
+        android:layout_height="235dp"
         android:layout_below="@+id/highscoreTextView"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
