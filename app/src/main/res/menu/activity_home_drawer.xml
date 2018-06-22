@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_tasks"
             android:icon="@drawable/ic_task"
-            android:title="Task Organizer" />
+            android:title="Work Plan" />
         <item
             android:id="@+id/nav_rankings"
             android:icon="@drawable/ic_star"
@@ -22,7 +22,7 @@
             android:title="@string/settings" />
         <item
             android:id="@+id/nav_gambling"
-            android:icon="@drawable/ic_settings"
+            android:icon="@drawable/ic_gambling"
             android:title="@string/gambling" />
     </group>
 

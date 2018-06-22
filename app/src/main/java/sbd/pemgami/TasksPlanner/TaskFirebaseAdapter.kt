@@ -155,11 +155,11 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
             view.firstLine.text = task.name + " - " + dateStr
 
             val imageList = HashMap<String, Int>()
-            imageList.put("[tT]oilet|[bB]athroom", R.drawable.toilet)
-            imageList.put("[cC]lean.*(?![tT]oilet|[bB]athroom)", R.drawable.clean2)
+            imageList.put("[tT]oilet|[bB]athroom|([Ww][Cc])", R.drawable.toilet)
+            imageList.put("[cC]lean.*(?![tT]oilet|[bB]athroom|[Ww][Cc])", R.drawable.clean2)
             imageList.put("[dD]ishes| ([wW]ash up)| ([dD]ish wash)", R.drawable.dishes2)
             imageList.put("[cC]all", R.drawable.call2)
-            imageList.put("[gG]rocer(y|ies)|[sS]hopping|[sS]upermarket", R.drawable.shopping3)
+            imageList.put("[gG]rocer[y|(ies)]|[sS]hopping|[sS]upermarket|[bB]uy", R.drawable.shopping3)
             imageList.put("[rR]epair|[fF]ix", R.drawable.repair3)
             imageList.put("[wW]aste|[tT]rash", R.drawable.waste)
 
