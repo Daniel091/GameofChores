@@ -30,6 +30,7 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
     override fun onStart() {
         super.onStart()
 
+        activity?.title = "Work Plan"
         progressBarRecycler.visibility = View.VISIBLE
 
         // could load these from HomeActivity, would be nicer than to always read them

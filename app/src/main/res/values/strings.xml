@@ -60,7 +60,9 @@
     <string name="gambl_placeYourBets">Select a card and place your bet!!</string>
     <string name="gambl_stayOrSwitch">Stay or double bet to switch card!!</string>
     <string name="gambl_jackpotTitle">WG JACKPOT:</string>
->>>>>>> gambling
+    <string name="rankings">Rankings</string>
+    <string name="home">Home</string>
+    >>>>>>> gambling
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>

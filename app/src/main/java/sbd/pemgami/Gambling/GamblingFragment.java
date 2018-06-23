@@ -1,5 +1,6 @@
 package sbd.pemgami.Gambling;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import sbd.pemgami.R;
+
 public class GamblingFragment extends Fragment {
     private static final String TAG = "GamblingFragment";
 
@@ -33,6 +35,10 @@ public class GamblingFragment extends Fragment {
             }
         });
 
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.setTitle("Gambling");
+        }
 
         return view;
     }

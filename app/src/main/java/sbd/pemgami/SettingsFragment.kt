@@ -8,19 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_settings.*
 import sbd.pemgami.LoginFlow.StartActivity
-import android.widget.RadioGroup
-import android.widget.Toast
-import kotlinx.android.synthetic.main.app_bar_home.*
 
 
 class SettingsFragment : Fragment() {
     private val fbAuth = FirebaseAuth.getInstance()
-    public var selectedColor = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,21 +38,6 @@ class SettingsFragment : Fragment() {
             SharedPrefsUtils._debugClearPreferences(activity?.applicationContext)
             logUsrOut()
         }
-
-        ThemeRadioGroup.setOnCheckedChangeListener({ group, checkedId ->
-            val radioButton = view?.findViewById<RadioButton>(checkedId)
-            selectedColor = radioButton?.text.toString()
-            Toast.makeText(activity, radioButton?.text.toString() + " is selected", Toast.LENGTH_LONG).show()
-            if (id!=-1){
-                //Toast.makeText(activity,  " Debug!", Toast.LENGTH_LONG).show()
-                if (selectedColor == "Grey Theme" ){
-                    // TODO: Set Toolbar Color somehow....
-                    //toolbar.setBackgroundResource(R.color.colorWhite)
-                } else if (selectedColor == "Orange Theme" ){
-                    // set Toolbar Color to Orange somehow...
-                }
-            }
-        })
     }
 
     companion object {

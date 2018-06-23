@@ -7,36 +7,22 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/home" />
         <item
             android:id="@+id/nav_tasks"
             android:icon="@drawable/ic_task"
-            android:title="Work Plan" />
+            android:title="@string/work_plan" />
         <item
             android:id="@+id/nav_rankings"
             android:icon="@drawable/ic_star"
-            android:title="Rankings" />
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/settings" />
+            android:title="@string/rankings" />
         <item
             android:id="@+id/nav_gambling"
             android:icon="@drawable/ic_gambling"
             android:title="@string/gambling" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings" />
     </group>
-
-    <!--
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>-->
 </menu>

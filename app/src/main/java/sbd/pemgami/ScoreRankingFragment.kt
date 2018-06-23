@@ -21,6 +21,8 @@ class ScoreRankingFragment : Fragment(), ScoreFirebaseAdapter.BuildEventHandler 
 
     override fun onStart() {
         super.onStart()
+        activity?.title = "Rankings"
+
         progressBar4.visibility = View.VISIBLE
 
         my_recycler_view.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
@@ -40,9 +42,8 @@ class ScoreRankingFragment : Fragment(), ScoreFirebaseAdapter.BuildEventHandler 
         progressBar4.visibility = View.INVISIBLE
     }
 
-    @SuppressLint("SimpleDateFormat")
     private fun setCurrentMonth() {
-        val format = SimpleDateFormat("MMMM")
+        val format = SimpleDateFormat("MMMM", Locale.US)
         val month = activity?.applicationContext?.resources?.getString(R.string.highscore, format.format(Date()))
         highscoreTextView.text = month
     }
