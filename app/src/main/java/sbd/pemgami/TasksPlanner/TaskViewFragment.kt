@@ -59,8 +59,6 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
             }
 
             override fun onRightSwipe(position: Int?) {
-                //val adapter = my_recycler_view.adapter as TaskFirebaseAdapter
-                //position?.let { adapter.removeAt(position, true) }
                 displayDoneDialog(context, position)
             }
 
