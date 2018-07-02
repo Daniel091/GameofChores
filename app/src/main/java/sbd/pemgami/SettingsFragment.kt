@@ -58,14 +58,14 @@ class SettingsFragment : Fragment() {
                 editAlert.setView(editView)
                 editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",{
                     _,_ ->
-                    val newUsername = editAlert.alert_dialog_edittext.text
+                    val newUsername = editAlert.alert_dialog_edittext.text.toString()
                     val type = {newUsername::class.simpleName}
-                    Toast.makeText(context, "Your new username is:\n$type", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Your new username is:\n$newUsername", Toast.LENGTH_LONG).show()
                     firebaseData
                             .child("users")
                             .child(fbAuth.currentUser?.uid)
                             .child("name")
-                            .setValue("test")
+                            .setValue(newUsername)
                     userName.text = newUsername
                 })
                 editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{
