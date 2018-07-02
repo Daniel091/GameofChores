@@ -59,7 +59,6 @@ class SettingsFragment : Fragment() {
                 editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",{
                     _,_ ->
                     val newUsername = editAlert.alert_dialog_edittext.text.toString()
-                    val type = {newUsername::class.simpleName}
                     Toast.makeText(context, "Your new username is:\n$newUsername", Toast.LENGTH_LONG).show()
                     firebaseData
                             .child("users")
@@ -67,6 +66,9 @@ class SettingsFragment : Fragment() {
                             .child("name")
                             .setValue(newUsername)
                     userName.text = newUsername
+                    val updated_usr = usr!!.copy(name=newUsername)
+                    SharedPrefsUtils.writeUserToSharedPref(activity!!.applicationContext, updated_usr)
+
                 })
                 editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{
                     _,_ ->
