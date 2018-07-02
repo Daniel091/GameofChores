@@ -21,11 +21,12 @@
     <string name="copy">Copy</string>
     <string name="found_wg">Hurray, found WG named: %1s \nDo you like to join it as: %2s?</string>
     <string name="no_wg">Sadly, no WG with this ID found</string>
-    <string name="debug_logout">Debug Logout</string>
+    <string name="debug_logout">Logout</string>
     <string name="debug_clear_sharedpreferences">Debug Clear SharedPreferences and Logout</string>
     <string name="title_activity_work_plan">WorkPlanActivity</string>
     <string name="work_plan">Work Plan</string>
     <string name="settings">Settings</string>
+    <string name="change_usr">Please enter new username</string>
 
 
     <string name="winner_excitement1">And this month\'s winner is?</string>

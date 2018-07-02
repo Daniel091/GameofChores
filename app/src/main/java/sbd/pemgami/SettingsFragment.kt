@@ -1,6 +1,7 @@
 package sbd.pemgami
 
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -8,14 +9,23 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.edit_text_layout.*
+import kotlinx.android.synthetic.main.fragment_create_wg.*
+import kotlinx.android.synthetic.main.fragment_find_wg.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.android.synthetic.main.nav_header_home.*
 import sbd.pemgami.LoginFlow.StartActivity
 
 
 class SettingsFragment : Fragment() {
     private val fbAuth = FirebaseAuth.getInstance()
+    private var firebaseData = FirebaseDatabase.getInstance().reference
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -26,7 +36,8 @@ class SettingsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
+        val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
+        userName.text = "${usr?.name}"
         activity?.title = "Settings"
 
         //debug button
@@ -38,7 +49,41 @@ class SettingsFragment : Fragment() {
             SharedPrefsUtils._debugClearPreferences(activity?.applicationContext)
             logUsrOut()
         }
+
+        //Change User Name on Click
+        changeUsrButton.setOnClickListener {
+            context?.let {
+                val editAlert = AlertDialog.Builder(context).create()
+                val editView = layoutInflater.inflate(R.layout.edit_text_layout, null)
+                editAlert.setView(editView)
+                editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",{
+                    _,_ ->
+                    val newUsername = editAlert.alert_dialog_edittext.text
+                    val type = {newUsername::class.simpleName}
+                    Toast.makeText(context, "Your new username is:\n$type", Toast.LENGTH_LONG).show()
+                    firebaseData
+                            .child("users")
+                            .child(fbAuth.currentUser?.uid)
+                            .child("name")
+                            .setValue("test")
+                    userName.text = newUsername
+                })
+                editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{
+                    _,_ ->
+                    Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
+                })
+
+                editAlert.show()
+            }
+        }
+
+        //delete button
+        // TODO: Add Dialog "Are you sure..."
+        leaveWG.setOnClickListener {
+            removeUser()
+        }
     }
+
 
     companion object {
         fun newInstance(): SettingsFragment {
@@ -62,5 +107,13 @@ class SettingsFragment : Fragment() {
             }
         }
     }
-}
 
+    // TODO: hier fehlt das Extrahieren der WG ID?! -> app stürzt ab
+    private fun removeUser() {
+        firebaseData
+                .child("users")
+                .child(fbAuth.currentUser?.uid)
+                .child("wg_id")
+                .setValue(null)
+    }
+}
