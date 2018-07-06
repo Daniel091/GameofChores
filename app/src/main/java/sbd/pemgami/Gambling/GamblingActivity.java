@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,11 @@ public class GamblingActivity extends AppCompatActivity {
 
     ScrollableNumberPicker numberPicker;
 
+    ImageView arrow1;
+    ImageView arrow2;
+    ImageView arrow3;
+
+
     int betAmount = 100;
 
 
@@ -68,6 +74,10 @@ public class GamblingActivity extends AppCompatActivity {
         card1 = findViewById(R.id.gambl_card1);
         card2 = findViewById(R.id.gambl_card2);
         card3 = findViewById(R.id.gambl_card3);
+
+        arrow1 = findViewById(R.id.gambl_arrow1);
+        arrow2 = findViewById(R.id.gambl_arrow2);
+        arrow3 = findViewById(R.id.gambl_arrow3);
 
         submitBet = findViewById(R.id.gambl_submit);
         buySwitch = findViewById(R.id.gambl_buySwitch);
@@ -87,6 +97,9 @@ public class GamblingActivity extends AppCompatActivity {
                 if (selectable1) {
                     card1.setImageResource(R.drawable.card_selectedback);
                     cFlag1 = true;
+                    arrow1.setVisibility(View.VISIBLE);
+                    arrow2.setVisibility(View.GONE);
+                    arrow3.setVisibility(View.GONE);
 
                     if (cFlag2 && selectable2) {
                         card2.setImageResource(R.drawable.card_back);
@@ -107,6 +120,9 @@ public class GamblingActivity extends AppCompatActivity {
                 if (selectable2) {
                     card2.setImageResource(R.drawable.card_selectedback);
                     cFlag2 = true;
+                    arrow1.setVisibility(View.GONE);
+                    arrow2.setVisibility(View.VISIBLE);
+                    arrow3.setVisibility(View.GONE);
 
                     if (cFlag1 && selectable1) {
                         card1.setImageResource(R.drawable.card_back);
@@ -127,6 +143,9 @@ public class GamblingActivity extends AppCompatActivity {
                 if (selectable3) {
                     card3.setImageResource(R.drawable.card_selectedback);
                     cFlag3 = true;
+                    arrow1.setVisibility(View.GONE);
+                    arrow2.setVisibility(View.GONE);
+                    arrow3.setVisibility(View.VISIBLE);
 
                     if (cFlag1 && selectable1) {
                         card1.setImageResource(R.drawable.card_back);
@@ -194,16 +213,25 @@ public class GamblingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!selectable1) {
+                    arrow1.setVisibility(View.VISIBLE);
+                    arrow2.setVisibility(View.GONE);
+                    arrow3.setVisibility(View.GONE);
                     card2.setImageResource(getResources().getIdentifier(drawnCards.get(1).getFileName(), "drawable", getPackageName()));
                     card3.setImageResource(getResources().getIdentifier(drawnCards.get(2).getFileName(), "drawable", getPackageName()));
                 }
 
                 if (!selectable2) {
+                    arrow1.setVisibility(View.GONE);
+                    arrow2.setVisibility(View.VISIBLE);
+                    arrow3.setVisibility(View.GONE);
                     card1.setImageResource(getResources().getIdentifier(drawnCards.get(0).getFileName(), "drawable", getPackageName()));
                     card3.setImageResource(getResources().getIdentifier(drawnCards.get(2).getFileName(), "drawable", getPackageName()));
                 }
 
                 if (!selectable3) {
+                    arrow1.setVisibility(View.GONE);
+                    arrow2.setVisibility(View.GONE);
+                    arrow3.setVisibility(View.VISIBLE);
                     card2.setImageResource(getResources().getIdentifier(drawnCards.get(1).getFileName(), "drawable", getPackageName()));
                     card1.setImageResource(getResources().getIdentifier(drawnCards.get(0).getFileName(), "drawable", getPackageName()));
                 }

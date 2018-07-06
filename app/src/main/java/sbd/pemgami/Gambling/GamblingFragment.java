@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import sbd.pemgami.R;
+import sbd.pemgami.SharedPrefsUtils;
 
 public class GamblingFragment extends Fragment {
     private static final String TAG = "GamblingFragment";
@@ -25,6 +26,7 @@ public class GamblingFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_gambling, container, false);
         Button newGame = view.findViewById(R.id.gamb_startGame);
+
 
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
