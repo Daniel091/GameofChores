@@ -1,6 +1,7 @@
 package sbd.pemgami.Gambling;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,16 +13,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPickerListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Random;
 
 import javax.xml.datatype.Duration;
 
+import sbd.pemgami.Constants;
 import sbd.pemgami.R;
+import sbd.pemgami.SharedPrefsUtils;
+import sbd.pemgami.User;
+import sbd.pemgami.WG;
 
 import static android.graphics.Color.BLUE;
 import static android.graphics.Color.TRANSPARENT;
@@ -62,8 +75,19 @@ public class GamblingActivity extends AppCompatActivity {
     ImageView arrow2;
     ImageView arrow3;
 
+    TextView jackpotDisplay;
+    TextView playerPointsDisplay;
+
+    int jackpot;
+    int playersMoney;
 
     int betAmount = 100;
+
+    User user;
+    WG wg;
+
+    DatabaseReference wgJackpotRef;
+    DatabaseReference userPointsRef;
 
 
     @Override
@@ -71,6 +95,20 @@ public class GamblingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gambling);
 
+
+        //get user and wg
+        user = SharedPrefsUtils.readLastUserFromSharedPref(getBaseContext());
+        wg = SharedPrefsUtils.readLastWGFromSharedPref(getBaseContext());
+        jackpot = wg.getJackpot();
+        playersMoney = user.getPoints();
+
+        //in case someone has lost all of the money
+        if(playersMoney == 0){
+            finish();
+        }
+
+
+        //setup of all view elements
         card1 = findViewById(R.id.gambl_card1);
         card2 = findViewById(R.id.gambl_card2);
         card3 = findViewById(R.id.gambl_card3);
@@ -78,6 +116,10 @@ public class GamblingActivity extends AppCompatActivity {
         arrow1 = findViewById(R.id.gambl_arrow1);
         arrow2 = findViewById(R.id.gambl_arrow2);
         arrow3 = findViewById(R.id.gambl_arrow3);
+
+        jackpotDisplay = findViewById(R.id.gambl_wgJackpot);
+        jackpotDisplay.setText(String.valueOf(jackpot));
+
 
         submitBet = findViewById(R.id.gambl_submit);
         buySwitch = findViewById(R.id.gambl_buySwitch);
@@ -87,9 +129,53 @@ public class GamblingActivity extends AppCompatActivity {
         description = findViewById(R.id.gambl_descriptionText);
         betAmountDisplay = findViewById(R.id.gambl_betamount);
 
+        playerPointsDisplay = findViewById(R.id.gambl_playersPoints);
+        playerPointsDisplay.setText(String.format(getString(R.string.gambl_playerpoints), playersMoney));
+
         numberPicker = findViewById(R.id.gambl_scrollableNumberPicker);
+        numberPicker.setMaxValue(playersMoney);
+        numberPicker.setListener(new ScrollableNumberPickerListener() {
+            @Override
+            public void onNumberPicked(int value) {
+                if(value > playersMoney){
+                    numberPicker.setValue(playersMoney);
+                }
+                if(value < 1){
+                    numberPicker.setValue(1);
+                }
+            }
+        });
+
 
         drawnCards = drawCardsFromDeck();
+
+        //firebase stuff
+        wgJackpotRef = FirebaseDatabase.getInstance().getReference().child("wgs").child(wg.getUid()).child("jackpot");
+        userPointsRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("points");
+
+        wgJackpotRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                jackpotDisplay.setText(String.valueOf(jackpot));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //Do nothing
+            }
+        });
+
+        userPointsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                playerPointsDisplay.setText(String.format(getString(R.string.gambl_playerpoints), playersMoney));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -198,13 +284,24 @@ public class GamblingActivity extends AppCompatActivity {
 
                 if (cFlag1 || cFlag2 || cFlag3) {
                     betAmount = numberPicker.getValue();
+                    playersMoney = playersMoney - betAmount;
+                    user.setPoints(playersMoney);
+                    userPointsRef.setValue(playersMoney);
+                    writeWGAndUserToSharedPref();
+
                     betAmountDisplay.setText(String.valueOf(betAmount));
                     numberPicker.setVisibility(View.GONE);
                     betAmountDisplay.setVisibility(View.VISIBLE);
                     submitBet.setVisibility(View.GONE);
                     stay.setVisibility(View.VISIBLE);
-                    buySwitch.setVisibility(View.VISIBLE);
-                    description.setText(R.string.gambl_stayOrSwitch);
+
+                    if(playersMoney >= betAmount ){
+                        buySwitch.setVisibility(View.VISIBLE);
+                        description.setText(R.string.gambl_stayOrSwitch);
+                    } else {
+                        stay.performClick();
+                    }
+
                 }
             }
         });
@@ -290,12 +387,23 @@ public class GamblingActivity extends AppCompatActivity {
                     card1.setImageResource(getResources().getIdentifier(drawnCards.get(0).getFileName(), "drawable", getPackageName()));
                     card2.setImageResource(getResources().getIdentifier(drawnCards.get(1).getFileName(), "drawable", getPackageName()));
                     card3.setImageResource(getResources().getIdentifier(drawnCards.get(2).getFileName(), "drawable", getPackageName()));
-                    winOrLose();
                     buySwitch.setVisibility(View.GONE);
                     stay.setVisibility(View.GONE);
+
+                    playersMoney = playersMoney - betAmount;
+                    userPointsRef.setValue(playersMoney);
+                    writeWGAndUserToSharedPref();
+
                     betAmount = betAmount * 2;
+
+                    Log.d(TAG, "onClick: double betamount:" + betAmount);
+                    Log.d(TAG, "onClick: double playersmoney" + playersMoney);
+
+                    winOrLose();
+
                     betAmountDisplay.setText(String.valueOf(betAmount));
                     description.setVisibility(View.GONE);
+
                 }
             }
         });
@@ -312,6 +420,8 @@ public class GamblingActivity extends AppCompatActivity {
     private void winOrLose() {
         betAmountDisplay.setTextSize(40);
 
+        Log.d(TAG, "winOrLose: betamount: " + betAmount );
+
         //gets rid of card selection bug after all cards are face up
         selectable1 = false;
         selectable2 = false;
@@ -323,20 +433,38 @@ public class GamblingActivity extends AppCompatActivity {
         switch (win) {
             case 1:
                 Toast.makeText(getBaseContext(), "Well done champ!! Win some more?", Toast.LENGTH_LONG).show();
+                playersMoney = playersMoney + betAmount * 2;
+                user.setPoints(playersMoney);
+                userPointsRef.setValue(playersMoney);
                 break;
             case 666:
                 Toast.makeText(getBaseContext(), "JACKPOT BABY!!!!!", Toast.LENGTH_LONG).show();
+                playersMoney = playersMoney + betAmount + jackpot;
+                user.setPoints(playersMoney);
+                userPointsRef.setValue(playersMoney);
+                wgJackpotRef.setValue(1000);
                 break;
             default:
                 Toast.makeText(getBaseContext(), "YOU LOSE!!! NOBODY LOVES YOU!!! Try again :)", Toast.LENGTH_LONG).show();
                 betAmountDisplay.setTextColor(Color.RED);
+                jackpot = jackpot + betAmount;
+                wg.setJackpot(jackpot);
+                wgJackpotRef.setValue(jackpot);
+                if (playersMoney == 0){
+                    nextRound.setText(R.string.gambl_quit);
+                }
 
         }
+        writeWGAndUserToSharedPref();
         nextRound.setVisibility(View.VISIBLE);
 
 
     }
 
+    private void writeWGAndUserToSharedPref(){
+        SharedPrefsUtils.writeUserToSharedPrefJava(getBaseContext(), user);
+        SharedPrefsUtils.writeWGToSharedPrefJava(getBaseContext(), wg);
+    }
 
     private List<PlayingCard> drawCardsFromDeck() {
         List<PlayingCard> deck = PlayingCard.getCardDeck();

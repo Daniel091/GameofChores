@@ -28,21 +28,26 @@ public class GamblingFragment extends Fragment {
         // Required empty public constructor
     }
 
+    Button newGame;
+    TextView gambleText;
+    TextView gambleText2;
+    TextView ruleheader;
+    TextView rules;
+    LottieAnimationView sadface;
+    TextView nopoints;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_gambling, container, false);
-        Button newGame = view.findViewById(R.id.gamb_startGame);
-        TextView gambleText = view.findViewById(R.id.gamb_gambleText);
-        TextView gambleText2 = view.findViewById(R.id.gamb_gambleText2);
-        final TextView ruleheader = view.findViewById(R.id.gamb_ruleheader);
-        final TextView rules = view.findViewById(R.id.gamb_rulebook);
-        final LottieAnimationView sadface = view.findViewById(R.id.gamb_sadface);
-        final TextView nopoints = view.findViewById(R.id.gamb_nopoints);
-
-
-        User user = SharedPrefsUtils.readLastUserFromSharedPref(getContext());
+        newGame = view.findViewById(R.id.gamb_startGame);
+        gambleText = view.findViewById(R.id.gamb_gambleText);
+        gambleText2 = view.findViewById(R.id.gamb_gambleText2);
+        ruleheader = view.findViewById(R.id.gamb_ruleheader);
+        rules = view.findViewById(R.id.gamb_rulebook);
+        sadface = view.findViewById(R.id.gamb_sadface);
+        nopoints = view.findViewById(R.id.gamb_nopoints);
 
         //let it blink
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
@@ -59,7 +64,18 @@ public class GamblingFragment extends Fragment {
         anim2.setRepeatCount(Animation.INFINITE);
         gambleText2.startAnimation(anim2);
 
-        Log.d(TAG, "onCreateView: User Points:" + user.getPoints());
+        playerPointChecker();
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.setTitle("Gambling");
+        }
+
+        return view;
+    }
+
+    private void playerPointChecker() {
+        User user = SharedPrefsUtils.readLastUserFromSharedPref(getContext());
 
         if (user.getPoints() == 0) {
             newGame.setTextColor(Color.GRAY);
@@ -86,13 +102,12 @@ public class GamblingFragment extends Fragment {
                 }
             });
         }
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        playerPointChecker();
 
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.setTitle("Gambling");
-        }
-
-        return view;
     }
 }

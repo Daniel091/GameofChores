@@ -28,6 +28,7 @@
         app:lottie_scale="@integer/default_maxValue" />
 
     <TextView
+        style="@style/EditTextStyle.title"
         android:id="@+id/gamb_gambleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,9 +45,10 @@
         app:layout_constraintHorizontal_bias="0.633"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <TextView
+        style="@style/EditTextStyle.title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -62,9 +64,10 @@
         app:layout_constraintHorizontal_bias="0.633"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <TextView
+        style="@style/EditTextStyle.title"
         android:id="@+id/gamb_gambleText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,7 +76,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/gamb_gambleText"
-        android:textColor="@color/red"
+        android:textColor="@color/colorAccent"
         android:textSize="60dp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -81,9 +84,10 @@
         app:layout_constraintHorizontal_bias="0.633"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintVertical_bias="0.11" />
 
     <TextView
+        style="@style/EditTextStyle.title"
         android:id="@+id/gamb_ruleheader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,6 +106,7 @@
         app:layout_constraintVertical_bias="0.278" />
 
     <TextView
+        style="@style/EditTextStyle.title"
         android:id="@+id/gamb_rulebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,19 +145,19 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/gamb_sadface"
-        android:layout_width="333dp"
-        android:layout_height="316dp"
+        android:layout_width="368dp"
+        android:layout_height="334dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-android:visibility="gone"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.376"
+        app:layout_constraintVertical_bias="0.384"
         app:lottie_autoPlay="true"
         app:lottie_fileName="crying.json"
         app:lottie_loop="true" />

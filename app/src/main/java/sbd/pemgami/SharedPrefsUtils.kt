@@ -8,7 +8,6 @@ import com.google.gson.Gson
 object SharedPrefsUtils {
     private val TAG = "SharedPrefsUtils"
 
-    @JvmStatic
     fun writeWGToSharedPref(context: Context, wg: WG) {
         val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         val prefsEditor = mPrefs.edit()
@@ -21,6 +20,17 @@ object SharedPrefsUtils {
     }
 
     @JvmStatic
+    fun writeWGToSharedPrefJava(context: Context, wg: WG) {
+        val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = mPrefs.edit()
+        val gson = Gson()
+
+        val json = gson.toJson(wg)
+        prefsEditor.putString("LastWG", json)
+        prefsEditor.commit()
+        Log.d(TAG, "Wrote LastWG")
+    }
+
     fun writeWGToSharedPref(context: Context?, wg: WG): Boolean {
         if (context == null) return false
         writeWGToSharedPref(context, wg)
@@ -43,8 +53,6 @@ object SharedPrefsUtils {
         return null
     }
 
-
-    @JvmStatic
     fun writeUserToSharedPref(context: Context, user: User) {
         val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         val prefsEditor = mPrefs.edit()
@@ -57,6 +65,17 @@ object SharedPrefsUtils {
     }
 
     @JvmStatic
+    fun writeUserToSharedPrefJava(context: Context, user: User) {
+        val mPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefsEditor = mPrefs.edit()
+        val gson = Gson()
+
+        val json = gson.toJson(user)
+        prefsEditor.putString("LastUser", json)
+        prefsEditor.commit()
+        Log.d(TAG, "Wrote LastUser")
+    }
+
     fun writeUserToSharedPref(context: Context?, user: User): Boolean {
         if (context == null) return false
         writeUserToSharedPref(context, user)

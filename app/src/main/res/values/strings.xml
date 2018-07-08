@@ -71,6 +71,8 @@
         3. Low card wins if high pair appears
     </string>
     <string name="gamb_noPoints">No points to gamble with.</string>
+    <string name="gambl_playerpoints">Points: %d</string>
+    <string name="gambl_quit">Quit</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
