@@ -77,6 +77,8 @@
     <string name="jackpot_text_description">JACKPOT!!!!</string>
     <string name="winner_text_description">YOU WIN!!!</string>
     <string name="how_about_working">Huow about doing some work? Just saying....</string>
+    <string name="no_done_tasks">No Tasks done yet .. Better to do some work ;-)</string>
+    <string name="no_tasks_created_yet_better_create_some">No Tasks created yet, better create some ;-)</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>

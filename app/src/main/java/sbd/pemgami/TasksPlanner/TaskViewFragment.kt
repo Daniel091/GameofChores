@@ -3,6 +3,9 @@ package sbd.pemgami.TasksPlanner
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -12,14 +15,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.fragment_task_view_.*
-import sbd.pemgami.*
+import sbd.pemgami.R
+import sbd.pemgami.SharedPrefsUtils
 
 class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
     private val TAG = "TaskFragment"
     private var adapter: TaskFirebaseAdapter? = null
 
-    // list needs to be mutable, and var to maybe make it changeable
-    var taskList = mutableListOf<Task>()
+    private val timeHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+            progressBarRecycler.visibility = View.INVISIBLE
+            noDataLabelTasks.visibility = View.VISIBLE
+        }
+    }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -65,6 +75,8 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
         }, context)
         val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(my_recycler_view)
+
+        setUpTimerTask()
     }
 
     private fun displayDoneDialog(context: Context, position: Int?) {
@@ -123,5 +135,15 @@ class TaskViewFragment : Fragment(), TaskFirebaseAdapter.BuildEventHandler {
     // get triggered by TaskFirebaseAdapter, when data arrives
     override fun triggerBuildHappened() {
         progressBarRecycler.visibility = View.INVISIBLE
+        noDataLabelTasks.visibility = View.INVISIBLE
+    }
+
+    fun setUpTimerTask() {
+        val runnable = Runnable {
+            if(progressBarRecycler != null && progressBarRecycler.visibility == View.VISIBLE) {
+                timeHandler.sendEmptyMessage(1)
+            }
+        }
+        timeHandler.postDelayed(runnable, 7000)
     }
 }
