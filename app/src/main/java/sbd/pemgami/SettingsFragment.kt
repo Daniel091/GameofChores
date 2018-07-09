@@ -12,20 +12,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.edit_text_layout.*
-import kotlinx.android.synthetic.main.fragment_create_wg.*
-import kotlinx.android.synthetic.main.fragment_find_wg.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_settings.*
-import kotlinx.android.synthetic.main.nav_header_home.*
 import sbd.pemgami.LoginFlow.StartActivity
 
 
 class SettingsFragment : Fragment() {
     private val fbAuth = FirebaseAuth.getInstance()
-    private var firebaseData = FirebaseDatabase.getInstance().reference
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -56,24 +49,13 @@ class SettingsFragment : Fragment() {
                 val editAlert = AlertDialog.Builder(context).create()
                 val editView = layoutInflater.inflate(R.layout.edit_text_layout, null)
                 editAlert.setView(editView)
-                editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK",{
-                    _,_ ->
-                    val newUsername = editAlert.alert_dialog_edittext.text.toString()
-                    Toast.makeText(context, "Your new username is:\n$newUsername", Toast.LENGTH_LONG).show()
-                    firebaseData
-                            .child("users")
-                            .child(fbAuth.currentUser?.uid)
-                            .child("name")
-                            .setValue(newUsername)
-                    userName.text = newUsername
-                    val updated_usr = usr!!.copy(name=newUsername)
-                    SharedPrefsUtils.writeUserToSharedPref(activity!!.applicationContext, updated_usr)
+                editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { _, _ ->
+                    updateUsername(editAlert.alert_dialog_edittext.text.toString())
 
-                })
-                editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel",{
-                    _,_ ->
+                }
+                editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { _, _ ->
                     Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
-                })
+                }
 
                 editAlert.show()
             }
@@ -86,12 +68,19 @@ class SettingsFragment : Fragment() {
         }
     }
 
+    private fun updateUsername(newUsername: String) {
+        val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
 
-    companion object {
-        fun newInstance(): SettingsFragment {
-            return SettingsFragment()
+        Toast.makeText(context, "Your new username is:\n$newUsername", Toast.LENGTH_LONG).show()
+        userName.text = newUsername
+
+        Constants.databaseUsers.child(usr?.uid).child("name").setValue(newUsername)
+        usr?.let {
+            val uUser = usr.copy(name = newUsername)
+            SharedPrefsUtils.writeUserToSharedPref(activity?.applicationContext, uUser)
         }
     }
+
 
     private fun logUsrOut() {
         if (fbAuth.currentUser != null) {
@@ -110,12 +99,29 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    // TODO: hier fehlt das Extrahieren der WG ID?! -> app stürzt ab
     private fun removeUser() {
-        firebaseData
-                .child("users")
-                .child(fbAuth.currentUser?.uid)
-                .child("wg_id")
-                .setValue(null)
+        val context = activity?.applicationContext
+        // remove user
+        val wg = SharedPrefsUtils.readLastWGFromSharedPref(context)
+        val usr = SharedPrefsUtils.readLastUserFromSharedPref(context)
+        val uUser = usr?.copy(wg_id = "")
+        wg?.users?.remove(usr?.uid)
+
+
+        // remove user wg_id attribute
+        Constants.databaseUsers.child(usr?.uid).setValue(uUser).addOnSuccessListener {
+            uUser?.let { SharedPrefsUtils.writeUserToSharedPref(context, uUser) }
+            SharedPrefsUtils.removeLastWG(context)
+
+            // save wg obj without user_uid
+            val wgUsrRef = Constants.databaseWGs.child(wg?.uid)
+            wgUsrRef?.setValue(wg)?.addOnSuccessListener {
+
+                // navigate to StartActivity
+                val intent = Intent(context, StartActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+        }
     }
 }
