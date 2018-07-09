@@ -1,6 +1,7 @@
 package sbd.pemgami.TasksPlanner
 
 import android.content.Context
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -144,6 +145,7 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
     class TaskHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
         private val fmt2 = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        private val today = Date()
 
         init {
             v.setOnClickListener(this)
@@ -155,6 +157,9 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
 
             val taskDate = Date(task.time)
             val dateStr = fmt2.format(taskDate)
+            if(taskDate.before(today)) {
+                view.firstLine.setTextColor(Color.YELLOW)
+            }
 
             view.firstLine.text = task.name + " - " + dateStr
 
