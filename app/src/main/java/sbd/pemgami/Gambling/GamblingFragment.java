@@ -1,7 +1,7 @@
 package sbd.pemgami.Gambling;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -35,11 +36,13 @@ public class GamblingFragment extends Fragment {
     TextView rules;
     LottieAnimationView sadface;
     TextView nopoints;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        context = inflater.getContext();
         View view = inflater.inflate(R.layout.fragment_gambling, container, false);
         newGame = view.findViewById(R.id.gamb_startGame);
         gambleText = view.findViewById(R.id.gamb_gambleText);
@@ -88,6 +91,7 @@ public class GamblingFragment extends Fragment {
                     sadface.setVisibility(View.VISIBLE);
                     sadface.animate();
                     nopoints.setVisibility(View.VISIBLE);
+                    Toast.makeText(context, getString(R.string.how_about_working), Toast.LENGTH_LONG).show();
                 }
             });
 

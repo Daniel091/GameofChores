@@ -7,12 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +70,7 @@ public class GamblingActivity extends AppCompatActivity {
     Button nextRound;
 
     TextView description;
+    TextView description2;
     TextView betAmountDisplay;
 
     ScrollableNumberPicker numberPicker;
@@ -76,7 +80,10 @@ public class GamblingActivity extends AppCompatActivity {
     ImageView arrow3;
 
     TextView jackpotDisplay;
+    TextView jackpotDisplay2;
     TextView playerPointsDisplay;
+
+    TextView jackpotTitle;
 
     int jackpot;
     int playersMoney;
@@ -88,6 +95,14 @@ public class GamblingActivity extends AppCompatActivity {
 
     DatabaseReference wgJackpotRef;
     DatabaseReference userPointsRef;
+
+    LottieAnimationView winAnim;
+    LottieAnimationView loseAnim;
+    LottieAnimationView fireworksAnim;
+    LottieAnimationView jackpotAnim;
+    LottieAnimationView star1;
+    LottieAnimationView star2;
+    LottieAnimationView star3;
 
 
     @Override
@@ -109,6 +124,17 @@ public class GamblingActivity extends AppCompatActivity {
 
 
         //setup of all view elements
+
+        winAnim = findViewById(R.id.gambl_winAnim);
+        loseAnim = findViewById(R.id.gambl_loseAnim);
+        fireworksAnim = findViewById(R.id.gambl_fireworksAnim);
+        jackpotAnim = findViewById(R.id.gambl_jackpotAnim);
+        star1 = findViewById(R.id.gambl_star1);
+        star2 = findViewById(R.id.gambl_star2);
+        star3 = findViewById(R.id.gambl_star3);
+
+        jackpotTitle = findViewById(R.id.gambl_jackpotTitle1);
+
         card1 = findViewById(R.id.gambl_card1);
         card2 = findViewById(R.id.gambl_card2);
         card3 = findViewById(R.id.gambl_card3);
@@ -119,6 +145,7 @@ public class GamblingActivity extends AppCompatActivity {
 
         jackpotDisplay = findViewById(R.id.gambl_wgJackpot);
         jackpotDisplay.setText(String.valueOf(jackpot));
+        jackpotDisplay2 = findViewById(R.id.gambl_wgJackpot2);
 
 
         submitBet = findViewById(R.id.gambl_submit);
@@ -127,6 +154,7 @@ public class GamblingActivity extends AppCompatActivity {
         nextRound = findViewById(R.id.gambl_nextRound);
 
         description = findViewById(R.id.gambl_descriptionText);
+        description2 = findViewById(R.id.gambl_descriptionText2);
         betAmountDisplay = findViewById(R.id.gambl_betamount);
 
         playerPointsDisplay = findViewById(R.id.gambl_playersPoints);
@@ -157,6 +185,7 @@ public class GamblingActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 jackpotDisplay.setText(String.valueOf(jackpot));
+                jackpotDisplay2.setText(String.valueOf(jackpot));
             }
 
             @Override
@@ -284,6 +313,8 @@ public class GamblingActivity extends AppCompatActivity {
 
                 if (cFlag1 || cFlag2 || cFlag3) {
                     betAmount = numberPicker.getValue();
+
+                    Log.d(TAG, "onClick: submit bet: " + betAmount);
                     playersMoney = playersMoney - betAmount;
                     user.setPoints(playersMoney);
                     userPointsRef.setValue(playersMoney);
@@ -336,7 +367,6 @@ public class GamblingActivity extends AppCompatActivity {
                 winOrLose();
                 buySwitch.setVisibility(View.GONE);
                 stay.setVisibility(View.GONE);
-                description.setVisibility(View.GONE);
             }
         });
 
@@ -402,7 +432,6 @@ public class GamblingActivity extends AppCompatActivity {
                     winOrLose();
 
                     betAmountDisplay.setText(String.valueOf(betAmount));
-                    description.setVisibility(View.GONE);
 
                 }
             }
@@ -429,6 +458,7 @@ public class GamblingActivity extends AppCompatActivity {
 
         //0 = loose, 1 = win, 666 = jackpot
         int win = Referee.checkCards(notSelected1, notSelected2, selectedCard);
+        description.setTextSize(40);
 
         switch (win) {
             case 1:
@@ -436,20 +466,36 @@ public class GamblingActivity extends AppCompatActivity {
                 playersMoney = playersMoney + betAmount * 2;
                 user.setPoints(playersMoney);
                 userPointsRef.setValue(playersMoney);
+                winAnim.setVisibility(View.VISIBLE);
+                fireworksAnim.setVisibility(View.VISIBLE);
+                description.setText(R.string.winner_text_description);
                 break;
             case 666:
+                description.setText(R.string.jackpot_text_description);
+                description2.setText(R.string.jackpot_text_description);
                 Toast.makeText(getBaseContext(), "JACKPOT BABY!!!!!", Toast.LENGTH_LONG).show();
                 playersMoney = playersMoney + betAmount + jackpot;
                 user.setPoints(playersMoney);
                 userPointsRef.setValue(playersMoney);
+                wg.setJackpot(1000);
                 wgJackpotRef.setValue(1000);
+
+                playJackpotAnimations();
+
+                writeWGAndUserToSharedPref();
                 break;
             default:
+                description.setText(R.string.loser_text_description);
                 Toast.makeText(getBaseContext(), "YOU LOSE!!! NOBODY LOVES YOU!!! Try again :)", Toast.LENGTH_LONG).show();
                 betAmountDisplay.setTextColor(Color.RED);
+                user.setPoints(playersMoney);
+                user.setPoints(playersMoney);
                 jackpot = jackpot + betAmount;
                 wg.setJackpot(jackpot);
                 wgJackpotRef.setValue(jackpot);
+                loseAnim.setVisibility(View.VISIBLE);
+
+
                 if (playersMoney == 0){
                     nextRound.setText(R.string.gambl_quit);
                 }
@@ -459,6 +505,36 @@ public class GamblingActivity extends AppCompatActivity {
         nextRound.setVisibility(View.VISIBLE);
 
 
+    }
+
+    private void playJackpotAnimations() {
+        jackpotAnim.setVisibility(View.VISIBLE);
+        fireworksAnim.setVisibility(View.VISIBLE);
+        star1.setVisibility(View.VISIBLE);
+        star2.setVisibility(View.VISIBLE);
+        star3.setVisibility(View.VISIBLE);
+        description2.setVisibility(View.VISIBLE);
+
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(50);
+        anim.setStartOffset(30);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        jackpotDisplay.startAnimation(anim);
+
+        Animation anim2 = new AlphaAnimation(0.0f, 1.0f);
+        anim2.setDuration(50);
+        anim2.setStartOffset(15);
+        anim2.setRepeatMode(Animation.REVERSE);
+        anim2.setRepeatCount(Animation.INFINITE);
+        jackpotTitle.startAnimation(anim2);
+
+        Animation anim3 = new AlphaAnimation(0.0f, 1.0f);
+        anim3.setDuration(50);
+        anim3.setStartOffset(10);
+        anim3.setRepeatMode(Animation.REVERSE);
+        anim3.setRepeatCount(Animation.INFINITE);
+        description.startAnimation(anim3);
     }
 
     private void writeWGAndUserToSharedPref(){

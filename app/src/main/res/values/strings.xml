@@ -73,6 +73,10 @@
     <string name="gamb_noPoints">No points to gamble with.</string>
     <string name="gambl_playerpoints">Points: %d</string>
     <string name="gambl_quit">Quit</string>
+    <string name="loser_text_description">You lose...</string>
+    <string name="jackpot_text_description">JACKPOT!!!!</string>
+    <string name="winner_text_description">YOU WIN!!!</string>
+    <string name="how_about_working">Huow about doing some work? Just saying....</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
