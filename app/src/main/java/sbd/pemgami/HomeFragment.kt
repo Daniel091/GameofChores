@@ -3,6 +3,9 @@ package sbd.pemgami
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.support.v7.widget.LinearLayoutManager
@@ -14,6 +17,16 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment(), TasksDoneFirebaseAdapter.BuildEventHandler {
+
+    private val timeHandler = object : Handler(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message?) {
+            super.handleMessage(msg)
+
+            progressBar5.visibility = View.INVISIBLE
+            noDataLabel.visibility = View.VISIBLE
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -38,15 +51,25 @@ class HomeFragment : Fragment(), TasksDoneFirebaseAdapter.BuildEventHandler {
                 doneTasksRecView.layoutManager = LinearLayoutManager(activity?.applicationContext, LinearLayout.VERTICAL, false)
                 val adapter = TasksDoneFirebaseAdapter(this, usr, wg)
                 doneTasksRecView.adapter = adapter
+                setUpTimerTask()
             }
         }
     }
 
     // when doneTasks Recycler View gets filled event is being triggered
     override fun triggerBuildHappened() {
-        progressBar5.visibility = View.GONE
+        progressBar5.visibility = View.INVISIBLE
+        noDataLabel.visibility = View.INVISIBLE
     }
 
+    private fun setUpTimerTask() {
+        val runnable = Runnable {
+            if (progressBar5 != null && progressBar5.visibility == View.VISIBLE) {
+                timeHandler.sendEmptyMessage(1)
+            }
+        }
+        timeHandler.postDelayed(runnable, 7000)
+    }
 
     companion object {
         fun newInstance(): HomeFragment {

@@ -15,12 +15,8 @@ import java.util.*
 
 
 class TasksDoneFirebaseAdapter(frag: HomeFragment, usr: User, wg: WG) : RecyclerView.Adapter<TasksDoneFirebaseAdapter.DoneTaskHolder>() {
-
     var mListener: BuildEventHandler? = frag
-    private val mUsr = usr
-    private val mWg = wg
     private val tasks = mutableListOf<DoneTask>()
-    private val context = frag.context
 
     init {
         // get last 10 done tasks

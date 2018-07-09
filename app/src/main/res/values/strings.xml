@@ -64,6 +64,22 @@
     <string name="rankings">Rankings</string>
     <string name="home">Home</string>
     <string name="done_tasks">Done Tasks</string>
+    <string name="gamb_rules">Rules:</string>
+    <string name="gamb_gambleText">GAMBLE!!</string>
+    <string name="gamb_rulebook">
+        1. Jackpot when trips\n\n
+        2. Highcard wins unless pair appears\n\n
+        3. Low card wins if high pair appears
+    </string>
+    <string name="gamb_noPoints">No points to gamble with.</string>
+    <string name="gambl_playerpoints">Points: %d</string>
+    <string name="gambl_quit">Quit</string>
+    <string name="loser_text_description">You lose...</string>
+    <string name="jackpot_text_description">JACKPOT!!!!</string>
+    <string name="winner_text_description">YOU WIN!!!</string>
+    <string name="how_about_working">Huow about doing some work? Just saying....</string>
+    <string name="no_done_tasks">No Tasks done yet .. Better to do some work ;-)</string>
+    <string name="no_tasks_created_yet_better_create_some">No Tasks created yet, better create some ;-)</string>
     <!-- String Array Constants -->
     <string-array name="taskTimes">
         <item>One Time</item>
