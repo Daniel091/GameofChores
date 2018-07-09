@@ -20,6 +20,12 @@
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         app:srcCompat="@mipmap/ic_launcher_round" />-->
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/game_of_chores_logo_small" />
+
     <TextView
         android:id="@+id/wg_title"
         android:layout_width="match_parent"
