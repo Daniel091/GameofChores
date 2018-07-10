@@ -62,7 +62,7 @@ class StartActivity : AppCompatActivity() {
                 AuthUI.getInstance().createSignInIntentBuilder()
                         .setAvailableProviders(selectedProviders)
                         .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.game_of_chores_logo_small)
+                        .setLogo(R.drawable.game_of_chores_logo_small_white)
                         .build(),
                 RC_SIGN_IN)
     }

@@ -24,7 +24,7 @@
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        app:srcCompat="@drawable/game_of_chores_logo_small" />
+        app:srcCompat="@drawable/game_of_chores_logo_small_white"/>
 
     <TextView
         android:id="@+id/wg_title"
