@@ -50,8 +50,11 @@ class SettingsFragment : Fragment() {
                 val editView = layoutInflater.inflate(R.layout.edit_text_layout, null)
                 editAlert.setView(editView)
                 editAlert.setButton(AlertDialog.BUTTON_POSITIVE, "OK") { _, _ ->
-                    updateUsername(editAlert.alert_dialog_edittext.text.toString())
-
+                    if (editAlert.alert_dialog_edittext.text.isNotEmpty()){
+                        updateUsername(editAlert.alert_dialog_edittext.text.toString())
+                    } else {
+                        Toast.makeText(context, "Username remains unchanged", Toast.LENGTH_LONG).show()
+                    }
                 }
                 editAlert.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel") { _, _ ->
                     Toast.makeText(context, "Cancelled", Toast.LENGTH_LONG).show()
@@ -62,7 +65,6 @@ class SettingsFragment : Fragment() {
         }
 
         //delete button
-        // TODO: Add Dialog "Are you sure..."
         leaveWG.setOnClickListener {
             val c = context
             c?.let {
