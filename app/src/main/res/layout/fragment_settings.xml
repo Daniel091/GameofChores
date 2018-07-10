@@ -16,12 +16,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:src="@drawable/settings_image"
-        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintBottom_toTopOf="@+id/settingsHeadingTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/settingsHeadingTextView"
         style="@style/EditTextStyle.title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:layout_marginTop="250dp"
         android:layout_marginBottom="10dp"
         android:textColor="@color/colorBrightYellow"
-        android:text="Settings"
+        android:text="@string/settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,18 +48,19 @@
     <TextView
         android:id="@+id/userNameText"
         style="@style/EditTextStyle"
+        android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="15dp"
-        android:text="Username:"
+        android:text="@string/username"
         app:layout_constraintBottom_toBottomOf="@+id/debugLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.026"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView6"
+        app:layout_constraintTop_toBottomOf="@id/settingsHeadingTextView"
         app:layout_constraintVertical_bias="0.142" />
 
     <LinearLayout
@@ -67,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,12 +88,13 @@
         <Button
             android:id="@+id/changeUsrButton"
             android:layout_width="130dp"
+            android:backgroundTint="@color/colorWhite"
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:drawablePadding="20dip"
-            android:drawableRight="@drawable/pen_black"
-            android:text="Change" />
+            android:drawableEnd="@drawable/pen_black"
+            android:text="@string/change" />
     </LinearLayout>
 
     <Button
@@ -101,14 +103,13 @@
         android:layout_width="130dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="@color/colorAccent"
         android:drawablePadding="20dip"
-        android:drawableRight="@drawable/leave2"
-        android:text="Leave"
+        android:drawableEnd="@drawable/leave2"
+        android:text="@string/leave"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintHorizontal_bias="0.033"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -119,7 +120,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="48dp"
         android:drawablePadding="20dip"
-        android:drawableRight="@drawable/logout"
+        android:drawableEnd="@drawable/logout"
+        android:backgroundTint="@color/colorWhite"
         android:text="@string/debug_logout"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintHorizontal_bias="0.97"
@@ -153,11 +155,12 @@
         style="@style/EditTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Share ID with new members:"
+        android:text="@string/share_id"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.059"
@@ -169,7 +172,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +197,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:drawablePadding="20dip"
-            android:drawableRight="@drawable/copy"
+            android:drawableEnd="@drawable/copy"
+            android:backgroundTint="@color/colorWhite"
             android:text="@string/copy" />
 
     </LinearLayout>

@@ -91,5 +91,10 @@
 
     <string name="really_leave">Are you sure you want to leave?</string>
     <string name="leave_desc">Once you leave you will no longer be part of %1s</string>
+    <string name="share_id">Share ID with new members:</string>
+    <string name="username">Username:</string>
+    <string name="leave">Leave</string>
+    <string name="change">Change</string>
+    <string name="settings">Settings</string>
 
 </resources>
