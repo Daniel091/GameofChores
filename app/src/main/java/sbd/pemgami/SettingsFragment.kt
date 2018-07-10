@@ -64,9 +64,9 @@ class SettingsFragment : Fragment() {
         //delete button
         // TODO: Add Dialog "Are you sure..."
         leaveWG.setOnClickListener {
-            val context = activity?.applicationContext
-            context?.let {
-                displayLeaveDialog(context)
+            val c = context
+            c?.let {
+                displayLeaveDialog(c, wg)
             }
         }
 
@@ -132,16 +132,21 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun displayLeaveDialog(context: Context) {
+    private fun displayLeaveDialog(context: Context, wg: WG?) {
         val builder = android.support.v7.app.AlertDialog.Builder(context)
         builder.setTitle(context.resources.getString(R.string.really_leave))
-        builder.setMessage(context.resources.getString(R.string.leave_desc))
+        builder.setMessage(context.resources.getString(R.string.leave_desc, wg?.name))
 
         // Leave WG
         builder.setPositiveButton("Ok") { _, _ ->
             Toast.makeText(context, "Jetzt austreten!", Toast.LENGTH_LONG).show()
             removeUser()
         }
+
+        builder.setNegativeButton("Cancel") { _, _ ->
+            // closes dialog
+        }
+
         val dialog = builder.create()
         dialog.show()
     }
