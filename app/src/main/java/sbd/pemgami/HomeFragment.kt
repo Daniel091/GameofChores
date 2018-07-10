@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), TasksDoneFirebaseAdapter.BuildEventHandler {
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
         debugLabel.text = "Community: ${wg?.name}"
-        textView.text = "Welcome back, ${usr?.name}!"
+        textView.text = "Welcome back,\n${usr?.name}!"
 
         // uncomment for round welcome image
         //val img = BitmapFactory.decodeResource(resources, R.drawable.welcome_image)

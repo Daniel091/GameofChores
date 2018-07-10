@@ -2,6 +2,8 @@ package sbd.pemgami
 
 
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -31,18 +33,15 @@ class SettingsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
+        val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
+
         userName.text = "${usr?.name}"
         activity?.title = "Settings"
 
+        codeTextViewSettings.text = wg?.uid
+
         //debug button
         logoutBtn.setOnClickListener { logUsrOut() }
-
-        // debug button
-        clearShPrefBtn.setOnClickListener {
-            // cleans your shared preferences usr and wg data
-            SharedPrefsUtils._debugClearPreferences(activity?.applicationContext)
-            logUsrOut()
-        }
 
         //Change User Name on Click
         changeUsrButton.setOnClickListener {
@@ -69,6 +68,10 @@ class SettingsFragment : Fragment() {
             context?.let {
                 displayLeaveDialog(context)
             }
+        }
+
+        copyBtnSettings.setOnClickListener {
+            copyText(codeTextViewSettings.text)
         }
     }
 
@@ -137,9 +140,17 @@ class SettingsFragment : Fragment() {
         // Leave WG
         builder.setPositiveButton("Ok") { _, _ ->
             Toast.makeText(context, "Jetzt austreten!", Toast.LENGTH_LONG).show()
-            //removeUser()
+            removeUser()
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private fun copyText(text: CharSequence) {
+        val clipM = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = ClipData.newPlainText("text", text)
+        clipM.primaryClip = clipData
+
+        Toast.makeText(context, "WG ID Copied", Toast.LENGTH_LONG).show()
     }
 }

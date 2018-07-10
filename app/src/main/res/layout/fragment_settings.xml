@@ -8,93 +8,126 @@
     tools:context=".SettingsFragment"
     android:background="@drawable/blackboard" >
 
-    <TextView
-        android:id="@+id/textView6"
-        style="@style/EditTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
+    <ImageView
+        android:id="@+id/imageViewSettings"
+        android:layout_width="158dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="68dp"
-        android:text="Change your settings here"
+        android:src="@drawable/settings_image"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textView6"
+        style="@style/EditTextStyle.title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/logoutBtn"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/colorBrightYellow"
+        android:text="Settings"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/userNameText"/>
+
+    <View
+        android:id="@+id/SplitLine1"
+        android:layout_width="match_parent"
+        android:layout_height= "1dp"
+        android:background="@color/colorWhite"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/userNameText"/>
+
+
+    <TextView
+        android:id="@+id/userNameText"
+        style="@style/EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:text="Username:"
+        app:layout_constraintBottom_toBottomOf="@+id/debugLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.026"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView6"
+        app:layout_constraintVertical_bias="0.142" />
+
+    <LinearLayout
+        android:id="@+id/usernameLinLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userNameText">
 
         <TextView
             android:id="@+id/userName"
             style="@style/SmallerTextStyle"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:text="usrname"
             android:textColor="@color/colorWhite"
             android:textIsSelectable="true" />
 
         <Button
             android:id="@+id/changeUsrButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:drawablePadding="20dip"
+            android:drawableRight="@drawable/pen_black"
             android:text="Change" />
     </LinearLayout>
 
     <Button
         android:id="@+id/leaveWG"
         style="@style/SmallerTextStyle"
-        android:drawableRight="@drawable/leave2"
-        android:drawablePadding="20dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="@color/colorAccent"
-        android:text="Leave WG"
+        android:drawablePadding="20dip"
+        android:drawableRight="@drawable/leave2"
+        android:text="Leave"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.081"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clearShPrefBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/logoutBtn"
-        android:drawableRight="@drawable/logout"
-        android:drawablePadding="20dip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="130dp"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="50dp"
+        android:drawablePadding="20dip"
+        android:drawableRight="@drawable/logout"
         android:text="@string/debug_logout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debugLabel" />
-
-    <Button
-        android:id="@+id/clearShPrefBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:text="@string/debug_clear_sharedpreferences"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoutBtn" />
+        app:layout_constraintHorizontal_bias="0.788"
+        app:layout_constraintLeft_toRightOf="@+id/leaveWG"
+        app:layout_constraintStart_toEndOf="@+id/leaveWG"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <TextView
         android:id="@+id/debugLabel"
@@ -108,21 +141,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <View
+        android:id="@+id/SplitLine2"
+        android:layout_width="match_parent"
+        android:layout_height= "1dp"
+        android:background="@color/colorWhite"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/shareCodeText"/>
+
+    <TextView
+        android:id="@+id/shareCodeText"
+        style="@style/EditTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Share ID with new members:"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameLinLayout" />
+
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="36dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/leaveWG"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHorizontal_bias="0.266"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/usernameLinLayout">
 
         <TextView
-            android:id="@+id/codeTextView"
+            android:id="@+id/codeTextViewSettings"
             style="@style/SmallerTextStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:text="1234567891011"
@@ -130,16 +190,24 @@
             android:textIsSelectable="true" />
 
         <Button
-            android:id="@+id/copyBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/copyBtnSettings"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
             android:drawablePadding="20dip"
             android:drawableRight="@drawable/copy"
             android:text="@string/copy" />
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/SplitLine3"
+        android:layout_width="match_parent"
+        android:layout_height= "1dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
 
 
 </android.support.constraint.ConstraintLayout>
