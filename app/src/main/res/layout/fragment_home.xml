@@ -10,9 +10,10 @@
 
     <TextView
         android:id="@+id/textView"
+        android:textColor="@color/colorBrightYellow"
         style="@style/EditTextStyle.title"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -21,6 +22,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeImageView" />
+
+    <View
+        android:id="@+id/SplitLine_hor1"
+        android:layout_width="match_parent"
+        android:layout_height= "1dp"
+        android:background="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"/>
 
     <TextView
         android:id="@+id/textView5"
@@ -39,10 +47,10 @@
 
     <ImageView
         android:id="@+id/welcomeImageView"
-        android:layout_width="232dp"
-        android:layout_height="156dp"
+        android:layout_width="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginTop="32dp"
-        android:src="@drawable/welcome_image"
+        android:src="@drawable/game_of_chores_logo_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -56,13 +64,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center"
-        android:text="asd"
+        android:text="Community: YourCommunity"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@id/SplitLine_hor1"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/doneTasksRecView"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center"
