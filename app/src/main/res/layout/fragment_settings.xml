@@ -64,15 +64,15 @@
 
     <LinearLayout
         android:id="@+id/usernameLinLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.266"
         app:layout_constraintTop_toBottomOf="@+id/userNameText">
 
         <TextView
@@ -90,7 +90,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:drawablePadding="20dip"
             android:drawableRight="@drawable/pen_black"
             android:text="Change" />
@@ -115,16 +114,15 @@
 
     <Button
         android:id="@+id/logoutBtn"
-        android:layout_width="130dp"
+        android:layout_width="125dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="48dp"
         android:drawablePadding="20dip"
         android:drawableRight="@drawable/logout"
         android:text="@string/debug_logout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.788"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.97"
         app:layout_constraintLeft_toRightOf="@+id/leaveWG"
         app:layout_constraintStart_toEndOf="@+id/leaveWG"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -193,9 +191,8 @@
             android:id="@+id/copyBtnSettings"
             android:layout_width="130dp"
             android:layout_height="50dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
             android:drawablePadding="20dip"
             android:drawableRight="@drawable/copy"
             android:text="@string/copy" />
