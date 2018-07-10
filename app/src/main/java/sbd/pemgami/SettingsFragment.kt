@@ -2,6 +2,7 @@ package sbd.pemgami
 
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -64,7 +65,10 @@ class SettingsFragment : Fragment() {
         //delete button
         // TODO: Add Dialog "Are you sure..."
         leaveWG.setOnClickListener {
-            removeUser()
+            val context = activity?.applicationContext
+            context?.let {
+                displayLeaveDialog(context)
+            }
         }
     }
 
@@ -123,5 +127,19 @@ class SettingsFragment : Fragment() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun displayLeaveDialog(context: Context) {
+        val builder = android.support.v7.app.AlertDialog.Builder(context)
+        builder.setTitle(context.resources.getString(R.string.really_leave))
+        builder.setMessage(context.resources.getString(R.string.leave_desc))
+
+        // Leave WG
+        builder.setPositiveButton("Ok") { _, _ ->
+            Toast.makeText(context, "Jetzt austreten!", Toast.LENGTH_LONG).show()
+            //removeUser()
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 }
