@@ -157,8 +157,10 @@ class TaskFirebaseAdapter(frag: TaskViewFragment, usr: User, wg: WG, context: Co
 
             val taskDate = Date(task.time)
             val dateStr = fmt2.format(taskDate)
-            if(taskDate.before(today)) {
+            if (taskDate.before(today)) {
                 view.firstLine.setTextColor(Color.YELLOW)
+            } else {
+                view.firstLine.setTextColor(Color.WHITE)
             }
 
             view.firstLine.text = task.name + " - " + dateStr
