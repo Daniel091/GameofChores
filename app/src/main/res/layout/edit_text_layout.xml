@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColorHint="@color/colorWhite">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/alert_dialog_edittext"
+            android:layout_width="429dp"
+            android:layout_height="45dp"
+            android:hint="@string/change_usr"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</LinearLayout>

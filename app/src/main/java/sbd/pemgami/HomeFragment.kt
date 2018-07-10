@@ -38,12 +38,14 @@ class HomeFragment : Fragment(), TasksDoneFirebaseAdapter.BuildEventHandler {
         activity?.title = "Home"
         val usr = SharedPrefsUtils.readLastUserFromSharedPref(activity?.applicationContext)
         val wg = SharedPrefsUtils.readLastWGFromSharedPref(activity?.applicationContext)
-        debugLabel.text = "Username: ${usr?.name}, WG: ${wg?.name}"
+        debugLabel.text = "Community: ${wg?.name}"
+        textView.text = "Welcome back,\n${usr?.name}!"
 
-        val img = BitmapFactory.decodeResource(resources, R.drawable.welcome_image)
-        val round = RoundedBitmapDrawableFactory.create(resources, img)
-        round.isCircular = true
-        welcomeImageView.setImageDrawable(round)
+        // uncomment for round welcome image
+        //val img = BitmapFactory.decodeResource(resources, R.drawable.welcome_image)
+        //val round = RoundedBitmapDrawableFactory.create(resources, img)
+        //round.isCircular = true
+        //welcomeImageView.setImageDrawable(round)
 
         usr?.let {
             wg?.let {
