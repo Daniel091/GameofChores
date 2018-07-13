@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/blackboard">
+
+    <EditText
+        android:id="@+id/nameEditText"
+        style="@style/EditTextStyle.title"
+        android:layout_marginBottom="8dp"
+        android:drawableLeft="@drawable/pen"
+        android:hint="@string/task"
+        android:inputType="text"
+        android:lines="1"
+        android:maxLines="5"
+        android:minLines="1"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.16"/>
+
+    <EditText
+        style="@style/EditTextStyle"
+        android:id="@+id/timeEditText"
+        android:layout_alignStart="@+id/nameEditText"
+        android:layout_below="@+id/nameEditText"
+        android:hint="@string/time_in_mins"
+        android:drawableLeft="@drawable/duration"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.327" />
+
+    <EditText
+        style="@style/EditTextStyle"
+        android:id="@+id/deadlineEditText"
+        android:layout_alignStart="@+id/timeEditText"
+        android:layout_below="@+id/timeEditText"
+        android:drawableLeft="@drawable/deadline"
+        android:hint="@string/start_date"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.566" />
+
+    <EditText
+        style="@style/EditTextStyle"
+        android:id="@+id/firstEditText"
+        android:layout_alignStart="@+id/deadlineEditText"
+        android:layout_below="@+id/deadlineEditText"
+        android:drawableLeft="@drawable/person"
+        android:hint="@string/who"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.449" />
+
+    <!-- The number of points will have to be calculated automatically -->
+    <TextView
+        android:id="@+id/pointsTextView"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/submitButton"
+        android:layout_below="@+id/deadlineEditText"
+        android:layout_marginBottom="156dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="right"
+        android:text="@string/points"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_alignStart="@+id/firstEditText"
+        android:layout_below="@+id/pointsTextView"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/save"
+        android:fontFamily="sans-serif-smallcaps"
+        android:minHeight="1dp"
+        android:minWidth="2dp"
+        android:text="@string/save"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:theme="@style/buttonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.847" />
+
+</android.support.constraint.ConstraintLayout>
