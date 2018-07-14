@@ -141,7 +141,6 @@ class SettingsFragment : Fragment() {
 
         // Leave WG
         builder.setPositiveButton("Ok") { _, _ ->
-            Toast.makeText(context, "Jetzt austreten!", Toast.LENGTH_LONG).show()
             removeUser()
         }
 

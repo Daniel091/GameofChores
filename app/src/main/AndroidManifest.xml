@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/game_of_chores_launcher"
-        android:label="Game of Chores@string/app_name"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/game_of_chores_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
