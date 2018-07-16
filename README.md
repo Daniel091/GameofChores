@@ -1,91 +1,14 @@
-# PemGAMI
-Englisch 
-
-## First Feature Goals to be done until 1.6.2018
-- Aufgabenplaner (Main-Feature)
-- Bewohner des Monats
-- Anmeldungsflow
-
-### Aufgabenplaner
-- Bonuspunkte Berechnung nach Zeit
-- Screen1: Forumlar fürs Festlegen der Dauer, Name der Aufgabe, Zeit, Rotation, ..
-- Screen2: Was steht heute an, Übersicht (Home Seite)
-- Notifications für Aufgaben
-- Nice to have: Regex, für Bonuspunkte (Bad, ..) 
-
-### Bewohner des Monats
-- Screen1: Ranglisten, am ersten Tag des neuen Monats, Auswertung und Ranglisten Screen
-- Screen2: Derzeitiger Stand
-
-### Anmeldung
-- Benutzername, WG
-- Screen1: Neue WG erstellen oder in WG einschreiben
-- Screen2: WG-Erstellung, WG, Name, Bewohner, generiert einen Code
-- Screen3: WG-Code eintippen
-
-## Update 1 
-- Pinnwand
-- Gambling
-
-### Gambling
-- TO be done
-
-### Pinnwand
-- Titel, Beschreibung, Datum
-- Screen1: Übersicht
-- Screen2: Eingabe
+# About the App
+Game of Chores introduces a clever way of organising household tasks easily. 
+First, create a new community or join an existing one by entering the respective ID. It is as simple as that.
+Then, create a task, assign a responsible person and a due date.
+Decide if the task is one time only or if it should be repeated daily, weekly, monthly or annually.
+Avoid doing the same tasks over and over alone by adding rotation amongst all household members.
+Gain points for all finished chores.
+With these points you can gamble and gain even more points, in order to become member of the month and be celebrated by the app and of course – your flat mates!
 
 
-
-# Database Example JSON
-```
-{
-  "users" : {
-    "FTSyyQqR2kYGQUscp0kCiH10QC93" : {
-      "email" : "d-eichinger@arcor.de",
-      "name" : "NeuerUsr",
-      "uid" : "FTSyyQqR2kYGQUscp0kCiH10QC93",
-      "wg_id" : "-LDvZLu-WnyoR9g1ICLf"
-    },
-  
-    "sR2r9jFEurhZ4MM4iRFGOBxoXkz2" : {
-      "email" : "deichinger0@gmail.com",
-      "name" : "deichinger0@gmail.com",
-      "uid" : "sR2r9jFEurhZ4MM4iRFGOBxoXkz2",
-      "wg_id" : "-LDvZLu-WnyoR9g1ICLf"
-    },
-  },
-  "wg_tasks" : {
-    "-LDvZLu-WnyoR9g1ICLf" : [ {
-      "duration" : 10,
-      "name" : "Bad putzen",
-      "rotatable" : true,
-      "time" : 1528322400914,
-      "user" : "sR2r9jFEurhZ4MM4iRFGOBxoXkz2"
-    }, {
-      "duration" : 10,
-      "name" : "Bad putzen",
-      "rotatable" : true,
-      "time" : 1528927200914,
-      "user" : "FTSyyQqR2kYGQUscp0kCiH10QC93"
-    },]
-  },
-  "wgs" : {
-    "-LDvZLu-WnyoR9g1ICLf" : {
-      "admin" : "sR2r9jFEurhZ4MM4iRFGOBxoXkz2",
-      "name" : "FancyWG",
-      "uid" : "-LDvZLu-WnyoR9g1ICLf",
-      "users" : [ "sR2r9jFEurhZ4MM4iRFGOBxoXkz2", "FTSyyQqR2kYGQUscp0kCiH10QC93" ]
-    },
-  }
-}
-```
-
-
-
-
-
-## Git Tutorial
+# Git Tutorial
 
 ### Branching:
 New Branch, switch to branch, commit push
